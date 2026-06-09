@@ -71,6 +71,9 @@ class VocabularyApp {
     // Device ID 생성 (로그인 없이도 추적)
     this.deviceId = getOrCreateDeviceId()
 
+    // 단어 데이터 로드 (public/words.json에서)
+    await this.loadWordsFromFile()
+
     // 인증 상태 확인
     this.user = await getCurrentUser()
 
@@ -163,11 +166,35 @@ class VocabularyApp {
 
   }
 
+  async loadWordsFromFile() {
+    try {
+      const stored = localStorage.getItem('vocabularyWords')
+      if (stored) {
+        this.words = JSON.parse(stored)
+        return
+      }
+
+      const response = await fetch('/words.json')
+      if (!response.ok) throw new Error('Failed to load words.json')
+
+      const wordsData = await response.json()
+      this.words = wordsData
+      this.saveWords(wordsData)
+    } catch (error) {
+      console.warn('Failed to load words.json, using initial data:', error)
+      this.words = this.getInitialWords()
+      this.saveWords(this.words)
+    }
+  }
+
   loadWords() {
     const stored = localStorage.getItem('vocabularyWords')
     if (stored) return JSON.parse(stored)
+    return this.getInitialWords()
+  }
 
-    const initialWords = [
+  getInitialWords() {
+    return [
       { id: 1, word: 'infrastructure', pos: '명사', meaning: '기간 시설, 인프라', englishMeaning: 'the basic systems, services, and facilities needed for a country or organization to function properly', ipa: '/ˈɪnfrəˌstrʌktʃər/', category: 'Business', example: 'Modern infrastructure is essential for economic development.', isLearned: false, createdAt: new Date().toISOString() },
       { id: 2, word: 'rollout', pos: '명사', meaning: '(첫) 출시, 본격적인 전개', englishMeaning: 'the process of introducing something new, especially a product or service', ipa: '/ˈroʊl.aʊt/', category: 'Business', example: 'The new product rollout was successful and exceeded expectations.', isLearned: false, createdAt: new Date().toISOString() },
       { id: 3, word: 'cooperation', pos: '명사', meaning: '협력, 협조', englishMeaning: 'the action or process of working together to the same end', ipa: '/koʊ.ɑpəˈreɪ.ʃən/', category: 'Business', example: 'Cooperation between teams is crucial for project success.', isLearned: false, createdAt: new Date().toISOString() },
@@ -177,8 +204,6 @@ class VocabularyApp {
       { id: 7, word: 'academic', pos: '형용사', meaning: '학문적인, 대학의', englishMeaning: 'relating to education and scholarship', ipa: '/ˌæk.əˈdem.ɪk/', category: 'Business', example: 'Academic research requires rigorous methodology and peer review.', isLearned: false, createdAt: new Date().toISOString() },
       { id: 8, word: 'establishment', pos: '명사', meaning: '설립, 수립', englishMeaning: 'the action or process of establishing or starting something', ipa: '/ɪˈstæb.lɪʃ.mənt/', category: 'Business', example: 'The establishment of new policies helped improve efficiency.', isLearned: false, createdAt: new Date().toISOString() },
     ]
-    this.saveWords(initialWords)
-    return initialWords
   }
 
   loadDictationData() {
