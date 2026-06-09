@@ -4,6 +4,7 @@ class VocabularyApp {
   constructor() {
     this.words = this.loadWords()
     this.currentCategory = 'all'
+    this.currentView = 'list'
     this.init()
   }
 
@@ -20,15 +21,34 @@ class VocabularyApp {
       this.currentCategory = e.target.value
       this.render()
     })
+    document.getElementById('quizBtn')?.addEventListener('click', () => this.startQuiz())
+    document.getElementById('backToListBtn')?.addEventListener('click', () => {
+      this.currentView = 'list'
+      this.render()
+    })
   }
 
   loadWords() {
     const stored = localStorage.getItem('vocabularyWords')
-    return stored ? JSON.parse(stored) : []
+    if (stored) return JSON.parse(stored)
+
+    const initialWords = [
+      { id: 1, word: 'infrastructure', pos: '명사', meaning: '기간 시설, 인프라', category: 'Business', example: '', isLearned: false, createdAt: new Date().toISOString() },
+      { id: 2, word: 'rollout', pos: '명사', meaning: '(첫) 출시, 본격적인 전개', category: 'Business', example: '', isLearned: false, createdAt: new Date().toISOString() },
+      { id: 3, word: 'cooperation', pos: '명사', meaning: '협력, 협조', category: 'Business', example: '', isLearned: false, createdAt: new Date().toISOString() },
+      { id: 4, word: 'delivery', pos: '명사', meaning: '인도, 납품, 배달', category: 'Business', example: '', isLearned: false, createdAt: new Date().toISOString() },
+      { id: 5, word: 'institute', pos: '명사', meaning: '기관, 협회, 연구소', category: 'Business', example: '', isLearned: false, createdAt: new Date().toISOString() },
+      { id: 6, word: 'strategically', pos: '부사', meaning: '전략적으로', category: 'Business', example: '', isLearned: false, createdAt: new Date().toISOString() },
+      { id: 7, word: 'academic', pos: '형용사', meaning: '학문적인, 대학의', category: 'Business', example: '', isLearned: false, createdAt: new Date().toISOString() },
+      { id: 8, word: 'establishment', pos: '명사', meaning: '설립, 수립', category: 'Business', example: '', isLearned: false, createdAt: new Date().toISOString() },
+    ]
+
+    this.saveWords(initialWords)
+    return initialWords
   }
 
-  saveWords() {
-    localStorage.setItem('vocabularyWords', JSON.stringify(this.words))
+  saveWords(words = this.words) {
+    localStorage.setItem('vocabularyWords', JSON.stringify(words))
   }
 
   showAddModal() {
@@ -44,6 +64,7 @@ class VocabularyApp {
     e.preventDefault()
     const word = document.getElementById('wordInput').value.trim()
     const meaning = document.getElementById('meaningInput').value.trim()
+    const pos = document.getElementById('posInput').value.trim() || '명사'
     const category = document.getElementById('categoryInput').value.trim() || 'General'
     const example = document.getElementById('exampleInput').value.trim()
 
@@ -56,6 +77,7 @@ class VocabularyApp {
       id: Date.now(),
       word,
       meaning,
+      pos,
       category,
       example,
       createdAt: new Date().toISOString(),
@@ -97,9 +119,106 @@ class VocabularyApp {
   }
 
   render() {
-    this.renderStats()
-    this.renderCategoryFilter()
-    this.renderWordList()
+    if (this.currentView === 'quiz') {
+      this.renderQuiz()
+    } else {
+      this.renderStats()
+      this.renderCategoryFilter()
+      this.renderWordList()
+    }
+  }
+
+  startQuiz() {
+    if (this.words.length < 2) {
+      alert('퀴즈를 하려면 최소 2개 이상의 단어가 필요합니다.')
+      return
+    }
+    this.quizIndex = 0
+    this.quizScore = 0
+    this.quizAnswered = []
+    this.currentView = 'quiz'
+    this.generateQuiz()
+    this.render()
+  }
+
+  generateQuiz() {
+    const shuffled = [...this.words].sort(() => Math.random() - 0.5)
+    this.quizQuestions = shuffled.map(correct => {
+      const options = [correct]
+      const others = this.words.filter(w => w.id !== correct.id)
+      while (options.length < 4 && others.length > 0) {
+        const idx = Math.floor(Math.random() * others.length)
+        options.push(others[idx])
+        others.splice(idx, 1)
+      }
+      options.sort(() => Math.random() - 0.5)
+      return { correct, options: options.map(o => o.meaning) }
+    })
+  }
+
+  renderQuiz() {
+    const main = document.querySelector('main')
+    if (!main) return
+
+    if (this.quizIndex >= this.quizQuestions.length) {
+      main.innerHTML = `
+        <div class="flex flex-col items-center justify-center py-12 text-center">
+          <div class="text-6xl mb-4">🎉</div>
+          <h2 class="text-2xl font-bold text-gray-900 mb-2">퀴즈 완료!</h2>
+          <p class="text-gray-600 mb-6">
+            <span class="text-3xl font-bold text-blue-600">${this.quizScore}</span> / ${this.quizQuestions.length}
+          </p>
+          <button id="backToListBtn" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg transition-all">
+            목록으로 돌아가기
+          </button>
+        </div>
+      `
+      document.getElementById('backToListBtn')?.addEventListener('click', () => {
+        this.currentView = 'list'
+        this.render()
+      })
+      return
+    }
+
+    const q = this.quizQuestions[this.quizIndex]
+    const correctMeaning = q.correct.meaning
+    const progress = this.quizIndex + 1
+
+    main.innerHTML = `
+      <div class="py-4">
+        <div class="mb-6">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-sm font-medium text-gray-600">진행: ${progress}/${this.quizQuestions.length}</span>
+            <span class="text-sm font-medium text-blue-600">${this.quizScore}점</span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-2">
+            <div class="bg-blue-500 h-2 rounded-full transition-all" style="width: ${(progress / this.quizQuestions.length) * 100}%"></div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+          <p class="text-gray-600 text-sm mb-4">다음 단어의 뜻은?</p>
+          <h2 class="text-3xl font-bold text-gray-900 mb-6">${this.escapeHtml(q.correct.word)}</h2>
+          <p class="text-xs text-gray-500 mb-6">품사: ${this.escapeHtml(q.correct.pos)}</p>
+
+          <div class="space-y-3" id="quizOptions">
+            ${q.options.map((meaning, i) => `
+              <button onclick="app.answerQuiz('${meaning}', '${correctMeaning}')" class="w-full p-4 bg-gray-100 hover:bg-gray-200 text-left rounded-lg font-medium text-gray-900 transition-all border-2 border-transparent hover:border-blue-400">
+                ${this.escapeHtml(meaning)}
+              </button>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+    `
+  }
+
+  answerQuiz(selected, correct) {
+    const isCorrect = selected === correct
+    if (isCorrect) this.quizScore++
+    this.quizAnswered.push({ isCorrect })
+    this.quizIndex++
+    this.render()
   }
 
   renderStats() {
@@ -141,10 +260,13 @@ class VocabularyApp {
             <div class="flex-1">
               <div class="flex items-center gap-2 mb-1">
                 <h3 class="font-bold text-lg ${word.isLearned ? 'line-through text-gray-400' : 'text-gray-900'}">${this.escapeHtml(word.word)}</h3>
-                <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">${this.escapeHtml(word.category)}</span>
+                <span class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded">${this.escapeHtml(word.pos)}</span>
               </div>
               <p class="text-gray-600 text-sm mb-2">${this.escapeHtml(word.meaning)}</p>
-              ${word.example ? `<p class="text-gray-500 text-xs italic">예: ${this.escapeHtml(word.example)}</p>` : ''}
+              <div class="flex gap-2">
+                <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">${this.escapeHtml(word.category)}</span>
+              </div>
+              ${word.example ? `<p class="text-gray-500 text-xs italic mt-2">예: ${this.escapeHtml(word.example)}</p>` : ''}
             </div>
             <div class="flex gap-2 flex-shrink-0">
               <button onclick="app.toggleLearned(${word.id})" class="p-2 rounded-lg ${word.isLearned ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-600'} hover:opacity-80 transition" title="${word.isLearned ? '미학습' : '학습완료'}">
