@@ -16,6 +16,8 @@
     "vite": "^5.0.8"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.108.0"
+    "@supabase/supabase-js": "^2.108.0",
+    "axios": "^1.17.0",
+    "youtube-transcript-api": "^3.0.6"
   }
 }
