@@ -267,8 +267,8 @@ class VocabularyApp {
         <!-- 탭 버튼 (top-28 = 헤더 바로 아래) -->
         ${this.renderTabs()}
 
-        <!-- 콘텐츠 영역 (pt-56 = 헤더 + 탭 높이) -->
-        <main id="mainContent" class="flex-1 overflow-y-auto pb-20 pt-56"></main>
+        <!-- 콘텐츠 영역 (pt-40 = 헤더 112px + 탭 52px) -->
+        <main id="mainContent" class="flex-1 overflow-y-auto pb-20 pt-40"></main>
       </div>
     `
 
