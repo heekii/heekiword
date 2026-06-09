@@ -76,6 +76,7 @@ class VocabularyApp {
       if (e.target.id === 'closeModal') this.closeModal()
       if (e.target.id === 'autoFillBtn') { e.preventDefault(); this.autoFillWordInfo() }
       if (e.target.id === 'quizBtn') this.startQuiz()
+      if (e.target.id === 'submitBtn') { e.preventDefault(); this.submitDictation(e) }
       if (e.target.id === 'vocabTab') { this.currentView = 'vocabulary'; this.render() }
       if (e.target.id === 'dictationTab') { this.currentView = 'dictation'; this.render() }
       if (e.target.id === 'characterTab') { this.currentView = 'character'; this.render() }
@@ -113,15 +114,6 @@ class VocabularyApp {
       }
     })
 
-    document.addEventListener('input', (e) => {
-      if (e.target.id === 'dictationInput') {
-        const wordId = e.target.getAttribute('data-word-id')
-        if (wordId) {
-          const word = this.words.find(w => w.id === parseInt(wordId))
-          if (word) this.checkDictationRealtime(e)
-        }
-      }
-    })
   }
 
   loadWords() {
@@ -507,6 +499,15 @@ class VocabularyApp {
     })
 
     input.addEventListener('keydown', (e) => {
+      // Enter 키: 완료 처리
+      if (e.key === 'Enter') {
+        e.preventDefault()
+        if (currentIndex === target.length) {
+          this.submitDictation({ target: document.getElementById('dictationForm') })
+        }
+        return
+      }
+
       // 백스페이스 처리
       if (e.key === 'Backspace') {
         e.preventDefault()
