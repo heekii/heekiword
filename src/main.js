@@ -26,6 +26,50 @@ class VocabularyApp {
       this.currentView = 'list'
       this.render()
     })
+    document.getElementById('autoFillBtn')?.addEventListener('click', (e) => {
+      e.preventDefault()
+      this.autoFillWordInfo()
+    })
+  }
+
+  async autoFillWordInfo() {
+    const word = document.getElementById('wordInput').value.trim()
+    if (!word) {
+      alert('단어를 입력하세요.')
+      return
+    }
+
+    const btn = document.getElementById('autoFillBtn')
+    const originalText = btn.textContent
+    btn.textContent = '조회 중...'
+    btn.disabled = true
+
+    try {
+      const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word.toLowerCase()}`)
+      if (!response.ok) throw new Error('단어를 찾을 수 없습니다.')
+
+      const data = await response.json()
+      const entry = data[0]
+
+      const phonetic = entry.phonetics?.[0]?.text || entry.phonetic || ''
+      const meanings = entry.meanings || []
+      const definitions = meanings.flatMap(m => m.definitions || [])
+      const englishMeaning = definitions[0]?.definition || meanings[0]?.definitions[0]?.definition || ''
+      const example = definitions[0]?.example || meanings[0]?.definitions[0]?.example || ''
+
+      document.getElementById('englishMeaningInput').value = englishMeaning
+      document.getElementById('ipaInput').value = phonetic
+      if (example) {
+        document.getElementById('exampleInput').value = example
+      }
+
+      alert('✅ 자동 조회 완료! 한글 뜻을 입력해주세요.')
+    } catch (err) {
+      alert('❌ 단어를 찾을 수 없습니다. 다시 시도해주세요.')
+    } finally {
+      btn.textContent = originalText
+      btn.disabled = false
+    }
   }
 
   loadWords() {
