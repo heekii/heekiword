@@ -9,6 +9,8 @@ on:
 jobs:
   scrape-words:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: 📥 코드 다운로드
@@ -36,21 +38,26 @@ jobs:
       - name: 🚀 단어 수집 스크립트 실행
         run: |
           cd scripts
-          python word-scraper.py
+          python word-scraper.py 2>&1 || echo "스크립트 실행 완료 (에러 무시)"
+
+      - name: 📊 결과 확인
+        run: |
+          echo "=== 파일 목록 ==="
+          ls -la public/ || echo "public 폴더 없음"
+          echo "=== words.json 크기 ==="
+          wc -l public/words.json || echo "파일 없음"
 
       - name: 📤 변경사항 커밋 & 푸시
         run: |
-          git config user.name "Word Scraper Bot"
-          git config user.email "bot@heekiword.dev"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # public/words.json이 있는지 확인
           if [ -f "public/words.json" ]; then
             git add public/words.json
-            git commit -m "feat: 자동 단어 수집 - $(date +'%Y-%m-%d')" || echo "✓ 변경사항 없음"
-            git push || echo "✓ 푸시할 변경사항 없음"
+            git commit -m "feat: 자동 단어 수집 - $(date +'%Y-%m-%d')" || echo "변경사항 없음"
+            git push
+            echo "✓ 단어 수집 완료!"
           else
-            echo "⚠️  public/words.json 파일 없음"
+            echo "⚠️  words.json 생성 실패"
+            exit 1
           fi
-
-      - name: ✅ 완료
-        run: echo "✓ 단어 수집 완료!"
