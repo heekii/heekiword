@@ -443,19 +443,18 @@ class VocabularyApp {
             <label class="block text-sm font-medium text-gray-700 mb-3">위 문장을 입력창에 그대로 따라 쓰세요</label>
 
             <div class="relative mb-4">
-              <div class="bg-gray-100 rounded-lg p-4 mb-2 min-h-24 text-center text-lg leading-relaxed font-light text-gray-300">
+              <div class="bg-gray-100 rounded-lg p-4 min-h-24 text-center text-lg leading-relaxed font-light text-gray-300 relative">
                 ${this.escapeHtml(randomWord.example)}
+                <textarea
+                  id="dictationInput"
+                  data-word-id="${randomWord.id}"
+                  placeholder=""
+                  class="absolute inset-0 p-4 text-center text-lg leading-relaxed text-gray-900 bg-transparent resize-none focus:outline-none focus:ring-2 focus:ring-orange-500 rounded-lg"
+                  aria-label="단어장 필사 입력"
+                  aria-describedby="dictation-feedback"
+                  style="font-family: inherit;"
+                ></textarea>
               </div>
-
-              <textarea
-                id="dictationInput"
-                data-word-id="${randomWord.id}"
-                placeholder="여기에 따라 쓰세요..."
-                rows="4"
-                class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm resize-none bg-white"
-                aria-label="단어장 필사 입력"
-                aria-describedby="dictation-feedback"
-              ></textarea>
 
               <div id="dictationFeedback" class="mt-2 p-3 rounded-lg min-h-12" role="status" aria-live="polite" aria-atomic="true">
                 <div class="text-xs text-gray-600">입력을 시작하세요...</div>
