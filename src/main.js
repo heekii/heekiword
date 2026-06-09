@@ -166,70 +166,86 @@ class VocabularyApp {
   render() {
     const app = document.getElementById('app') || document.body
 
+    // 공통 레이아웃 (고정 헤더 + 탭 + 콘텐츠)
+    app.innerHTML = `
+      <div class="min-h-screen flex flex-col max-w-md mx-auto bg-gray-50">
+        <!-- 고정 헤더 -->
+        <header class="sticky top-0 z-40 bg-white border-b-2 border-gray-200 shadow-sm">
+          <div class="px-4 py-4 flex items-center justify-between">
+            <div>
+              <h1 class="text-2xl font-bold text-gray-900">heekiword</h1>
+              <p class="text-xs text-gray-500 mt-1">단어 수집가를 위한 학습장</p>
+            </div>
+            <div class="flex gap-2">
+              <button id="quizBtn" class="bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 text-white rounded-full p-3 transition-all active:scale-95 shadow-lg" aria-label="퀴즈 시작" title="퀴즈 시작">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </button>
+              <button id="addWordBtn" class="bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 text-white rounded-full p-3 transition-all active:scale-95 shadow-lg" aria-label="새 단어 추가">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </header>
+
+        <!-- 탭 버튼 -->
+        ${this.renderTabs()}
+
+        <!-- 콘텐츠 영역 -->
+        <main id="mainContent" class="flex-1 overflow-y-auto pb-20"></main>
+      </div>
+    `
+
+    // 콘텐츠 렌더링
+    this.renderMainContent()
+  }
+
+  renderMainContent() {
+    const mainContent = document.getElementById('mainContent')
+    if (!mainContent) return
+
     if (this.currentView === 'vocabulary') {
-      this.renderVocabulary(app)
+      mainContent.innerHTML = `<div class="px-4 py-4">${this.renderVocabularyContent()}</div>`
+      this.renderWordList()
     } else if (this.currentView === 'dictation') {
-      this.renderDictationTab(app)
+      mainContent.innerHTML = `
+        <div class="px-4 py-4">
+          ${this.renderDictationStats()}
+          <div id="dictationContent"></div>
+        </div>
+      `
+      this.renderDictationChallenge()
     } else if (this.currentView === 'character') {
-      this.renderCharacterTab(app)
+      mainContent.innerHTML = `<div class="px-4 py-4">${this.renderCharacterContent()}</div>`
     } else if (this.currentView === 'quiz') {
-      this.renderQuiz(app)
+      mainContent.innerHTML = this.renderQuizContent()
     }
   }
 
-  renderVocabulary(container) {
-    container.innerHTML = `
-      <div class="min-h-screen flex flex-col max-w-md mx-auto bg-gray-50">
-        ${this.renderHeader()}
-        ${this.renderTabs()}
-        <main class="flex-1 px-4 py-4 overflow-y-auto pb-20">
-          <div id="contentArea"></div>
-        </main>
-      </div>
-      ${this.renderAddModal()}
-    `
-    this.renderWordList()
-  }
-
-  renderHeader() {
+  renderVocabularyContent() {
     const learned = this.words.filter(w => w.isLearned).length
     return `
-      <header class="sticky top-0 z-40 bg-white border-b-2 border-gray-200 shadow-sm">
-        <div class="px-4 py-4 flex items-center justify-between">
-          <div>
-            <h1 class="text-2xl font-bold text-gray-900">heekiword</h1>
-            <p class="text-xs text-gray-500 mt-1">단어 수집가를 위한 학습장</p>
-          </div>
-          <div class="flex gap-2">
-            <button id="quizBtn" class="bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 text-white rounded-full p-3 transition-all active:scale-95 shadow-lg" aria-label="퀴즈 시작" title="퀴즈 시작">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </button>
-            <button id="addWordBtn" class="bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 text-white rounded-full p-3 transition-all active:scale-95 shadow-lg" aria-label="새 단어 추가">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-              </svg>
-            </button>
-          </div>
+      <div class="grid grid-cols-2 gap-3 mb-4">
+        <div class="bg-blue-50 rounded-lg p-3 text-center border-2 border-blue-200">
+          <p class="text-xs text-gray-600 mb-1">전체</p>
+          <p class="text-2xl font-bold text-blue-600" aria-label="전체 단어 개수">${this.words.length}</p>
         </div>
-        <div class="px-4 pb-4 grid grid-cols-2 gap-3">
-          <div class="bg-blue-50 rounded-lg p-3 text-center border-2 border-blue-200">
-            <p class="text-xs text-gray-600 mb-1">전체</p>
-            <p class="text-2xl font-bold text-blue-600" aria-label="전체 단어 개수">${this.words.length}</p>
-          </div>
-          <div class="bg-green-50 rounded-lg p-3 text-center border-2 border-green-200">
-            <p class="text-xs text-gray-600 mb-1">학습완료 ✓</p>
-            <p class="text-2xl font-bold text-green-600" aria-label="학습 완료 단어 개수">${learned}</p>
-          </div>
+        <div class="bg-green-50 rounded-lg p-3 text-center border-2 border-green-200">
+          <p class="text-xs text-gray-600 mb-1">학습완료 ✓</p>
+          <p class="text-2xl font-bold text-green-600" aria-label="학습 완료 단어 개수">${learned}</p>
         </div>
-        <div class="px-4 pb-4">
-          <select id="categoryFilter" class="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <option value="all">전체</option>
-            ${[...new Set(this.words.map(w => w.category))].sort().map(cat => `<option value="${cat}">${cat}</option>`).join('')}
-          </select>
-        </div>
-      </header>
+      </div>
+      <div class="mb-4">
+        <select id="categoryFilter" class="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option value="all">전체</option>
+          ${[...new Set(this.words.map(w => w.category))].sort().map(cat => `<option value="${cat}">${cat}</option>`).join('')}
+        </select>
+      </div>
+      <div id="contentArea"></div>
+      ${this.renderAddModal()}
     `
   }
 
@@ -362,39 +378,26 @@ class VocabularyApp {
     `
   }
 
-  renderDictationTab(container) {
+  renderDictationStats() {
     const today = new Date().toISOString().split('T')[0]
     const todayRecord = this.dictationData.records[today]
 
-    container.innerHTML = `
-      <div class="min-h-screen flex flex-col max-w-md mx-auto bg-gray-50">
-        <header class="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
-          <div class="px-4 py-4">
-            <h1 class="text-2xl font-bold text-gray-900">✏️ 필사 도전</h1>
-            <p class="text-xs text-gray-500 mt-1">매일 예문을 필사하고 스탬프를 모으세요</p>
-          </div>
-          <div class="px-4 pb-4 grid grid-cols-3 gap-2">
-            <div class="rounded-lg p-3 text-center ${todayRecord?.success ? 'bg-green-50 border-2 border-green-300' : 'bg-gray-100 border-2 border-gray-300'}">
-              <p class="text-xs font-medium ${todayRecord?.success ? 'text-green-700' : 'text-gray-600'}">오늘</p>
-              <p class="text-2xl font-bold mt-2">${todayRecord?.success ? '✓ 완료' : '⭕ 대기중'}</p>
-            </div>
-            <div class="bg-blue-50 rounded-lg p-3 text-center border-2 border-blue-300">
-              <p class="text-xs font-medium text-blue-700">연속</p>
-              <p class="text-2xl font-bold text-blue-600 mt-2">${this.character.streak}일</p>
-            </div>
-            <div class="bg-purple-50 rounded-lg p-3 text-center border-2 border-purple-300">
-              <p class="text-xs font-medium text-purple-700">성공</p>
-              <p class="text-2xl font-bold text-purple-600 mt-2">${this.character.totalSuccess}회</p>
-            </div>
-          </div>
-        </header>
-        ${this.renderTabs()}
-        <main class="flex-1 px-4 py-4 overflow-y-auto pb-20">
-          <div id="dictationContent"></div>
-        </main>
+    return `
+      <div class="grid grid-cols-3 gap-2 mb-4">
+        <div class="rounded-lg p-3 text-center ${todayRecord?.success ? 'bg-green-50 border-2 border-green-300' : 'bg-gray-100 border-2 border-gray-300'}">
+          <p class="text-xs font-medium ${todayRecord?.success ? 'text-green-700' : 'text-gray-600'}">오늘</p>
+          <p class="text-2xl font-bold mt-2">${todayRecord?.success ? '✓ 완료' : '⭕ 대기중'}</p>
+        </div>
+        <div class="bg-blue-50 rounded-lg p-3 text-center border-2 border-blue-300">
+          <p class="text-xs font-medium text-blue-700">연속</p>
+          <p class="text-2xl font-bold text-blue-600 mt-2">${this.character.streak}일</p>
+        </div>
+        <div class="bg-purple-50 rounded-lg p-3 text-center border-2 border-purple-300">
+          <p class="text-xs font-medium text-purple-700">성공</p>
+          <p class="text-2xl font-bold text-purple-600 mt-2">${this.character.totalSuccess}회</p>
+        </div>
       </div>
     `
-    this.renderDictationChallenge()
   }
 
   renderDictationChallenge() {
@@ -638,23 +641,6 @@ class VocabularyApp {
     }
   }
 
-  renderCharacterTab(container) {
-    container.innerHTML = `
-      <div class="min-h-screen flex flex-col max-w-md mx-auto bg-gray-50">
-        <header class="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
-          <div class="px-4 py-4">
-            <h1 class="text-2xl font-bold text-gray-900">🐣 캐릭터</h1>
-            <p class="text-xs text-gray-500 mt-1">매일 필사하면서 캐릭터를 성장시키세요</p>
-          </div>
-        </header>
-        ${this.renderTabs()}
-        <main class="flex-1 px-4 py-4 overflow-y-auto pb-20">
-          ${this.renderCharacterContent()}
-        </main>
-      </div>
-    `
-  }
-
   renderCharacterContent() {
     const characterStage = this.getCharacterStage()
     const months = Object.keys(this.dictationData.stats).sort().reverse().slice(0, 3)
@@ -732,10 +718,10 @@ class VocabularyApp {
     }
   }
 
-  renderQuiz(container) {
+  renderQuizContent() {
     if (this.quizIndex >= (this.quizQuestions?.length || 0)) {
-      container.innerHTML = `
-        <div class="min-h-screen flex flex-col items-center justify-center bg-gray-50 max-w-md mx-auto">
+      return `
+        <div class="flex flex-col items-center justify-center min-h-96 text-center">
           <div class="text-6xl mb-4">🎉</div>
           <h2 class="text-2xl font-bold text-gray-900 mb-2">Quiz Complete!</h2>
           <p class="text-gray-600 mb-6">
@@ -744,40 +730,32 @@ class VocabularyApp {
           <button id="vocabTab" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg transition-all">돌아가기</button>
         </div>
       `
-      return
     }
 
     const q = this.quizQuestions[this.quizIndex]
     const progress = (this.quizIndex || 0) + 1
 
-    container.innerHTML = `
-      <div class="min-h-screen flex flex-col max-w-md mx-auto bg-gray-50">
-        <header class="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm p-4">
+    return `
+      <div>
+        <div class="mb-4">
           <div class="flex justify-between items-center mb-2">
             <span class="text-sm font-medium text-gray-600">Progress: ${progress}/${this.quizQuestions?.length || 0}</span>
-            <button id="vocabTab" class="text-gray-400 hover:text-gray-600">
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-              </svg>
-            </button>
           </div>
           <div class="w-full bg-gray-200 rounded-full h-2">
             <div class="bg-blue-500 h-2 rounded-full transition-all" style="width: ${(progress / (this.quizQuestions?.length || 1)) * 100}%"></div>
           </div>
-        </header>
-        <main class="flex-1 px-4 py-6">
-          <div class="bg-white rounded-lg shadow-sm p-6">
-            <p class="text-gray-600 text-sm mb-4">Select the meaning:</p>
-            <h2 class="text-3xl font-bold text-gray-900 mb-6">${this.escapeHtml(q.correct.word)}</h2>
-            <div class="space-y-3">
-              ${q.options.map((meaning, idx) => `
-                <button data-answer-quiz="${meaning}|${q.correct.meaning}" class="w-full p-4 bg-gray-100 hover:bg-gray-200 text-left rounded-lg font-medium text-gray-900 transition-all border-2 border-transparent hover:border-blue-400">
-                  ${this.escapeHtml(meaning)}
-                </button>
-              `).join('')}
-            </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-sm p-6">
+          <p class="text-gray-600 text-sm mb-4">Select the meaning:</p>
+          <h2 class="text-3xl font-bold text-gray-900 mb-6">${this.escapeHtml(q.correct.word)}</h2>
+          <div class="space-y-3">
+            ${q.options.map((meaning, idx) => `
+              <button data-answer-quiz="${meaning}|${q.correct.meaning}" class="w-full p-4 bg-gray-100 hover:bg-gray-200 text-left rounded-lg font-medium text-gray-900 transition-all border-2 border-transparent hover:border-blue-400">
+                ${this.escapeHtml(meaning)}
+              </button>
+            `).join('')}
           </div>
-        </main>
+        </div>
       </div>
     `
   }
