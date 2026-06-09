@@ -74,6 +74,9 @@ class VocabularyApp {
     // 단어 데이터 로드 (public/words.json에서)
     await this.loadWordsFromFile()
 
+    // Dictation 문장 데이터 로드 (public/dictation_sentences.json에서)
+    await this.loadDictationSentences()
+
     // 인증 상태 확인
     this.user = await getCurrentUser()
 
@@ -187,6 +190,20 @@ class VocabularyApp {
         console.log(`⚠️  Using initial data: ${this.words.length} words`)
         localStorage.setItem('vocabularyWords', JSON.stringify(this.words))
       }
+    }
+  }
+
+  async loadDictationSentences() {
+    try {
+      const response = await fetch('/dictation_sentences.json')
+      if (!response.ok) throw new Error('Failed to load dictation_sentences.json')
+
+      const sentencesData = await response.json()
+      this.dictationSentences = sentencesData
+      console.log(`✅ Loaded ${sentencesData.length} dictation sentences`)
+    } catch (error) {
+      console.error('❌ Failed to load dictation_sentences.json:', error)
+      this.dictationSentences = []
     }
   }
 
@@ -705,17 +722,31 @@ class VocabularyApp {
       return
     }
 
-    const randomWord = this.words[Math.floor(Math.random() * this.words.length)]
-    if (!randomWord?.example) {
-      content.innerHTML = '<div class="text-center py-8 text-gray-400">예문이 없습니다.</div>'
+    if (!this.dictationSentences || this.dictationSentences.length === 0) {
+      content.innerHTML = '<div class="text-center py-8 text-gray-400">문장 데이터가 없습니다.</div>'
       return
     }
+
+    const randomSentence = this.dictationSentences[Math.floor(Math.random() * this.dictationSentences.length)]
+    if (!randomSentence) {
+      content.innerHTML = '<div class="text-center py-8 text-gray-400">문장이 없습니다.</div>'
+      return
+    }
+
+    const categoryEmoji = {
+      'TED': '🎬',
+      'Movie': '🎥',
+      'Business': '💼'
+    }[randomSentence.category] || '📚'
 
     content.innerHTML = `
       <div class="py-4">
         <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
-          <h2 class="text-xl font-bold text-gray-900 mb-2">${this.escapeHtml(randomWord.word)}</h2>
-          <p class="text-gray-500 text-sm mb-4 font-mono" aria-label="발음기호">${this.escapeHtml(randomWord.ipa)}</p>
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-bold text-gray-900">${this.escapeHtml(randomSentence.word)}</h2>
+            <span class="text-2xl">${categoryEmoji}</span>
+          </div>
+          <p class="text-xs font-semibold text-orange-600 mb-3">💡 Hint: ${randomSentence.category}</p>
 
           <form id="dictationForm" class="space-y-4">
             <label class="block text-sm font-medium text-gray-700 mb-4">Type the sentence below</label>
@@ -724,8 +755,7 @@ class VocabularyApp {
             <div
               id="dictationInput"
               contenteditable="true"
-              data-word-id="${randomWord.id}"
-              data-target="${this.escapeHtml(randomWord.example)}"
+              data-sentence="${this.escapeHtml(randomSentence.sentence)}"
               class="w-full bg-white rounded-lg border-2 border-gray-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all p-4 text-base leading-relaxed text-gray-900 focus:outline-none min-h-24 text-left"
               aria-label="Dictation input"
               spellcheck="false"
@@ -766,7 +796,7 @@ class VocabularyApp {
   setupDictationInput() {
     const input = document.getElementById('dictationInput')
     const submitBtn = document.getElementById('submitBtn')
-    const target = input?.getAttribute('data-target') || ''
+    const target = input?.getAttribute('data-sentence') || ''
 
     if (!input) return
 
@@ -884,15 +914,13 @@ class VocabularyApp {
   async submitDictation(e) {
     const inputElement = document.getElementById('dictationInput')
     const input = (inputElement?.textContent || '').trim()
-    const wordId = parseInt(inputElement?.getAttribute('data-word-id'))
-    const word = this.words.find(w => w.id === wordId)
-    const correct = word?.example.trim() || ''
+    const correct = (inputElement?.getAttribute('data-sentence') || '').trim()
 
     if (input === correct) {
       audio.play('success')
 
       const today = new Date().toISOString().split('T')[0]
-      this.dictationData.records[today] = { success: true, word: word.word }
+      this.dictationData.records[today] = { success: true }
 
       const month = today.substring(0, 7)
       if (!this.dictationData.stats[month]) {
@@ -917,8 +945,8 @@ class VocabularyApp {
       // Supabase에 학습 기록 저장 (User 또는 Device)
       // const { error } = await saveLearningRecord({
       //   type: 'dictation',
-      //   word: word.word,
-      //   course: word.category,
+      //   word: inputElement?.getAttribute('data-sentence'),
+      //   course: 'Dictation',
       //   success: true
       // }, this.deviceId)
       // if (error) console.error('Failed to save record:', error)
