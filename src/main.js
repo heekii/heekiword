@@ -174,15 +174,15 @@ class VocabularyApp {
           <div class="px-4 py-4 flex items-center justify-between">
             <div>
               <h1 class="text-2xl font-bold text-gray-900">heekiword</h1>
-              <p class="text-xs text-gray-500 mt-1">단어 수집가를 위한 학습장</p>
+              <p class="text-xs text-gray-500 mt-1">Vocabulary Tracker for Learning</p>
             </div>
             <div class="flex gap-2">
-              <button id="quizBtn" class="bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 text-white rounded-full p-3 transition-all active:scale-95 shadow-lg" aria-label="퀴즈 시작" title="퀴즈 시작">
+              <button id="quizBtn" class="bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 text-white rounded-full p-3 transition-all active:scale-95 shadow-lg" aria-label="Start Quiz" title="Start Quiz">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </button>
-              <button id="addWordBtn" class="bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 text-white rounded-full p-3 transition-all active:scale-95 shadow-lg" aria-label="새 단어 추가">
+              <button id="addWordBtn" class="bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 text-white rounded-full p-3 transition-all active:scale-95 shadow-lg" aria-label="Add Word">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
@@ -232,17 +232,17 @@ class VocabularyApp {
     return `
       <div class="grid grid-cols-2 gap-3 mb-4">
         <div class="bg-blue-50 rounded-lg p-3 text-center border-2 border-blue-200">
-          <p class="text-xs text-gray-600 mb-1">전체</p>
-          <p class="text-2xl font-bold text-blue-600" aria-label="전체 단어 개수">${this.words.length}</p>
+          <p class="text-xs text-gray-600 mb-1">Total</p>
+          <p class="text-2xl font-bold text-blue-600" aria-label="Total words">${this.words.length}</p>
         </div>
         <div class="bg-green-50 rounded-lg p-3 text-center border-2 border-green-200">
-          <p class="text-xs text-gray-600 mb-1">학습완료 ✓</p>
-          <p class="text-2xl font-bold text-green-600" aria-label="학습 완료 단어 개수">${learned}</p>
+          <p class="text-xs text-gray-600 mb-1">완료됨 ✓</p>
+          <p class="text-2xl font-bold text-green-600" aria-label="Completed words">${learned}</p>
         </div>
       </div>
       <div class="mb-4">
         <select id="categoryFilter" class="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-          <option value="all">전체</option>
+          <option value="all">All</option>
           ${[...new Set(this.words.map(w => w.category))].sort().map(cat => `<option value="${cat}">${cat}</option>`).join('')}
         </select>
       </div>
@@ -259,13 +259,13 @@ class VocabularyApp {
     return `
       <div class="sticky top-24 z-30 bg-white border-b border-gray-200 flex" role="tablist" aria-label="Main navigation">
         <button id="vocabTab" class="flex-1 py-3 px-4 font-medium border-b-2 transition-colors ${isActive('vocabulary') ? activeClass : inactiveClass} text-center" role="tab" aria-selected="${isActive('vocabulary')}" aria-controls="vocab-panel">
-          📚 <span class="hidden sm:inline">단어장</span>
+          📚 <span class="hidden sm:inline">Vocabulary</span>
         </button>
         <button id="dictationTab" class="flex-1 py-3 px-4 font-medium border-b-2 transition-colors ${isActive('dictation') ? activeClass : inactiveClass} text-center" role="tab" aria-selected="${isActive('dictation')}" aria-controls="dictation-panel">
-          ✏️ <span class="hidden sm:inline">필사</span>
+          ✏️ <span class="hidden sm:inline">Dictation</span>
         </button>
         <button id="characterTab" class="flex-1 py-3 px-4 font-medium border-b-2 transition-colors ${isActive('character') ? activeClass : inactiveClass} text-center" role="tab" aria-selected="${isActive('character')}" aria-controls="character-panel">
-          🐣 <span class="hidden sm:inline">캐릭터</span>
+          🐣 <span class="hidden sm:inline">Character</span>
         </button>
       </div>
     `
@@ -277,7 +277,7 @@ class VocabularyApp {
     if (!content) return
 
     if (filtered.length === 0) {
-      content.innerHTML = '<div class="text-center py-8 text-gray-400">아직 단어가 없습니다.</div>'
+      content.innerHTML = '<div class="text-center py-8 text-gray-400">No words yet. Add your first word!</div>'
       return
     }
 
@@ -292,7 +292,7 @@ class VocabularyApp {
             ${word.ipa ? `<p class="text-gray-500 text-xs mb-2">${this.escapeHtml(word.ipa)}</p>` : ''}
             <div class="mb-2 p-3 bg-blue-50 rounded-lg cursor-pointer hover:bg-blue-100 transition" data-toggle-meaning="${word.id}">
               <p class="text-gray-700 text-sm mb-2 font-medium">${this.escapeHtml(word.englishMeaning || word.meaning)}</p>
-              <p class="text-xs text-gray-500 text-center">💬 뜻을 클릭하면 한글/영문 전환</p>
+              <p class="text-xs text-gray-500 text-center">💬 Click to toggle Korean meaning</p>
             </div>
             <div id="meaning-${word.id}" class="hidden text-gray-600 text-sm mb-2 p-2 bg-gray-50 rounded">
               ${this.escapeHtml(word.meaning)}
@@ -300,7 +300,7 @@ class VocabularyApp {
             <div class="flex gap-2">
               <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">${this.escapeHtml(word.category)}</span>
             </div>
-            ${word.example ? `<p class="text-gray-500 text-xs italic mt-2">예: ${this.escapeHtml(word.example)}</p>` : ''}
+            ${word.example ? `<p class="text-gray-500 text-xs italic mt-2">Example: ${this.escapeHtml(word.example)}</p>` : ''}
           </div>
           <div class="flex gap-2 flex-shrink-0">
             <button data-toggle-learned="${word.id}" class="p-2 rounded-lg ${word.isLearned ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-600'} hover:opacity-80 transition">
@@ -324,7 +324,7 @@ class VocabularyApp {
       <div id="addModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end">
         <div class="w-full bg-white rounded-t-2xl p-6 animate-slide-up max-h-[90vh] overflow-y-auto">
           <div class="flex items-center justify-between mb-6">
-            <h2 class="text-xl font-bold text-gray-900">새 단어 추가</h2>
+            <h2 class="text-xl font-bold text-gray-900">Add Word</h2>
             <button id="closeModal" class="text-gray-400 hover:text-gray-600">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -333,43 +333,43 @@ class VocabularyApp {
           </div>
           <form id="addWordForm" class="space-y-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">단어</label>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Word</label>
               <div class="flex gap-2">
-                <input type="text" id="wordInput" placeholder="영어 단어를 입력하세요" class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" required>
-                <button type="button" id="autoFillBtn" class="bg-green-500 hover:bg-green-600 text-white font-semibold px-4 py-3 rounded-lg transition-all active:scale-95 whitespace-nowrap">자동 조회</button>
+                <input type="text" id="wordInput" placeholder="Enter English word" class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" required>
+                <button type="button" id="autoFillBtn" class="bg-green-500 hover:bg-green-600 text-white font-semibold px-4 py-3 rounded-lg transition-all active:scale-95 whitespace-nowrap">Auto Search</button>
               </div>
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">영문 뜻</label>
-              <textarea id="englishMeaningInput" placeholder="영어로 뜻을 설명해주세요" rows="2" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm resize-none"></textarea>
+              <label class="block text-sm font-medium text-gray-700 mb-2">English Meaning</label>
+              <textarea id="englishMeaningInput" placeholder="Describe the meaning in English" rows="2" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm resize-none"></textarea>
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">뜻 (한글)</label>
+              <label class="block text-sm font-medium text-gray-700 mb-2">한글 뜻 (Korean)</label>
               <textarea id="meaningInput" placeholder="단어의 의미를 입력하세요" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm resize-none" required></textarea>
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">발음기호 (IPA)</label>
-              <input type="text" id="ipaInput" placeholder="예: /ˈɪnfrəˌstrʌktʃər/" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+              <label class="block text-sm font-medium text-gray-700 mb-2">IPA (Pronunciation)</label>
+              <input type="text" id="ipaInput" placeholder="Example: /ˈɪnfrəˌstrʌktʃər/" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">품사</label>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Part of Speech</label>
               <select id="posInput" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
-                <option value="명사">명사</option>
-                <option value="동사">동사</option>
-                <option value="형용사">형용사</option>
-                <option value="부사">부사</option>
-                <option value="전치사">전치사</option>
+                <option value="Noun">Noun</option>
+                <option value="Verb">Verb</option>
+                <option value="Adjective">Adjective</option>
+                <option value="Adverb">Adverb</option>
+                <option value="Preposition">Preposition</option>
               </select>
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">카테고리</label>
-              <input type="text" id="categoryInput" placeholder="예: 비즈니스" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+              <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
+              <input type="text" id="categoryInput" placeholder="Example: Business" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">예시</label>
-              <textarea id="exampleInput" placeholder="예문을 입력하세요" rows="2" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm resize-none"></textarea>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Example Sentence</label>
+              <textarea id="exampleInput" placeholder="Enter example sentence" rows="2" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm resize-none"></textarea>
             </div>
-            <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-lg transition-all active:scale-95">추가하기</button>
+            <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-lg transition-all active:scale-95">Add Word</button>
           </form>
         </div>
       </div>
@@ -387,16 +387,16 @@ class VocabularyApp {
     return `
       <div class="grid grid-cols-3 gap-2 mb-4">
         <div class="rounded-lg p-3 text-center ${todayRecord?.success ? 'bg-green-50 border-2 border-green-300' : 'bg-gray-100 border-2 border-gray-300'}">
-          <p class="text-xs font-medium ${todayRecord?.success ? 'text-green-700' : 'text-gray-600'}">오늘</p>
-          <p class="text-2xl font-bold mt-2">${todayRecord?.success ? '✓ 완료' : '⭕ 대기중'}</p>
+          <p class="text-xs font-medium ${todayRecord?.success ? 'text-green-700' : 'text-gray-600'}">Today</p>
+          <p class="text-2xl font-bold mt-2">${todayRecord?.success ? '✓ Done' : '⭕ Pending'}</p>
         </div>
         <div class="bg-blue-50 rounded-lg p-3 text-center border-2 border-blue-300">
-          <p class="text-xs font-medium text-blue-700">연속</p>
-          <p class="text-2xl font-bold text-blue-600 mt-2">${this.character.streak}일</p>
+          <p class="text-xs font-medium text-blue-700">Streak</p>
+          <p class="text-2xl font-bold text-blue-600 mt-2">${this.character.streak} days</p>
         </div>
         <div class="bg-purple-50 rounded-lg p-3 text-center border-2 border-purple-300">
-          <p class="text-xs font-medium text-purple-700">성공</p>
-          <p class="text-2xl font-bold text-purple-600 mt-2">${this.character.totalSuccess}회</p>
+          <p class="text-xs font-medium text-purple-700">Success</p>
+          <p class="text-2xl font-bold text-purple-600 mt-2">${this.character.totalSuccess}x</p>
         </div>
       </div>
     `
@@ -414,8 +414,8 @@ class VocabularyApp {
       content.innerHTML = `
         <div class="text-center py-12">
           <div class="text-6xl mb-4">🎉</div>
-          <h2 class="text-2xl font-bold text-gray-900 mb-2">완벽했어요!</h2>
-          <p class="text-gray-600 mb-4">내일 다시 도전하세요!</p>
+          <h2 class="text-2xl font-bold text-gray-900 mb-2">Perfect!</h2>
+          <p class="text-gray-600 mb-4">Come back tomorrow for your next challenge!</p>
           <div class="bg-green-50 rounded-lg p-4 mb-4 border-2 border-green-200">
             <p class="text-sm text-green-700">✨ You nailed it! Keep up the great streak! ✨</p>
           </div>
@@ -437,7 +437,7 @@ class VocabularyApp {
           <p class="text-gray-500 text-sm mb-4 font-mono" aria-label="발음기호">${this.escapeHtml(randomWord.ipa)}</p>
 
           <form id="dictationForm" class="space-y-4">
-            <label class="block text-sm font-medium text-gray-700 mb-4">예문을 따라 입력하세요</label>
+            <label class="block text-sm font-medium text-gray-700 mb-4">Type the sentence below</label>
 
             <!-- contenteditable 입력 영역 -->
             <div
@@ -446,12 +446,12 @@ class VocabularyApp {
               data-word-id="${randomWord.id}"
               data-target="${this.escapeHtml(randomWord.example)}"
               class="w-full bg-white rounded-lg border-2 border-gray-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all p-4 text-base leading-relaxed text-gray-900 focus:outline-none min-h-24 text-left"
-              aria-label="단어장 필사 입력"
+              aria-label="Dictation input"
               spellcheck="false"
             ></div>
 
             <button type="submit" id="submitBtn" class="w-full bg-gray-300 text-gray-500 font-semibold py-3 rounded-lg transition-all cursor-not-allowed" disabled>
-              ✓ 입력 중...
+              ✓ Typing...
             </button>
           </form>
         </div>
@@ -559,9 +559,9 @@ class VocabularyApp {
           submitBtn.disabled = false
           submitBtn.classList.remove('bg-gray-300', 'text-gray-500', 'cursor-not-allowed')
           submitBtn.classList.add('bg-orange-500', 'hover:bg-orange-600', 'text-white')
-          submitBtn.textContent = '✓ 완료'
+          submitBtn.textContent = '✓ Done'
         } else {
-          submitBtn.textContent = `✓ 입력 중... (${currentIndex}/${target.length})`
+          submitBtn.textContent = `✓ Typing... (${currentIndex}/${target.length})`
         }
       }
     })
@@ -639,7 +639,7 @@ class VocabularyApp {
     } else {
       audio.play('error')
       const similarity = this.calculateSimilarity(input, correct)
-      alert(`❌ Not quite. Keep trying! Accuracy: ${similarity}%`)
+      alert(`Not quite right. Keep trying! Accuracy: ${similarity}%`)
     }
   }
 
@@ -675,21 +675,21 @@ class VocabularyApp {
           <h3 class="font-bold text-gray-900 mb-4">🏆 Badges</h3>
           <div class="grid grid-cols-3 gap-3">
             ${this.character.badges.map(b => `<div class="text-center p-3 bg-yellow-50 rounded-lg"><div class="text-2xl mb-1">${b.emoji}</div><p class="text-xs font-medium">${b.name}</p></div>`).join('')}
-            ${this.character.badges.length === 0 ? '<p class="text-xs text-gray-400 col-span-3">배지를 획득하면 여기에 표시됩니다</p>' : ''}
+            ${this.character.badges.length === 0 ? '<p class="text-xs text-gray-400 col-span-3">Earn badges to see them here</p>' : ''}
           </div>
         </div>
 
         <div class="bg-white rounded-lg shadow-sm p-6">
           <h3 class="font-bold text-gray-900 mb-4">📊 Monthly Stats</h3>
-          ${months.length === 0 ? '<p class="text-xs text-gray-400">아직 필사 기록이 없습니다.</p>' : months.map(month => {
+          ${months.length === 0 ? '<p class="text-xs text-gray-400">No dictation records yet.</p>' : months.map(month => {
             const stats = this.dictationData.stats[month]
             const [year, monthNum] = month.split('-')
             return `
               <div class="mb-3 pb-3 border-b last:border-b-0">
-                <p class="text-sm font-medium text-gray-900 mb-2">${year}년 ${monthNum}월</p>
+                <p class="text-sm font-medium text-gray-900 mb-2">${year}.${monthNum}</p>
                 <div class="flex justify-between text-xs text-gray-600">
-                  <span>성공: ${stats.successDays}일</span>
-                  <span>시도: ${stats.totalAttempts}일</span>
+                  <span>Successful: ${stats.successDays}d</span>
+                  <span>Attempts: ${stats.totalAttempts}d</span>
                 </div>
               </div>
             `
@@ -729,7 +729,7 @@ class VocabularyApp {
           <p class="text-gray-600 mb-6">
             <span class="text-3xl font-bold text-blue-600">${this.quizScore}</span> / ${this.quizQuestions?.length || 0}
           </p>
-          <button id="vocabTab" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg transition-all">돌아가기</button>
+          <button id="vocabTab" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg transition-all">Back</button>
         </div>
       `
     }
@@ -777,7 +777,7 @@ class VocabularyApp {
   }
 
   deleteWord(id) {
-    if (confirm('이 단어를 삭제하시겠습니까?')) {
+    if (confirm('Delete this word?')) {
       this.words = this.words.filter(w => w.id !== id)
       this.saveWords()
       this.render()
@@ -801,12 +801,12 @@ class VocabularyApp {
     const englishMeaning = document.getElementById('englishMeaningInput')?.value.trim() || ''
     const meaning = document.getElementById('meaningInput')?.value.trim() || ''
     const ipa = document.getElementById('ipaInput')?.value.trim() || ''
-    const pos = document.getElementById('posInput')?.value.trim() || '명사'
+    const pos = document.getElementById('posInput')?.value.trim() || 'Noun'
     const category = document.getElementById('categoryInput')?.value.trim() || 'General'
     const example = document.getElementById('exampleInput')?.value.trim() || ''
 
     if (!word || !meaning) {
-      alert('단어와 뜻은 필수입니다.')
+      alert('Word and meaning are required.')
       return
     }
 
@@ -826,13 +826,13 @@ class VocabularyApp {
   async autoFillWordInfo() {
     const word = document.getElementById('wordInput')?.value.trim()
     if (!word) {
-      alert('단어를 입력하세요.')
+      alert('Enter a word first.')
       return
     }
 
     const btn = document.getElementById('autoFillBtn')
     const originalText = btn.textContent
-    btn.textContent = '조회 중...'
+    btn.textContent = 'Searching...'
     btn.disabled = true
 
     try {
@@ -851,9 +851,9 @@ class VocabularyApp {
       document.getElementById('ipaInput').value = phonetic
       if (example) document.getElementById('exampleInput').value = example
 
-      alert('✅ 자동 조회 완료! 한글 뜻을 입력해주세요.')
+      alert('✅ Auto search complete! Enter the Korean meaning.')
     } catch (err) {
-      alert('❌ 단어를 찾을 수 없습니다.')
+      alert('❌ Word not found.')
     } finally {
       btn.textContent = originalText
       btn.disabled = false
@@ -862,7 +862,7 @@ class VocabularyApp {
 
   startQuiz() {
     if (this.words.length < 2) {
-      alert('퀴즈를 하려면 최소 2개 이상의 단어가 필요합니다.')
+      alert('At least 2 words are needed for a quiz.')
       return
     }
     this.quizIndex = 0
