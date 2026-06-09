@@ -437,76 +437,108 @@ class VocabularyApp {
       <div class="py-4">
         <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
           <h2 class="text-xl font-bold text-gray-900 mb-2">${this.escapeHtml(randomWord.word)}</h2>
-          <p class="text-gray-500 text-sm mb-4" aria-label="발음기호">${this.escapeHtml(randomWord.ipa)}</p>
+          <p class="text-gray-500 text-sm mb-4 font-mono" aria-label="발음기호">${this.escapeHtml(randomWord.ipa)}</p>
 
           <form id="dictationForm" class="space-y-4">
-            <label class="block text-sm font-medium text-gray-700 mb-3">위 문장을 입력창에 그대로 따라 쓰세요</label>
+            <label class="block text-sm font-medium text-gray-700 mb-4">예문을 따라 입력하세요</label>
 
-            <div class="relative mb-4">
-              <div class="bg-gray-100 rounded-lg p-4 min-h-24 text-center text-lg leading-relaxed font-light text-gray-300 relative border-2 border-transparent" id="dictationContainer">
+            <!-- 입력 컴포넌트 -->
+            <div class="bg-gray-50 rounded-lg p-4 relative min-h-24 focus-within:ring-2 focus-within:ring-orange-500 focus-within:ring-offset-2 transition-all">
+              <!-- 예문 배경 (연하게) -->
+              <div class="absolute inset-4 text-gray-200 text-lg leading-relaxed pointer-events-none break-words whitespace-pre-wrap" id="dictationExample">
                 ${this.escapeHtml(randomWord.example)}
-                <textarea
-                  id="dictationInput"
-                  data-word-id="${randomWord.id}"
-                  placeholder=""
-                  class="absolute inset-0 p-4 text-center text-lg leading-relaxed text-gray-900 bg-transparent resize-none focus:outline-none rounded-lg"
-                  aria-label="단어장 필사 입력"
-                  style="font-family: inherit;"
-                ></textarea>
               </div>
+
+              <!-- 사용자 입력 표시 -->
+              <div id="dictationDisplay" class="relative text-lg leading-relaxed break-words whitespace-pre-wrap min-h-20">
+                <span class="text-transparent">.</span>
+              </div>
+
+              <!-- 실제 input (숨김) -->
+              <input
+                id="dictationInput"
+                type="text"
+                data-word-id="${randomWord.id}"
+                data-target="${this.escapeHtml(randomWord.example)}"
+                class="absolute inset-0 p-4 bg-transparent text-transparent caret-orange-500 focus:outline-none resize-none"
+                aria-label="단어장 필사 입력"
+                autocomplete="off"
+              />
             </div>
 
-            <button type="submit" class="w-full bg-orange-500 hover:bg-orange-600 active:bg-orange-700 text-white font-semibold py-3 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2">
-              ✓ 완료
+            <button type="submit" id="submitBtn" class="w-full bg-gray-300 text-gray-500 font-semibold py-3 rounded-lg transition-all cursor-not-allowed" disabled>
+              ✓ 입력 중...
             </button>
           </form>
         </div>
       </div>
     `
+    this.setupDictationInput()
   }
 
-  checkDictationRealtime(e) {
-    const input = e.target.value
-    const wordId = parseInt(e.target.getAttribute('data-word-id'))
-    const word = this.words.find(w => w.id === wordId)
-    const correct = word?.example || ''
-    const container = document.getElementById('dictationContainer')
+  setupDictationInput() {
+    const input = document.getElementById('dictationInput')
+    const display = document.getElementById('dictationDisplay')
+    const submitBtn = document.getElementById('submitBtn')
+    const target = input?.getAttribute('data-target') || ''
 
-    if (!input) {
-      if (container) container.classList.remove('border-red-500', 'border-green-500')
-      return
-    }
+    if (!input || !display) return
 
-    let correctCount = 0
-    let hasError = false
+    input.addEventListener('input', (e) => {
+      const value = e.target.value
+      let html = ''
 
-    for (let i = 0; i < Math.max(input.length, correct.length); i++) {
-      if (input[i] !== correct[i]) {
-        hasError = true
-        break
+      for (let i = 0; i < target.length; i++) {
+        if (i < value.length) {
+          if (value[i] === target[i]) {
+            html += `<span class="text-gray-900">${this.escapeHtml(value[i])}</span>`
+          } else {
+            html += `<span class="text-red-600 bg-red-50">${this.escapeHtml(value[i])}</span>`
+          }
+        } else {
+          html += `<span class="text-gray-300">${this.escapeHtml(target[i])}</span>`
+        }
       }
-      if (input[i] === correct[i]) correctCount++
-    }
 
-    const accuracy = Math.round((correctCount / correct.length) * 100)
+      display.innerHTML = html || '<span class="text-transparent">.</span>'
 
-    if (hasError) {
-      audio.play('warning')
-      if (container) {
-        container.classList.remove('border-green-500')
-        container.classList.add('border-red-500')
+      // 완료 상태 확인
+      if (value === target) {
+        submitBtn.disabled = false
+        submitBtn.classList.remove('bg-gray-300', 'text-gray-500', 'cursor-not-allowed')
+        submitBtn.classList.add('bg-orange-500', 'hover:bg-orange-600', 'text-white')
+        submitBtn.textContent = '✓ 완료'
+      } else {
+        submitBtn.disabled = true
+        submitBtn.classList.remove('bg-orange-500', 'hover:bg-orange-600', 'text-white')
+        submitBtn.classList.add('bg-gray-300', 'text-gray-500', 'cursor-not-allowed')
+        submitBtn.textContent = `✓ 입력 중... (${value.length}/${target.length})`
       }
-    } else if (accuracy >= 80) {
-      if (container) {
-        container.classList.remove('border-red-500')
-        container.classList.add('border-green-500')
+    })
+
+    input.addEventListener('keydown', (e) => {
+      const value = e.target.value
+      const key = e.key
+
+      // 백스페이스, 화살표, Tab, Delete 등은 허용
+      if (['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Tab', 'Home', 'End'].includes(key)) {
+        return
       }
-    } else {
-      if (container) {
-        container.classList.remove('border-red-500', 'border-green-500')
+
+      // 정답 글자가 아니면 입력 방지
+      if (key.length === 1 && value.length < target.length) {
+        if (key !== target[value.length]) {
+          e.preventDefault()
+          audio.play('error')
+        }
+      } else if (key.length === 1) {
+        e.preventDefault()
       }
-    }
+    })
+
+    input.focus()
   }
+
 
   submitDictation(e) {
     const input = document.getElementById('dictationInput').value.trim()
