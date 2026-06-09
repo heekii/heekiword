@@ -701,26 +701,9 @@ class VocabularyApp {
   }
 
   renderDictationChallenge() {
-    const today = new Date().toISOString().split('T')[0]
-    const todayRecord = this.dictationData.records[today]
     const content = document.getElementById('dictationContent')
 
     if (!content) return
-
-    if (todayRecord?.success) {
-      audio.play('success')
-      content.innerHTML = `
-        <div class="text-center py-12">
-          <div class="text-6xl mb-4">🎉</div>
-          <h2 class="text-2xl font-bold text-gray-900 mb-2">Perfect!</h2>
-          <p class="text-gray-600 mb-4">Come back tomorrow for your next challenge!</p>
-          <div class="bg-green-50 rounded-lg p-4 mb-4 border-2 border-green-200">
-            <p class="text-sm text-green-700">✨ You nailed it! Keep up the great streak! ✨</p>
-          </div>
-        </div>
-      `
-      return
-    }
 
     if (!this.dictationSentences || this.dictationSentences.length === 0) {
       content.innerHTML = '<div class="text-center py-8 text-gray-400">문장 데이터가 없습니다.</div>'
@@ -919,16 +902,7 @@ class VocabularyApp {
     if (input === correct) {
       audio.play('success')
 
-      const today = new Date().toISOString().split('T')[0]
-      this.dictationData.records[today] = { success: true }
-
-      const month = today.substring(0, 7)
-      if (!this.dictationData.stats[month]) {
-        this.dictationData.stats[month] = { successDays: 0, totalAttempts: 0 }
-      }
-      this.dictationData.stats[month].successDays++
-      this.dictationData.stats[month].totalAttempts++
-
+      // 캐릭터 경험치 업데이트 (매번)
       this.character.totalSuccess++
       this.character.streak++
       this.character.exp += 10
@@ -939,21 +913,30 @@ class VocabularyApp {
         this.updateBadges()
       }
 
-      this.saveDictationData()
       this.saveCharacter()
 
-      // Supabase에 학습 기록 저장 (User 또는 Device)
-      // const { error } = await saveLearningRecord({
-      //   type: 'dictation',
-      //   word: inputElement?.getAttribute('data-sentence'),
-      //   course: 'Dictation',
-      //   success: true
-      // }, this.deviceId)
-      // if (error) console.error('Failed to save record:', error)
+      // 성공 메시지 표시 후 다음 문장으로
+      const content = document.getElementById('dictationContent')
+      if (content) {
+        content.innerHTML = `
+          <div class="text-center py-8">
+            <div class="text-6xl mb-4">✨</div>
+            <h2 class="text-2xl font-bold text-gray-900 mb-2">Perfect!</h2>
+            <p class="text-gray-600 mb-6">+10 EXP | Streak: ${this.character.streak}</p>
+            <button id="nextPracticeBtn" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-8 rounded-lg transition-all active:scale-95">
+              Next Practice 🚀
+            </button>
+          </div>
+        `
 
-      // 성공 페이지로 전환
-      this.currentView = 'dictation'
-      this.render()
+        // 다음 연습 버튼 이벤트
+        setTimeout(() => {
+          document.getElementById('nextPracticeBtn')?.addEventListener('click', () => {
+            audio.play('click')
+            this.renderDictationChallenge()
+          })
+        }, 0)
+      }
     } else {
       audio.play('error')
       const similarity = this.calculateSimilarity(input, correct)
