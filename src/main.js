@@ -199,8 +199,10 @@ class VocabularyApp {
       </div>
     `
 
-    // 콘텐츠 렌더링
-    this.renderMainContent()
+    // 콘텐츠 렌더링 (requestAnimationFrame으로 DOM 준비 보장)
+    requestAnimationFrame(() => {
+      this.renderMainContent()
+    })
   }
 
   renderMainContent() {
@@ -250,19 +252,19 @@ class VocabularyApp {
   }
 
   renderTabs() {
-    const isVocab = this.currentView === 'vocabulary'
-    const isDictation = this.currentView === 'dictation'
-    const isCharacter = this.currentView === 'character'
+    const isActive = (view) => this.currentView === view
+    const activeClass = 'border-orange-500 text-orange-600 bg-orange-50'
+    const inactiveClass = 'border-transparent text-gray-600 hover:text-gray-900'
 
     return `
       <div class="sticky top-24 z-30 bg-white border-b border-gray-200 flex" role="tablist" aria-label="Main navigation">
-        <button id="vocabTab" class="flex-1 py-3 px-4 font-medium border-b-2 transition-colors ${isVocab ? 'border-blue-500 text-blue-600 bg-blue-50' : 'border-transparent text-gray-600 hover:text-gray-900'} text-center" role="tab" aria-selected="${isVocab}" aria-controls="vocab-panel">
+        <button id="vocabTab" class="flex-1 py-3 px-4 font-medium border-b-2 transition-colors ${isActive('vocabulary') ? activeClass : inactiveClass} text-center" role="tab" aria-selected="${isActive('vocabulary')}" aria-controls="vocab-panel">
           📚 <span class="hidden sm:inline">단어장</span>
         </button>
-        <button id="dictationTab" class="flex-1 py-3 px-4 font-medium border-b-2 transition-colors ${isDictation ? 'border-orange-500 text-orange-600 bg-orange-50' : 'border-transparent text-gray-600 hover:text-gray-900'} text-center" role="tab" aria-selected="${isDictation}" aria-controls="dictation-panel">
+        <button id="dictationTab" class="flex-1 py-3 px-4 font-medium border-b-2 transition-colors ${isActive('dictation') ? activeClass : inactiveClass} text-center" role="tab" aria-selected="${isActive('dictation')}" aria-controls="dictation-panel">
           ✏️ <span class="hidden sm:inline">필사</span>
         </button>
-        <button id="characterTab" class="flex-1 py-3 px-4 font-medium border-b-2 transition-colors ${isCharacter ? 'border-purple-500 text-purple-600 bg-purple-50' : 'border-transparent text-gray-600 hover:text-gray-900'} text-center" role="tab" aria-selected="${isCharacter}" aria-controls="character-panel">
+        <button id="characterTab" class="flex-1 py-3 px-4 font-medium border-b-2 transition-colors ${isActive('character') ? activeClass : inactiveClass} text-center" role="tab" aria-selected="${isActive('character')}" aria-controls="character-panel">
           🐣 <span class="hidden sm:inline">캐릭터</span>
         </button>
       </div>
