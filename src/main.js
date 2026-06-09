@@ -527,33 +527,35 @@ class VocabularyApp {
 
       // 정답 글자 비교
       if (currentIndex < target.length) {
+        const spans = input.querySelectorAll('.char')
+
         if (e.key === target[currentIndex]) {
           // 맞는 글자
-          const spans = input.querySelectorAll('.char')
           spans[currentIndex].classList.remove('pending', 'incorrect', 'cursor')
           spans[currentIndex].classList.add('correct')
-          currentIndex++
-
-          if (currentIndex < target.length) {
-            spans[currentIndex].classList.add('cursor')
-          }
-
-          // 완료 확인
-          if (currentIndex === target.length) {
-            submitBtn.disabled = false
-            submitBtn.classList.remove('bg-gray-300', 'text-gray-500', 'cursor-not-allowed')
-            submitBtn.classList.add('bg-orange-500', 'hover:bg-orange-600', 'text-white')
-            submitBtn.textContent = '✓ 완료'
-          } else {
-            submitBtn.textContent = `✓ 입력 중... (${currentIndex}/${target.length})`
-          }
         } else {
           // 틀린 글자
           audio.play('error')
-          const spans = input.querySelectorAll('.char')
           spans[currentIndex].classList.remove('pending', 'correct', 'cursor')
           spans[currentIndex].classList.add('incorrect')
           spans[currentIndex].textContent = e.key
+        }
+
+        // 다음 인덱스로 이동 (맞든 틀리든)
+        currentIndex++
+
+        if (currentIndex < target.length) {
+          spans[currentIndex].classList.add('cursor')
+        }
+
+        // 완료 확인
+        if (currentIndex === target.length) {
+          submitBtn.disabled = false
+          submitBtn.classList.remove('bg-gray-300', 'text-gray-500', 'cursor-not-allowed')
+          submitBtn.classList.add('bg-orange-500', 'hover:bg-orange-600', 'text-white')
+          submitBtn.textContent = '✓ 완료'
+        } else {
+          submitBtn.textContent = `✓ 입력 중... (${currentIndex}/${target.length})`
         }
       }
     })
