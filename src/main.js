@@ -213,12 +213,12 @@ class VocabularyApp {
   render() {
     const app = document.getElementById('app') || document.body
 
-    // 로그인하지 않은 경우
-    if (!this.user) {
-      app.innerHTML = this.renderAuthPage()
-      requestAnimationFrame(() => this.attachAuthListeners())
-      return
-    }
+    // v1 MVP: 로그인 페이지 제거 (나중에 추가)
+    // if (!this.user) {
+    //   app.innerHTML = this.renderAuthPage()
+    //   requestAnimationFrame(() => this.attachAuthListeners())
+    //   return
+    // }
 
     // 공통 레이아웃 (고정 헤더 + 탭 + 콘텐츠)
     app.innerHTML = `
@@ -281,6 +281,8 @@ class VocabularyApp {
     }
   }
 
+  // v1 MVP: 로그인 페이지 제거 (나중에 추가)
+  /*
   renderAuthPage() {
     const isSignup = this.authView === 'signup'
     return `
@@ -349,7 +351,10 @@ class VocabularyApp {
       </div>
     `
   }
+  */
 
+  // v1 MVP: 로그인 리스너 제거 (나중에 추가)
+  /*
   attachAuthListeners() {
     const form = document.getElementById('authForm')
     const toggleBtn = document.getElementById('toggleAuth')
@@ -409,6 +414,7 @@ class VocabularyApp {
       })
     }
   }
+  */
 
   showAuthError(message, div) {
     div.textContent = '❌ ' + message
