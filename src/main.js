@@ -169,19 +169,19 @@ class VocabularyApp {
     // 공통 레이아웃 (고정 헤더 + 탭 + 콘텐츠)
     app.innerHTML = `
       <div class="min-h-screen flex flex-col max-w-md mx-auto bg-gray-50">
-        <!-- 고정 헤더 -->
-        <header class="fixed top-0 left-1/2 -translate-x-1/2 z-40 w-full max-w-md bg-white border-b border-gray-200 shadow-md">
-          <div class="px-4 py-4 flex items-center justify-between">
+        <!-- 고정 헤더 (높이 h-28 = 112px) -->
+        <header class="fixed top-0 left-1/2 -translate-x-1/2 z-40 w-full max-w-md h-28 bg-white border-b border-gray-200 shadow-md">
+          <div class="px-4 py-4 flex items-center justify-between h-full">
             <div>
               <h1 class="text-2xl font-bold text-gray-900">heekiword</h1>
               <p class="text-xs text-gray-500 mt-1">Vocabulary Tracker for Learning</p>
             </div>
             <div class="flex gap-2">
-              <button id="quizBtn" class="bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 text-white rounded-full p-3 transition-all active:scale-95 shadow-lg" aria-label="Start Quiz" title="Start Quiz">
+              <!-- <button id="quizBtn" class="bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 text-white rounded-full p-3 transition-all active:scale-95 shadow-lg" aria-label="Start Quiz" title="Start Quiz">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-              </button>
+              </button> -->
               <button id="addWordBtn" class="bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 text-white rounded-full p-3 transition-all active:scale-95 shadow-lg" aria-label="Add Word">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -191,11 +191,11 @@ class VocabularyApp {
           </div>
         </header>
 
-        <!-- 탭 버튼 -->
+        <!-- 탭 버튼 (top-28 = 헤더 바로 아래) -->
         ${this.renderTabs()}
 
-        <!-- 콘텐츠 영역 -->
-        <main id="mainContent" class="flex-1 overflow-y-auto pb-20 pt-32"></main>
+        <!-- 콘텐츠 영역 (pt-56 = 헤더 + 탭 높이) -->
+        <main id="mainContent" class="flex-1 overflow-y-auto pb-20 pt-56"></main>
       </div>
     `
 
@@ -257,7 +257,7 @@ class VocabularyApp {
     const inactiveClass = 'border-transparent text-gray-600 hover:text-gray-900'
 
     return `
-      <div class="sticky top-24 z-30 bg-white border-b border-gray-200 flex" role="tablist" aria-label="Main navigation">
+      <div class="fixed top-28 left-1/2 -translate-x-1/2 z-30 w-full max-w-md bg-white border-b border-gray-200 flex" role="tablist" aria-label="Main navigation">
         <button id="vocabTab" class="flex-1 py-3 px-4 font-medium border-b-2 transition-colors ${isActive('vocabulary') ? activeClass : inactiveClass} text-center" role="tab" aria-selected="${isActive('vocabulary')}" aria-controls="vocab-panel">
           📚 <span class="hidden sm:inline">Vocabulary</span>
         </button>
