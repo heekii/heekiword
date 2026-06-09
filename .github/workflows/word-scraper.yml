@@ -1,0 +1,56 @@
+name: 📚 Weekly Word Scraper
+
+on:
+  schedule:
+    # 매주 월요일 오전 10시 (UTC+9 = 금요일 01:00 UTC)
+    - cron: '0 1 * * 1'
+  workflow_dispatch:  # 수동 실행 가능
+
+jobs:
+  scrape-words:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 코드 다운로드
+        uses: actions/checkout@v4
+
+      - name: 🐍 Python 설정
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: 📦 라이브러리 설치
+        run: |
+          cd scripts
+          pip install -r requirements.txt
+
+      - name: 🔑 .env 파일 생성
+        run: |
+          cat > .env << EOF
+          CLAUDE_API_KEY=${{ secrets.CLAUDE_API_KEY }}
+          GUARDIAN_API_KEY=${{ secrets.GUARDIAN_API_KEY }}
+          NYT_API_KEY=${{ secrets.NYT_API_KEY }}
+          EOF
+
+      - name: 🚀 단어 수집 스크립트 실행
+        run: |
+          cd scripts
+          python word-scraper.py
+
+      - name: 📤 변경사항 커밋 & 푸시
+        run: |
+          git config user.name "Word Scraper Bot"
+          git config user.email "bot@heekiword.dev"
+
+          if git diff --quiet public/words.json; then
+            echo "✓ 변경사항 없음"
+          else
+            echo "📝 words.json 업데이트 감지"
+            git add public/words.json
+            git commit -m "feat: 자동 단어 수집 - $(date +'%Y-%m-%d')"
+            git push
+          fi
+
+      - name: ✅ 완료
+        run: echo "✓ 단어 수집 완료!"
