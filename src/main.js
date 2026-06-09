@@ -255,18 +255,12 @@ class VocabularyApp {
               <h1 class="text-2xl font-bold text-gray-900">heekiword</h1>
               <p class="text-xs text-gray-500 mt-1">Vocabulary Tracker for Learning</p>
             </div>
-            <div class="flex gap-2 items-center">
-              <button id="addWordBtn" class="bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 text-white rounded-full p-3 transition-all active:scale-95 shadow-lg" aria-label="Add Word">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                </svg>
-              </button>
-              <button id="logoutBtn" class="bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 text-white rounded-full p-3 transition-all active:scale-95 shadow-lg" aria-label="Logout" title="Logout">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                </svg>
-              </button>
-            </div>
+            <!-- v1 MVP: 추가/로그아웃 버튼 숨김 (v2에 추가) -->
+            <!-- <div class="flex gap-2 items-center">
+              <button id="addWordBtn" ...></button>
+              <button id="logoutBtn" ...></button>
+            </div> -->
+            <div class="flex gap-2 items-center"></div>
           </div>
         </header>
 
