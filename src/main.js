@@ -1,5 +1,55 @@
 import './style.css'
-import audio from './audio.js'
+
+const audio = {
+  audioContext: null,
+  init() {
+    try {
+      const AudioContext = window.AudioContext || window.webkitAudioContext
+      this.audioContext = new AudioContext()
+    } catch (e) {
+      console.log('Web Audio API not supported')
+    }
+  },
+  play(type) {
+    if (!this.audioContext) return
+    try {
+      const now = this.audioContext.currentTime
+      const osc = this.audioContext.createOscillator()
+      const gain = this.audioContext.createGain()
+      osc.connect(gain)
+      gain.connect(this.audioContext.destination)
+      if (type === 'success') {
+        osc.frequency.setValueAtTime(400, now)
+        osc.frequency.setValueAtTime(600, now + 0.1)
+        gain.gain.setValueAtTime(0.3, now)
+        gain.gain.setValueAtTime(0, now + 0.2)
+        osc.start(now)
+        osc.stop(now + 0.2)
+      } else if (type === 'error') {
+        osc.frequency.setValueAtTime(200, now)
+        osc.frequency.setValueAtTime(100, now + 0.1)
+        gain.gain.setValueAtTime(0.3, now)
+        gain.gain.setValueAtTime(0, now + 0.2)
+        osc.start(now)
+        osc.stop(now + 0.2)
+      } else if (type === 'click') {
+        osc.frequency.setValueAtTime(800, now)
+        gain.gain.setValueAtTime(0.1, now)
+        gain.gain.setValueAtTime(0, now + 0.05)
+        osc.start(now)
+        osc.stop(now + 0.05)
+      } else if (type === 'warning') {
+        osc.frequency.setValueAtTime(300, now)
+        osc.frequency.setValueAtTime(400, now + 0.05)
+        gain.gain.setValueAtTime(0.2, now)
+        gain.gain.setValueAtTime(0, now + 0.1)
+        osc.start(now)
+        osc.stop(now + 0.1)
+      }
+    } catch (e) {}
+  }
+}
+audio.init()
 
 class VocabularyApp {
   constructor() {
