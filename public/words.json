@@ -1,247 +1,1640 @@
 [
   {
     "word": "resilience",
-    "meaning": "회복력, 탄력성",
-    "ipa": "/rɪˈzɪliəns/",
-    "example": "Resilience helps us overcome challenges.",
+    "meaning": "resilience (The mental ability to recover quickly from depress...)",
+    "ipa": "/ɹə.zɪl.ɪ.əns/",
+    "example": "This is an example with resilience.",
     "category": "TED"
   },
   {
     "word": "innovation",
-    "meaning": "혁신",
+    "meaning": "innovation (The act of innovating; the introduction of somethi...)",
     "ipa": "/ˌɪnəˈveɪʃən/",
-    "example": "Innovation drives technological progress.",
+    "example": "This is an example with innovation.",
     "category": "TED"
   },
   {
     "word": "collaboration",
-    "meaning": "협력, 협업",
-    "ipa": "/kəˌlæbəˈreɪʃən/",
-    "example": "Collaboration between teams improves results.",
+    "meaning": "collaboration (The act of collaborating....)",
+    "ipa": "/kəˌlæbəˈɹeɪʃən/",
+    "example": "Collaboration can be a useful part of the creative process.",
     "category": "TED"
   },
   {
     "word": "sustainability",
-    "meaning": "지속가능성",
-    "ipa": "/səˌsteɪnəˈbɪləti/",
-    "example": "Sustainability is crucial for our future.",
+    "meaning": "sustainability (The ability to sustain something....)",
+    "ipa": "/səsˌteɪnəˈbɪlɪti/",
+    "example": "This is an example with sustainability.",
     "category": "TED"
   },
   {
     "word": "transformation",
-    "meaning": "변환, 변화",
-    "ipa": "/ˌtrænzfərˈmeɪʃən/",
-    "example": "Digital transformation is changing industries.",
+    "meaning": "transformation (The act of transforming or the state of being tran...)",
+    "ipa": "/ˌtɹæns.fə(ɹ)ˈmeɪ.ʃən/",
+    "example": "This is an example with transformation.",
     "category": "TED"
   },
   {
     "word": "expertise",
-    "meaning": "전문 지식",
-    "ipa": "/ˌekspɜrˈtiːz/",
-    "example": "His expertise in technology is invaluable.",
+    "meaning": "expertise (Great skill or knowledge in a particular field or ...)",
+    "ipa": "/ˌɛkspɚˈtiːs/",
+    "example": "The scientist has expertise in the field of nuclear fusion.",
     "category": "TED"
   },
   {
     "word": "efficiency",
-    "meaning": "효율성",
-    "ipa": "/ɪˈfɪʃənsi/",
-    "example": "Improving efficiency reduces waste.",
+    "meaning": "efficiency (The extent to which time is well used for the inte...)",
+    "ipa": "/ɪˈfɪʃn̩si/",
+    "example": "The efficiency of the planning department is deplorable.",
     "category": "TED"
   },
   {
     "word": "perspective",
-    "meaning": "관점, 관살",
-    "ipa": "/pərˈspektɪv/",
-    "example": "Different perspectives create better solutions.",
+    "meaning": "perspective (A view, vista or outlook....)",
+    "ipa": "/pɚˈspɛktɪv/",
+    "example": "This is an example with perspective.",
     "category": "TED"
   },
   {
     "word": "engagement",
-    "meaning": "참여, 관계",
-    "ipa": "/ɪnˈɡeɪdʒmənt/",
-    "example": "Community engagement strengthens society.",
+    "meaning": "engagement (An appointment, especially to speak or perform....)",
+    "ipa": "/ɪnˈɡeɪd͡ʒ.mənt/",
+    "example": "The lecturer has three speaking engagements this week.",
     "category": "TED"
   },
   {
     "word": "empowerment",
-    "meaning": "권한 부여",
-    "ipa": "/ɪmˈpaʊərmənt/",
-    "example": "Education enables personal empowerment.",
+    "meaning": "empowerment (The achievement of political, social or economic p...)",
+    "ipa": "/empowerment/",
+    "example": "This is an example with empowerment.",
     "category": "TED"
   },
   {
     "word": "integrity",
-    "meaning": "청렴함, 완전성",
-    "ipa": "/ɪnˈtɛɡrɪti/",
-    "example": "Integrity is the foundation of trust.",
+    "meaning": "integrity (Steadfast adherence to a strict moral or ethical c...)",
+    "ipa": "/ɪnˈtɛɡɹəti/",
+    "example": "This is an example with integrity.",
     "category": "TED"
   },
   {
     "word": "advocacy",
-    "meaning": "옹호, 지지",
-    "ipa": "/ˈædvəkəsi/",
-    "example": "Advocacy for change requires courage.",
+    "meaning": "advocacy (The profession of an advocate...)",
+    "ipa": "/ˈæd.və.kə.si/",
+    "example": "This is an example with advocacy.",
     "category": "TED"
   },
   {
     "word": "narrative",
-    "meaning": "이야기, 설명",
-    "ipa": "/ˈnærətɪv/",
-    "example": "Stories shape our narrative of change.",
+    "meaning": "narrative (The systematic recitation of an event or series of...)",
+    "ipa": "/ˈnæɹətɪv/",
+    "example": "This is an example with narrative.",
     "category": "TED"
   },
   {
     "word": "catalyst",
-    "meaning": "촉매, 계기",
-    "ipa": "/ˈkætəlɪst/",
-    "example": "One person can be a catalyst for change.",
+    "meaning": "catalyst (A substance that increases the rate of a chemical ...)",
+    "ipa": "/ˈkæt.əl.ɪst/",
+    "example": "This is an example with catalyst.",
     "category": "TED"
   },
   {
     "word": "paradigm",
-    "meaning": "패러다임, 모범",
-    "ipa": "/ˈpærədaɪm/",
-    "example": "We need a paradigm shift in thinking.",
+    "meaning": "paradigm (A pattern, a way of doing something, especially a ...)",
+    "ipa": "/paradigm/",
+    "example": "Thomas Kuhn's landmark “The Structure of Scientific Revolutions” got people talking about paradigm shifts, to the point the word itself now suggests an incomplete or biased perspective.",
     "category": "TED"
   },
   {
-    "word": "protagonist",
-    "meaning": "주인공, 주역",
-    "ipa": "/prəˈtæɡənɪst/",
-    "example": "The protagonist overcomes all odds in the film.",
+    "word": "authenticity",
+    "meaning": "authenticity (The quality of being genuine or not corrupted from...)",
+    "ipa": "/ɑθənˈtɪsɪti/",
+    "example": "I hereby certify the authenticity of this copy.",
+    "category": "TED"
+  },
+  {
+    "word": "complexity",
+    "meaning": "complexity (The state of being complex; intricacy; entanglemen...)",
+    "ipa": "/kəmˈplɛk.sɪ.ti/",
+    "example": "This is an example with complexity.",
+    "category": "TED"
+  },
+  {
+    "word": "potential",
+    "meaning": "potential (Currently unrealized ability (with the most common...)",
+    "ipa": "/pəˈtɛnʃəl/",
+    "example": "Even from a young age it was clear that she had the potential to become a great musician.",
+    "category": "TED"
+  },
+  {
+    "word": "adaptive",
+    "meaning": "adaptive (Of, pertaining to, characterized by or showing ada...)",
+    "ipa": "/əˈdæp.tɪv/",
+    "example": "This is an example with adaptive.",
+    "category": "TED"
+  },
+  {
+    "word": "interconnected",
+    "meaning": "interconnected (To connect to one another....)",
+    "ipa": "/interconnected/",
+    "example": "The Internet interconnects a set of networks.",
+    "category": "TED"
+  },
+  {
+    "word": "diversity",
+    "meaning": "diversity (The quality of being diverse or different; differe...)",
+    "ipa": "/daɪˈvɜː(ɹ)sɪti/",
+    "example": "This is an example with diversity.",
+    "category": "TED"
+  },
+  {
+    "word": "inclusion",
+    "meaning": "inclusion (An addition or annex to a group, set, or total....)",
+    "ipa": "/ɪnˈkluːʒən/",
+    "example": "The poem was a new inclusion in the textbook.",
+    "category": "TED"
+  },
+  {
+    "word": "equity",
+    "meaning": "equity (Fairness, impartiality, or justice as determined i...)",
+    "ipa": "/ˈɛk.wɪ.ti/",
+    "example": "This is an example with equity.",
+    "category": "TED"
+  },
+  {
+    "word": "abundance",
+    "meaning": "abundance (A large quantity; many....)",
+    "ipa": "/əˈbʌn.dn̩s/",
+    "example": "This is an example with abundance.",
+    "category": "TED"
+  },
+  {
+    "word": "mindful",
+    "meaning": "mindful (Being aware (of something); attentive, heedful....)",
+    "ipa": "/ˈmʌɪndfəl/",
+    "example": "This is an example with mindful.",
+    "category": "TED"
+  },
+  {
+    "word": "evolution",
+    "meaning": "evolution (A change of position....)",
+    "ipa": "/ˈɛvəluːʃ(ə)n/",
+    "example": "This is an example with evolution.",
+    "category": "TED"
+  },
+  {
+    "word": "impact",
+    "meaning": "impact (The striking of one body against another; collisio...)",
+    "ipa": "/impact/",
+    "example": "This is an example with impact.",
+    "category": "TED"
+  },
+  {
+    "word": "legacy",
+    "meaning": "legacy (Money or property bequeathed to someone in a will....)",
+    "ipa": "/ˈleɪɡəsi/",
+    "example": "This is an example with legacy.",
+    "category": "TED"
+  },
+  {
+    "word": "infrastructure",
+    "meaning": "infrastructure ((systems theory) An underlying base or foundation ...)",
+    "ipa": "/ˈɪnfɹəˌstɹʌk(t)ʃɚ/",
+    "example": "The parasitic tyranny's infrastructure depends on secrecy in order to be effective.",
+    "category": "TED"
+  },
+  {
+    "word": "rollout",
+    "meaning": "rollout (An act of rolling out; deployment....)",
+    "ipa": "/rollout/",
+    "example": "This is an example with rollout.",
+    "category": "TED"
+  },
+  {
+    "word": "cooperation",
+    "meaning": "cooperation ((usually uncountable) The act of cooperating....)",
+    "ipa": "/kowɑpəˈɹejʃən/",
+    "example": "This is an example with cooperation.",
+    "category": "TED"
+  },
+  {
+    "word": "delivery",
+    "meaning": "delivery (The act of conveying something....)",
+    "ipa": "/dɪˈlɪv(ə)ɹi/",
+    "example": "The delivery was completed by four.",
+    "category": "TED"
+  },
+  {
+    "word": "institute",
+    "meaning": "institute (An organization founded to promote a cause...)",
+    "ipa": "/ˈɪnstɪt(j)uːt/",
+    "example": "I work in a medical research institute.",
+    "category": "TED"
+  },
+  {
+    "word": "empirical",
+    "meaning": "empirical (Pertaining to or based on experience....)",
+    "ipa": "/ɪmˈpɪɹɪkəl/",
+    "example": "This is an example with empirical.",
+    "category": "TED"
+  },
+  {
+    "word": "employment",
+    "meaning": "employment (The work or occupation for which one is used, and ...)",
+    "ipa": "/ɛmˈplɔɪmənt/",
+    "example": "This is an example with employment.",
+    "category": "TED"
+  },
+  {
+    "word": "enabling",
+    "meaning": "enabling (To make somebody able (to do, or to be, something)...)",
+    "ipa": "/enabling/",
+    "example": "This is an example with enabling.",
+    "category": "TED"
+  },
+  {
+    "word": "enact",
+    "meaning": "enact (Purpose; determination...)",
+    "ipa": "/enact/",
+    "example": "This is an example with enact.",
+    "category": "TED"
+  },
+  {
+    "word": "encounter",
+    "meaning": "encounter (A meeting, especially one that is unplanned or une...)",
+    "ipa": "/ɪnˈkaʊntə/",
+    "example": "Their encounter was a matter of chance.",
+    "category": "TED"
+  },
+  {
+    "word": "encourage",
+    "meaning": "encourage (To mentally support; to motivate, give courage, ho...)",
+    "ipa": "/ɪnˈkʌɹɪdʒ/",
+    "example": "I encouraged him during his race.",
+    "category": "TED"
+  },
+  {
+    "word": "endeavor",
+    "meaning": "endeavor (A sincere attempt; a determined or assiduous effor...)",
+    "ipa": "/ɪnˈdɛv.ə/",
+    "example": "This is an example with endeavor.",
+    "category": "TED"
+  },
+  {
+    "word": "endorse",
+    "meaning": "endorse (A diminutive of the pale, usually appearing in pai...)",
+    "ipa": "/ɪnˈdɔːs/",
+    "example": "This is an example with endorse.",
+    "category": "TED"
+  },
+  {
+    "word": "endure",
+    "meaning": "endure (To continue or carry on, despite obstacles or hard...)",
+    "ipa": "/ɪnˈdjɔː(ɹ)/",
+    "example": "The singer's popularity endured for decades.",
+    "category": "TED"
+  },
+  {
+    "word": "energize",
+    "meaning": "energize (To invigorate; to make energetic....)",
+    "ipa": "/energize/",
+    "example": "This is an example with energize.",
+    "category": "TED"
+  },
+  {
+    "word": "enforce",
+    "meaning": "enforce (To keep up, impose or bring into effect something,...)",
+    "ipa": "/ɪnˈfɔːs/",
+    "example": "The police are there to enforce the law.",
+    "category": "TED"
+  },
+  {
+    "word": "engage",
+    "meaning": "engage ((heading) To interact socially....)",
+    "ipa": "/ɛnˈɡeɪdʒ/",
+    "example": "This is an example with engage.",
+    "category": "TED"
+  },
+  {
+    "word": "engineer",
+    "meaning": "engineer (A person who is qualified or professionally engage...)",
+    "ipa": "/ˌɛnd͡ʒɪˈnɪə/",
+    "example": "This is an example with engineer.",
+    "category": "TED"
+  },
+  {
+    "word": "enhance",
+    "meaning": "enhance (To lift, raise up....)",
+    "ipa": "/ɪnˈhɑːns/",
+    "example": "This is an example with enhance.",
+    "category": "TED"
+  },
+  {
+    "word": "enigma",
+    "meaning": "enigma (Something or someone puzzling, mysterious or inexp...)",
+    "ipa": "/əˈnɪɡmə/",
+    "example": "This is an example with enigma.",
+    "category": "TED"
+  },
+  {
+    "word": "enlighten",
+    "meaning": "enlighten (To supply with light....)",
+    "ipa": "/ənˈlaɪtn̩/",
+    "example": "The sun enlightens the Earth.",
+    "category": "TED"
+  },
+  {
+    "word": "enliven",
+    "meaning": "enliven (To give life or spirit to; to revive or animate....)",
+    "ipa": "/ɛnˈlaɪvən/",
+    "example": "This is an example with enliven.",
+    "category": "TED"
+  },
+  {
+    "word": "enmity",
+    "meaning": "enmity (The quality of being an enemy; hostile or unfriend...)",
+    "ipa": "/ˈɛn.mɪ.tɪ/",
+    "example": "This is an example with enmity.",
+    "category": "TED"
+  },
+  {
+    "word": "enormous",
+    "meaning": "enormous (Deviating from the norm; unusual, extraordinary....)",
+    "ipa": "/ɪˈnɔː(ɹ)məs/",
+    "example": "This is an example with enormous.",
+    "category": "TED"
+  },
+  {
+    "word": "enrage",
+    "meaning": "enrage (To fill with rage; to provoke to frenzy or madness...)",
+    "ipa": "/ɪnˈɹeɪd͡ʒ/",
+    "example": "This is an example with enrage.",
+    "category": "TED"
+  },
+  {
+    "word": "enrich",
+    "meaning": "enrich (To enhance....)",
+    "ipa": "/ɪnˈɹɪt͡ʃ/",
+    "example": "This is an example with enrich.",
+    "category": "TED"
+  },
+  {
+    "word": "enroll",
+    "meaning": "enroll (To enter (a name, etc.) in a register, roll or lis...)",
+    "ipa": "/ɪnˈɹəʊl/",
+    "example": "This is an example with enroll.",
+    "category": "TED"
+  },
+  {
+    "word": "ensconce",
+    "meaning": "ensconce (To place in a secure environment....)",
+    "ipa": "/ɛnˈskɒns/",
+    "example": "This is an example with ensconce.",
+    "category": "TED"
+  },
+  {
+    "word": "ensemble",
+    "meaning": "ensemble (A group of separate things that contribute to a co...)",
+    "ipa": "/ˌɒnˈsɒm.bəl/",
+    "example": "This is an example with ensemble.",
+    "category": "TED"
+  },
+  {
+    "word": "ensue",
+    "meaning": "ensue (To follow (a leader, inclination etc.)....)",
+    "ipa": "/ɛnˈsjʉː/",
+    "example": "This is an example with ensue.",
+    "category": "TED"
+  },
+  {
+    "word": "ensure",
+    "meaning": "ensure (To make a pledge to (someone); to promise, guarant...)",
+    "ipa": "/ɪnˈʃɔː/",
+    "example": "This is an example with ensure.",
+    "category": "TED"
+  },
+  {
+    "word": "entail",
+    "meaning": "entail (To imply or require....)",
+    "ipa": "/ənˈteɪl/",
+    "example": "This activity will entail careful attention to detail.",
+    "category": "TED"
+  },
+  {
+    "word": "entangle",
+    "meaning": "entangle (To tangle up; to twist or interweave in such a man...)",
+    "ipa": "/ɛnˈtaŋɡəl/",
+    "example": "The dolphins became entangled in a fishing net.",
+    "category": "TED"
+  },
+  {
+    "word": "enterprise",
+    "meaning": "enterprise (A company, business, organization, or other purpos...)",
+    "ipa": "/ˈɛntɚˌpɹaɪz/",
+    "example": "A micro-enterprise is defined as a business having 5 or fewer employees and a low seed capital.",
+    "category": "TED"
+  },
+  {
+    "word": "entertain",
+    "meaning": "entertain (Entertainment; pleasure....)",
+    "ipa": "/ˌɛntəˈteɪn/",
+    "example": "This is an example with entertain.",
+    "category": "TED"
+  },
+  {
+    "word": "enthusiasm",
+    "meaning": "enthusiasm (Possession by a god; divine inspiration or frenzy....)",
+    "ipa": "/-θuː-/",
+    "example": "This is an example with enthusiasm.",
+    "category": "TED"
+  },
+  {
+    "word": "entice",
+    "meaning": "entice (To lure; to attract by arousing desire or hope....)",
+    "ipa": "/entice/",
+    "example": "I enticed the little bear into the trap with a pot of honey.",
+    "category": "TED"
+  },
+  {
+    "word": "entitle",
+    "meaning": "entitle (To give a title to....)",
+    "ipa": "/ənˈtaɪtəl/",
+    "example": "This is an example with entitle.",
+    "category": "TED"
+  },
+  {
+    "word": "entity",
+    "meaning": "entity (That which has a distinct existence as an individu...)",
+    "ipa": "/ˈen.tɪ.ti/",
+    "example": "This is an example with entity.",
+    "category": "TED"
+  },
+  {
+    "word": "equestrian",
+    "meaning": "equestrian (An equestrian person; a horserider....)",
+    "ipa": "/equestrian/",
+    "example": "This is an example with equestrian.",
+    "category": "TED"
+  },
+  {
+    "word": "equidistant",
+    "meaning": "equidistant (Occupying a position midway between two ends or si...)",
+    "ipa": "/i.kwəˈdɪs.tənt/",
+    "example": "This is an example with equidistant.",
+    "category": "TED"
+  },
+  {
+    "word": "equilateral",
+    "meaning": "equilateral (A side exactly corresponding, or equal, to others....)",
+    "ipa": "/equilateral/",
+    "example": "This is an example with equilateral.",
+    "category": "TED"
+  },
+  {
+    "word": "equilibrium",
+    "meaning": "equilibrium (The condition of a system in which competing influ...)",
+    "ipa": "/iːkwɪˈlɪbɹɪəm/",
+    "example": "This is an example with equilibrium.",
+    "category": "TED"
+  },
+  {
+    "word": "equine",
+    "meaning": "equine (Any horse or horse-like animal, especially one of ...)",
+    "ipa": "/ˈiːkwaɪn/",
+    "example": "This is an example with equine.",
+    "category": "TED"
+  },
+  {
+    "word": "equinox",
+    "meaning": "equinox (The intersection of the apparent path of the sun i...)",
+    "ipa": "/ˈiːkwɪˌnɒks/",
+    "example": "This is an example with equinox.",
+    "category": "TED"
+  },
+  {
+    "word": "equipment",
+    "meaning": "equipment (The act of equipping, or the state of being equipp...)",
+    "ipa": "/ɪˈkwɪpmənt/",
+    "example": "This is an example with equipment.",
+    "category": "TED"
+  },
+  {
+    "word": "equipoise",
+    "meaning": "equipoise (A state of balance; equilibrium....)",
+    "ipa": "/ˈɛkwɪpɔɪz/",
+    "example": "This is an example with equipoise.",
+    "category": "TED"
+  },
+  {
+    "word": "equitable",
+    "meaning": "equitable (Marked by or having equity....)",
+    "ipa": "/ˈɛk.wɪ.tə.bəl/",
+    "example": "This is an example with equitable.",
+    "category": "TED"
+  },
+  {
+    "word": "equity",
+    "meaning": "equity (Fairness, impartiality, or justice as determined i...)",
+    "ipa": "/ˈɛk.wɪ.ti/",
+    "example": "This is an example with equity.",
+    "category": "TED"
+  },
+  {
+    "word": "equivalence",
+    "meaning": "equivalence (The condition of being equivalent or essentially e...)",
+    "ipa": "/ɪˈkwɪvələns/",
+    "example": "This is an example with equivalence.",
+    "category": "TED"
+  },
+  {
+    "word": "equivalent",
+    "meaning": "equivalent (Anything that is virtually equal to something else...)",
+    "ipa": "/ɪˈkwɪvələnt/",
+    "example": "This is an example with equivalent.",
+    "category": "TED"
+  },
+  {
+    "word": "equivocal",
+    "meaning": "equivocal (A word or expression capable of different meanings...)",
+    "ipa": "/əˈkwɪvəkəl/",
+    "example": "This is an example with equivocal.",
+    "category": "TED"
+  },
+  {
+    "word": "equivocate",
+    "meaning": "equivocate (To use words of equivocal or doubtful significatio...)",
+    "ipa": "/ɪˈkwɪvəˌkeɪt/",
+    "example": "This is an example with equivocate.",
+    "category": "TED"
+  },
+  {
+    "word": "era",
+    "meaning": "era (A time period of indeterminate length, generally m...)",
+    "ipa": "/ˈɪə̯ɹ.ə/",
+    "example": "This is an example with era.",
+    "category": "TED"
+  },
+  {
+    "word": "eradicate",
+    "meaning": "eradicate (To pull up by the roots; to uproot....)",
+    "ipa": "/ɪˈɹæd.ɪ.keɪt/",
+    "example": "This is an example with eradicate.",
+    "category": "TED"
+  },
+  {
+    "word": "erase",
+    "meaning": "erase (The operation of deleting data....)",
+    "ipa": "/ɪˈɹeɪz/",
+    "example": "This is an example with erase.",
+    "category": "TED"
+  },
+  {
+    "word": "erasure",
+    "meaning": "erasure (The action of erasing; deletion; obliteration....)",
+    "ipa": "/ɪˈɹeɪʒə/",
+    "example": "This is an example with erasure.",
+    "category": "TED"
+  },
+  {
+    "word": "erbium",
+    "meaning": "erbium (A chemical element (symbol Er) with atomic number ...)",
+    "ipa": "/ˈɜːɹbiəm/",
+    "example": "This is an example with erbium.",
+    "category": "TED"
+  },
+  {
+    "word": "erect",
+    "meaning": "erect (Upright; vertical or reaching broadly upwards....)",
+    "ipa": "/ɪˈɹɛkt/",
+    "example": "This is an example with erect.",
+    "category": "TED"
+  },
+  {
+    "word": "erection",
+    "meaning": "erection (The act of building or putting up or together of s...)",
+    "ipa": "/ɪˈɹɛkʃən/",
+    "example": "This is an example with erection.",
+    "category": "TED"
+  },
+  {
+    "word": "erector",
+    "meaning": "erector (A person who, or a device which erects....)",
+    "ipa": "/erector/",
+    "example": "This is an example with erector.",
+    "category": "TED"
+  },
+  {
+    "word": "eremite",
+    "meaning": "eremite (A hermit; a religious recluse, someone who lives a...)",
+    "ipa": "/ˈɛɹɪmaɪt/",
+    "example": "This is an example with eremite.",
+    "category": "TED"
+  },
+  {
+    "word": "erethism",
+    "meaning": "erethism (Abnormal excitement of a bodily organ or tissue....)",
+    "ipa": "/ˈɛɹɪθɪzəm/",
+    "example": "This is an example with erethism.",
+    "category": "TED"
+  },
+  {
+    "word": "ergo",
+    "meaning": "ergo (Consequently, therefore, thus....)",
+    "ipa": "/ergo/",
+    "example": "This is an example with ergo.",
+    "category": "TED"
+  },
+  {
+    "word": "ergot",
+    "meaning": "ergot (Any fungus in the genus Claviceps which are parasi...)",
+    "ipa": "/ˈɜːɡət/",
+    "example": "This is an example with ergot.",
+    "category": "TED"
+  },
+  {
+    "word": "ermine",
+    "meaning": "ermine (A weasel, Mustela erminea, found in northern latit...)",
+    "ipa": "/ˈɜːmɪn/",
+    "example": "This is an example with ermine.",
+    "category": "TED"
+  },
+  {
+    "word": "erne",
+    "meaning": "erne (A sea eagle (Haliaeetus), especially the white-tai...)",
+    "ipa": "/ɜːn/",
+    "example": "This is an example with erne.",
+    "category": "TED"
+  },
+  {
+    "word": "erode",
+    "meaning": "erode (To wear away by abrasion, corrosion or chemical re...)",
+    "ipa": "/ɪˈɹoʊd/",
+    "example": "This is an example with erode.",
+    "category": "TED"
+  },
+  {
+    "word": "erosion",
+    "meaning": "erosion (The result of having been worn away or eroded, as ...)",
+    "ipa": "/əˈɹəʊʒən/",
+    "example": "This is an example with erosion.",
+    "category": "TED"
+  },
+  {
+    "word": "erotic",
+    "meaning": "erotic (An amorous composition or poem....)",
+    "ipa": "/ɪˈɹɒtɪk/",
+    "example": "This is an example with erotic.",
+    "category": "TED"
+  },
+  {
+    "word": "eroticism",
+    "meaning": "eroticism (The state of being erotic, or of being sexually ar...)",
+    "ipa": "/eroticism/",
+    "example": "This is an example with eroticism.",
+    "category": "TED"
+  },
+  {
+    "word": "err",
+    "meaning": "err (To make a mistake....)",
+    "ipa": "/ɛə(ɹ)/",
+    "example": "He erred in his calculations, and made many mistakes.",
+    "category": "TED"
+  },
+  {
+    "word": "errand",
+    "meaning": "errand (A journey undertaken to accomplish some task....)",
+    "ipa": "/ˈɛɹənd/",
+    "example": "This is an example with errand.",
+    "category": "TED"
+  },
+  {
+    "word": "errant",
+    "meaning": "errant (A knight-errant....)",
+    "ipa": "/ˈɛɹənt/",
+    "example": "This is an example with errant.",
+    "category": "TED"
+  },
+  {
+    "word": "errata",
+    "meaning": "errata (An added page in a printed work where errors which...)",
+    "ipa": "/ɛˈɹɑːtə/",
+    "example": "This is an example with errata.",
+    "category": "TED"
+  },
+  {
+    "word": "soliloquy",
+    "meaning": "soliloquy (The act of a character speaking to themselves so a...)",
+    "ipa": "/səˈlɪləkwi/",
+    "example": "At the end of the second act the main villain gave a soliloquy detailing his plans to attack the protagonist.",
     "category": "Movie"
   },
   {
-    "word": "antagonist",
-    "meaning": "적, 대항자",
-    "ipa": "/ænˈtæɡənɪst/",
-    "example": "The antagonist reveals his true intentions.",
+    "word": "aside",
+    "meaning": "aside (An incidental remark made quietly so as to be hear...)",
+    "ipa": "/əˈsaɪd/",
+    "example": "This is an example with aside.",
     "category": "Movie"
   },
   {
-    "word": "climax",
-    "meaning": "절정, 최고조",
-    "ipa": "/ˈklaɪmæks/",
-    "example": "The climax of the movie left everyone speechless.",
+    "word": "comic relief",
+    "meaning": "comic relief (The inclusion of a humorous character or scene or ...)",
+    "ipa": "/ˈkɒmɪk ɹɪˈliːf/",
+    "example": "This is an example with comic relief.",
     "category": "Movie"
   },
   {
-    "word": "suspense",
-    "meaning": "긴장, 불안감",
-    "ipa": "/səˈspens/",
-    "example": "The suspense builds throughout the entire film.",
+    "word": "deus ex machina",
+    "meaning": "deus ex machina ((authorship) Any resolution to a story that does n...)",
+    "ipa": "/ˈdeɪ.əs ɛks ˈmɑːkiːnə/",
+    "example": "Oh, now I'm backed into a corner, and can't devise a way out. I could sure use a deus ex machina right about now!",
     "category": "Movie"
   },
   {
-    "word": "dialogue",
-    "meaning": "대사, 대화",
-    "ipa": "/ˈdaɪəlɔːɡ/",
-    "example": "The dialogue between the characters was witty.",
+    "word": "foreshadowing",
+    "meaning": "foreshadowing (To presage, or suggest something in advance....)",
+    "ipa": "/foreshadowing/",
+    "example": "This is an example with foreshadowing.",
     "category": "Movie"
   },
   {
-    "word": "flashback",
-    "meaning": "회상, 플래시백",
-    "ipa": "/ˈflæʃbæk/",
-    "example": "A flashback reveals the character's tragic past.",
+    "word": "allegory",
+    "meaning": "allegory (The representation of abstract principles by chara...)",
+    "ipa": "/ˈæl.ɘˌɡoʊɹ.i/",
+    "example": "This is an example with allegory.",
     "category": "Movie"
   },
   {
-    "word": "revelation",
-    "meaning": "폭로, 밝혀짐",
-    "ipa": "/ˌrevəˈleɪʃən/",
-    "example": "The revelation shocked the entire audience.",
+    "word": "metaphor",
+    "meaning": "metaphor (The use of a word or phrase to refer to something ...)",
+    "ipa": "/ˈmɛt.ə.fɔː(ɹ)/",
+    "example": "This is an example with metaphor.",
     "category": "Movie"
   },
   {
-    "word": "betrayal",
-    "meaning": "배신, 배반",
-    "ipa": "/bɪˈtreɪəl/",
-    "example": "The betrayal of his closest friend devastated him.",
+    "word": "simile",
+    "meaning": "simile (A figure of speech in which one thing is compared ...)",
+    "ipa": "/ˈsɪməli/",
+    "example": "A simile is a bit like a metaphor.",
     "category": "Movie"
   },
   {
-    "word": "redemption",
-    "meaning": "구원, 구속",
-    "ipa": "/rɪˈdempʃən/",
-    "example": "The character finds redemption through sacrifice.",
+    "word": "personification",
+    "meaning": "personification (A person, thing or name typifying a certain qualit...)",
+    "ipa": "/personification/",
+    "example": "Adolf Hitler was the personification of anti-Semitism.",
     "category": "Movie"
   },
   {
-    "word": "poignant",
-    "meaning": "감동적인, 애절한",
-    "ipa": "/ˈpɔɪnjənt/",
-    "example": "The poignant ending brought tears to everyone.",
+    "word": "symbolism",
+    "meaning": "symbolism (Representation of a concept through symbols or und...)",
+    "ipa": "/ˈsɪmbəˌlɪzəm/",
+    "example": "This is an example with symbolism.",
+    "category": "Movie"
+  },
+  {
+    "word": "imagery",
+    "meaning": "imagery (The work of one who makes images or visible repres...)",
+    "ipa": "/-ədʒɹi/",
+    "example": "This is an example with imagery.",
+    "category": "Movie"
+  },
+  {
+    "word": "atmosphere",
+    "meaning": "atmosphere (The gases surrounding the Earth or any astronomica...)",
+    "ipa": "/ˈæt.məsˌfɪə(ɹ)/",
+    "example": "This is an example with atmosphere.",
+    "category": "Movie"
+  },
+  {
+    "word": "mood",
+    "meaning": "mood (A mental or emotional state, composure....)",
+    "ipa": "/muːd/",
+    "example": "I've been in a bad mood since I dumped my boyfriend.",
+    "category": "Movie"
+  },
+  {
+    "word": "tone",
+    "meaning": "tone (A specific pitch....)",
+    "ipa": "/təʊn/",
+    "example": "This is an example with tone.",
+    "category": "Movie"
+  },
+  {
+    "word": "theme",
+    "meaning": "theme (A subject of a talk or an artistic piece; a topic....)",
+    "ipa": "/θiːm/",
+    "example": "This is an example with theme.",
+    "category": "Movie"
+  },
+  {
+    "word": "motif",
+    "meaning": "motif (A recurring or dominant element; a theme....)",
+    "ipa": "/moʊˈtiːf/",
+    "example": "See how the artist repeats the scroll motif throughout the work?",
+    "category": "Movie"
+  },
+  {
+    "word": "leitmotif",
+    "meaning": "leitmotif (A melodic theme associated with a particular chara...)",
+    "ipa": "/ˈlaɪt.məʊˌtiːf/",
+    "example": "This is an example with leitmotif.",
+    "category": "Movie"
+  },
+  {
+    "word": "foreshadow",
+    "meaning": "foreshadow (To presage, or suggest something in advance....)",
+    "ipa": "/fɔːˈʃadəʊ/",
+    "example": "This is an example with foreshadow.",
+    "category": "Movie"
+  },
+  {
+    "word": "foreboding",
+    "meaning": "foreboding (To predict a future event; to hint at something th...)",
+    "ipa": "/foreboding/",
+    "example": "This is an example with foreboding.",
+    "category": "Movie"
+  },
+  {
+    "word": "portent",
+    "meaning": "portent (Something that portends an event about to occur, e...)",
+    "ipa": "/ˈpɔːtɛnt/",
+    "example": "This is an example with portent.",
+    "category": "Movie"
+  },
+  {
+    "word": "ominous",
+    "meaning": "ominous (Of or pertaining to an omen or to omens; being or ...)",
+    "ipa": "/ˈɒmɪnəs/",
+    "example": "This is an example with ominous.",
+    "category": "Movie"
+  },
+  {
+    "word": "sinister",
+    "meaning": "sinister (Inauspicious, ominous, unlucky, illegitimate (as i...)",
+    "ipa": "/sinister/",
+    "example": "This is an example with sinister.",
+    "category": "Movie"
+  },
+  {
+    "word": "eerie",
+    "meaning": "eerie (Strange, weird, fear-inspiring....)",
+    "ipa": "/ˈɪəɹi/",
+    "example": "The eerie sounds seemed to come from the graveyard after midnight.",
+    "category": "Movie"
+  },
+  {
+    "word": "creepy",
+    "meaning": "creepy (Moving by creeping along....)",
+    "ipa": "/ˈkɹiːpi/",
+    "example": "This is an example with creepy.",
+    "category": "Movie"
+  },
+  {
+    "word": "uncanny",
+    "meaning": "uncanny ((Freud) Something that is simultaneously familiar ...)",
+    "ipa": "/ʌnˈkæni/",
+    "example": "This is an example with uncanny.",
+    "category": "Movie"
+  },
+  {
+    "word": "bizarre",
+    "meaning": "bizarre (Strangely unconventional in style or appearance....)",
+    "ipa": "/bəˈzɑː(ɹ)/",
+    "example": "This is an example with bizarre.",
+    "category": "Movie"
+  },
+  {
+    "word": "grotesque",
+    "meaning": "grotesque (A style of ornamentation characterized by fanciful...)",
+    "ipa": "/grotesque/",
+    "example": "This is an example with grotesque.",
+    "category": "Movie"
+  },
+  {
+    "word": "macabre",
+    "meaning": "macabre (Representing or personifying death....)",
+    "ipa": "/macabre/",
+    "example": "This is an example with macabre.",
+    "category": "Movie"
+  },
+  {
+    "word": "ghastly",
+    "meaning": "ghastly (Like a ghost in appearance; death-like; pale; pall...)",
+    "ipa": "/ˈɡɑːs(t).li/",
+    "example": "This is an example with ghastly.",
+    "category": "Movie"
+  },
+  {
+    "word": "horrifying",
+    "meaning": "horrifying (To cause to feel extreme apprehension or unease; t...)",
+    "ipa": "/horrifying/",
+    "example": "The haunted house was horrifying, from one room to the next I felt more and more like I wasn’t going to survive.",
+    "category": "Movie"
+  },
+  {
+    "word": "terrifying",
+    "meaning": "terrifying (To frighten greatly; to fill with terror....)",
+    "ipa": "/ˈtɛɹɪfaɪ.ɪŋ/",
+    "example": "This is an example with terrifying.",
+    "category": "Movie"
+  },
+  {
+    "word": "petrifying",
+    "meaning": "petrifying (To harden organic matter by permeating with water ...)",
+    "ipa": "/petrifying/",
+    "example": "This is an example with petrifying.",
+    "category": "Movie"
+  },
+  {
+    "word": "startling",
+    "meaning": "startling (To move suddenly, or be excited, on feeling alarm;...)",
+    "ipa": "/ˈstɑː.tl̩.ɪŋ/",
+    "example": "a horse that startles easily",
+    "category": "Movie"
+  },
+  {
+    "word": "shocking",
+    "meaning": "shocking (To cause to be emotionally shocked, to cause (some...)",
+    "ipa": "/ˈʃɒkɪŋ/",
+    "example": "The disaster shocked the world.",
+    "category": "Movie"
+  },
+  {
+    "word": "astonishing",
+    "meaning": "astonishing (To surprise greatly....)",
+    "ipa": "/əˈstɒnɪʃɪŋ/",
+    "example": "This is an example with astonishing.",
+    "category": "Movie"
+  },
+  {
+    "word": "astounding",
+    "meaning": "astounding (To astonish, bewilder or dazzle....)",
+    "ipa": "/astounding/",
+    "example": "This is an example with astounding.",
+    "category": "Movie"
+  },
+  {
+    "word": "amazing",
+    "meaning": "amazing (To fill with wonder and surprise; to astonish, ast...)",
+    "ipa": "/əˈmeɪzɪŋ/",
+    "example": "He was amazed when he found that the girl was a robot.",
+    "category": "Movie"
+  },
+  {
+    "word": "incredible",
+    "meaning": "incredible (Too implausible to be credible; beyond belief; unb...)",
+    "ipa": "/ɪŋˈkɹɛdɪbəl/",
+    "example": "This is an example with incredible.",
+    "category": "Movie"
+  },
+  {
+    "word": "unbelievable",
+    "meaning": "unbelievable (Not to be believed....)",
+    "ipa": "/ˌʌnbəˈliːvəbl̩/",
+    "example": "This is an example with unbelievable.",
+    "category": "Movie"
+  },
+  {
+    "word": "improbable",
+    "meaning": "improbable (Not likely to be true....)",
+    "ipa": "/ɪmˈpɹɒbəbl̩/",
+    "example": "It's highly improbable that aliens abducted you.",
+    "category": "Movie"
+  },
+  {
+    "word": "implausible",
+    "meaning": "implausible (Not plausible; unlikely; dubious....)",
+    "ipa": "/implausible/",
+    "example": "This is an example with implausible.",
+    "category": "Movie"
+  },
+  {
+    "word": "farfetched",
+    "meaning": "farfetched (Brought from far away....)",
+    "ipa": "/farfetched/",
+    "example": "This is an example with farfetched.",
+    "category": "Movie"
+  },
+  {
+    "word": "preposterous",
+    "meaning": "preposterous (Absurd, or contrary to common sense....)",
+    "ipa": "/preposterous/",
+    "example": "This is an example with preposterous.",
+    "category": "Movie"
+  },
+  {
+    "word": "ridiculous",
+    "meaning": "ridiculous (Deserving of ridicule; foolish; absurd....)",
+    "ipa": "/ɹiːˈdɪkjʊləs/",
+    "example": "It's ridiculous to charge so much for a little souvenir.",
+    "category": "Movie"
+  },
+  {
+    "word": "absurd",
+    "meaning": "absurd (An absurdity....)",
+    "ipa": "/æbˈzɝd/",
+    "example": "This is an example with absurd.",
+    "category": "Movie"
+  },
+  {
+    "word": "ludicrous",
+    "meaning": "ludicrous (Idiotic or unthinkable, often to the point of bein...)",
+    "ipa": "/ludicrous/",
+    "example": "He made a ludicrous attempt to run for office.",
+    "category": "Movie"
+  },
+  {
+    "word": "amusing",
+    "meaning": "amusing (To entertain or occupy in a pleasant manner; to st...)",
+    "ipa": "/əˈmjuːzɪŋ/",
+    "example": "I watch these movies because they amuse me.",
+    "category": "Movie"
+  },
+  {
+    "word": "entertaining",
+    "meaning": "entertaining (To amuse (someone); to engage the attention of agr...)",
+    "ipa": "/entertaining/",
+    "example": "The motivational speaker not only instructed but also entertained the audience.",
+    "category": "Movie"
+  },
+  {
+    "word": "delightful",
+    "meaning": "delightful (Pleasant; pleasing, bringing enjoyment, satisfacti...)",
+    "ipa": "[dəˈlaɪ̯t̚.fəɫ]",
+    "example": "This is an example with delightful.",
+    "category": "Movie"
+  },
+  {
+    "word": "charming",
+    "meaning": "charming (To seduce, persuade or fascinate someone or someth...)",
+    "ipa": "/ˈtʃɑː(ɹ).mɪŋ/",
+    "example": "He charmed her with his dashing tales of his days as a sailor.",
+    "category": "Movie"
+  },
+  {
+    "word": "enchanting",
+    "meaning": "enchanting (To attract and delight, to charm....)",
+    "ipa": "/enchanting/",
+    "example": "This is an example with enchanting.",
+    "category": "Movie"
+  },
+  {
+    "word": "captivating",
+    "meaning": "captivating (To attract and hold interest and attention of; cha...)",
+    "ipa": "/kæptɪveɪtɪŋ/",
+    "example": "This is an example with captivating.",
+    "category": "Movie"
+  },
+  {
+    "word": "cacophonous",
+    "meaning": "cacophonous (Containing, consisting of, or producing harsh, unp...)",
+    "ipa": "/kəˈkɒfənəs/",
+    "example": "This is an example with cacophonous.",
+    "category": "Movie"
+  },
+  {
+    "word": "discordant",
+    "meaning": "discordant (Not in harmony or accord...)",
+    "ipa": "/dɪsˈkɔːdənt/",
+    "example": "This is an example with discordant.",
     "category": "Movie"
   },
   {
     "word": "revenue",
-    "meaning": "수익, 매출",
-    "ipa": "/ˈrevənuː/",
-    "example": "The company's revenue increased by 20% this year.",
+    "meaning": "revenue (The income returned by an investment....)",
+    "ipa": "/ˈɹɛvənjuː/",
+    "example": "This is an example with revenue.",
     "category": "Business"
   },
   {
     "word": "profit",
-    "meaning": "이윤, 수익",
-    "ipa": "/ˈprɑːfɪt/",
-    "example": "Reducing costs will increase our profit margin.",
+    "meaning": "profit (Total income or cash flow minus expenditures. The ...)",
+    "ipa": "/ˈpɹɒfɪt/",
+    "example": "This is an example with profit.",
     "category": "Business"
   },
   {
     "word": "acquisition",
-    "meaning": "인수, 습득",
-    "ipa": "/ˌækwɪˈzɪʃən/",
-    "example": "The acquisition of that company was strategic.",
+    "meaning": "acquisition (The act or process of acquiring....)",
+    "ipa": "/æ.kwɪ.ˈzɪ.ʃən/",
+    "example": "The acquisition of sports equipment can be fun in itself.",
     "category": "Business"
   },
   {
     "word": "merger",
-    "meaning": "합병, 통합",
-    "ipa": "/ˈmɜːrdʒər/",
-    "example": "The merger created a stronger market position.",
+    "meaning": "merger (One that merges....)",
+    "ipa": "/ˈmɜːdʒə/",
+    "example": "This is an example with merger.",
     "category": "Business"
   },
   {
     "word": "portfolio",
-    "meaning": "포트폴리오, 자산 보유",
-    "ipa": "/pɔːrˈfoʊlioʊ/",
-    "example": "Our investment portfolio is well-diversified.",
+    "meaning": "portfolio (A case for carrying papers, drawings, photographs,...)",
+    "ipa": "/-əʊl.jəʊ/",
+    "example": "This is an example with portfolio.",
     "category": "Business"
   },
   {
     "word": "strategy",
-    "meaning": "전략, 계획",
-    "ipa": "/ˈstrætədʒi/",
-    "example": "Our marketing strategy focuses on digital channels.",
+    "meaning": "strategy (The science and art of military command as applied...)",
+    "ipa": "/ˈstɹætədʒi/",
+    "example": "This is an example with strategy.",
     "category": "Business"
   },
   {
     "word": "stakeholder",
-    "meaning": "이해관계자",
-    "ipa": "/ˈsteɪkhoʊldər/",
-    "example": "We must consider all stakeholders in this decision.",
+    "meaning": "stakeholder (A person holding the stakes of bettors, with the r...)",
+    "ipa": "/ˈsteɪkhoʊldə(ɹ)/",
+    "example": "This is an example with stakeholder.",
     "category": "Business"
   },
   {
     "word": "dividend",
-    "meaning": "배당금",
-    "ipa": "/ˈdɪvɪdend/",
-    "example": "Shareholders received a 5% dividend this quarter.",
+    "meaning": "dividend (A number or expression that is to be divided by an...)",
+    "ipa": "/ˈdɪvɪdɛnd/",
+    "example": "In \"42 ÷ 3\" the dividend is the 42.",
     "category": "Business"
   },
   {
     "word": "liability",
-    "meaning": "책임, 부채",
-    "ipa": "/ˌlaɪəˈbɪləti/",
-    "example": "The company's liabilities exceed its assets.",
+    "meaning": "liability (An obligation, debt or responsibility owed to some...)",
+    "ipa": "/laɪəˈbɪlɪti/",
+    "example": "This is an example with liability.",
     "category": "Business"
   },
   {
     "word": "asset",
-    "meaning": "자산, 재산",
-    "ipa": "/ˈæset/",
-    "example": "Real estate is our most valuable asset.",
+    "meaning": "asset (Something or someone of any value; any portion of ...)",
+    "ipa": "/asset/",
+    "example": "These shares are a valuable asset.",
+    "category": "Business"
+  },
+  {
+    "word": "equity",
+    "meaning": "equity (Fairness, impartiality, or justice as determined i...)",
+    "ipa": "/ˈɛk.wɪ.ti/",
+    "example": "This is an example with equity.",
+    "category": "Business"
+  },
+  {
+    "word": "leverage",
+    "meaning": "leverage (A force compounded by means of a lever rotating ar...)",
+    "ipa": "/ˈliːv(ə)ɹɪdʒ/",
+    "example": "A crowbar uses leverage to pry nails out of wood.",
+    "category": "Business"
+  },
+  {
+    "word": "forecast",
+    "meaning": "forecast (An estimation of a future condition....)",
+    "ipa": "/ˈfɔːkɑːst/",
+    "example": "This is an example with forecast.",
+    "category": "Business"
+  },
+  {
+    "word": "projection",
+    "meaning": "projection (Something which projects, protrudes, juts out, sti...)",
+    "ipa": "/pɹəˈdʒɛkʃən/",
+    "example": "The face of the cliff had many projections that were big enough for birds to nest on.",
+    "category": "Business"
+  },
+  {
+    "word": "benchmark",
+    "meaning": "benchmark (A standard by which something is evaluated or meas...)",
+    "ipa": "/benchmark/",
+    "example": "This is an example with benchmark.",
+    "category": "Business"
+  },
+  {
+    "word": "metric",
+    "meaning": "metric (A measure for something; a means of deriving a qua...)",
+    "ipa": "/ˈmɛt.ɹɪk/",
+    "example": "How to measure marketing? Use these key metrics for measuring marketing effectiveness.",
+    "category": "Business"
+  },
+  {
+    "word": "analytics",
+    "meaning": "analytics (The principles governing any of various forms of a...)",
+    "ipa": "/ænəˈlɪtɪks/",
+    "example": "This is an example with analytics.",
+    "category": "Business"
+  },
+  {
+    "word": "optimization",
+    "meaning": "optimization (The design and operation of a system or process to...)",
+    "ipa": "/optimization/",
+    "example": "This is an example with optimization.",
+    "category": "Business"
+  },
+  {
+    "word": "efficiency",
+    "meaning": "efficiency (The extent to which time is well used for the inte...)",
+    "ipa": "/ɪˈfɪʃn̩si/",
+    "example": "The efficiency of the planning department is deplorable.",
+    "category": "Business"
+  },
+  {
+    "word": "productivity",
+    "meaning": "productivity (The state of being productive, fertile or efficien...)",
+    "ipa": "/ˌpɹɒdʌkˈtɪvəti/",
+    "example": "This is an example with productivity.",
+    "category": "Business"
+  },
+  {
+    "word": "scalability",
+    "meaning": "scalability (The property of being scalable....)",
+    "ipa": "/scalability/",
+    "example": "This is an example with scalability.",
+    "category": "Business"
+  },
+  {
+    "word": "sustainability",
+    "meaning": "sustainability (The ability to sustain something....)",
+    "ipa": "/səsˌteɪnəˈbɪlɪti/",
+    "example": "This is an example with sustainability.",
+    "category": "Business"
+  },
+  {
+    "word": "compliance",
+    "meaning": "compliance (An act of complying....)",
+    "ipa": "/kəmˈplaɪəns/",
+    "example": "This is an example with compliance.",
+    "category": "Business"
+  },
+  {
+    "word": "regulation",
+    "meaning": "regulation (The act of regulating or the condition of being re...)",
+    "ipa": "/ˌɹɛɡjʊˈleɪʃən/",
+    "example": "This is an example with regulation.",
+    "category": "Business"
+  },
+  {
+    "word": "governance",
+    "meaning": "governance (The process, or the power, of governing; governmen...)",
+    "ipa": "/ˈɡʌvənəns/",
+    "example": "This is an example with governance.",
+    "category": "Business"
+  },
+  {
+    "word": "fiduciary",
+    "meaning": "fiduciary (One who holds a thing in trust for another; a trus...)",
+    "ipa": "/fʌɪˈdjuːʃəɹi/",
+    "example": "This is an example with fiduciary.",
+    "category": "Business"
+  },
+  {
+    "word": "accountability",
+    "meaning": "accountability (The state of being accountable; liability to be ca...)",
+    "ipa": "/accountability/",
+    "example": "This is an example with accountability.",
+    "category": "Business"
+  },
+  {
+    "word": "transparency",
+    "meaning": "transparency (The quality of being transparent; transparence....)",
+    "ipa": "/tɹænsˈpæɹənsi/",
+    "example": "This is an example with transparency.",
+    "category": "Business"
+  },
+  {
+    "word": "integrity",
+    "meaning": "integrity (Steadfast adherence to a strict moral or ethical c...)",
+    "ipa": "/ɪnˈtɛɡɹəti/",
+    "example": "This is an example with integrity.",
+    "category": "Business"
+  },
+  {
+    "word": "ethics",
+    "meaning": "ethics (The study of principles relating to right and wron...)",
+    "ipa": "/ˈɛθ.ɪks/",
+    "example": "This is an example with ethics.",
+    "category": "Business"
+  },
+  {
+    "word": "corporate",
+    "meaning": "corporate (A bond issued by a corporation....)",
+    "ipa": "/ˈkɔːp(ə)ɹət/",
+    "example": "This is an example with corporate.",
+    "category": "Business"
+  },
+  {
+    "word": "enterprise",
+    "meaning": "enterprise (A company, business, organization, or other purpos...)",
+    "ipa": "/ˈɛntɚˌpɹaɪz/",
+    "example": "A micro-enterprise is defined as a business having 5 or fewer employees and a low seed capital.",
+    "category": "Business"
+  },
+  {
+    "word": "venture",
+    "meaning": "venture (A risky or daring undertaking or journey....)",
+    "ipa": "/ˈvɛn.t͡ʃə/",
+    "example": "This is an example with venture.",
+    "category": "Business"
+  },
+  {
+    "word": "startup",
+    "meaning": "startup (The act or process of starting a process or machin...)",
+    "ipa": "/ˈstɑɹtˌʌp/",
+    "example": "This is an example with startup.",
+    "category": "Business"
+  },
+  {
+    "word": "entrepreneurship",
+    "meaning": "entrepreneurship (The art or science of innovation and risk-taking f...)",
+    "ipa": "/entrepreneurship/",
+    "example": "This is an example with entrepreneurship.",
+    "category": "Business"
+  },
+  {
+    "word": "innovation",
+    "meaning": "innovation (The act of innovating; the introduction of somethi...)",
+    "ipa": "/ˌɪnəˈveɪʃən/",
+    "example": "This is an example with innovation.",
+    "category": "Business"
+  },
+  {
+    "word": "standard",
+    "meaning": "standard (A principle or example or measure used for compari...)",
+    "ipa": "/ˈstændəd/",
+    "example": "This is an example with standard.",
+    "category": "Business"
+  },
+  {
+    "word": "quality",
+    "meaning": "quality (Level of excellence....)",
+    "ipa": "/ˈkwɒlɪti/",
+    "example": "Quality of life is usually determined by health, education, and income.",
+    "category": "Business"
+  },
+  {
+    "word": "assurance",
+    "meaning": "assurance (The act of assuring; a declaration tending to insp...)",
+    "ipa": "/əˈʃɔːɹəns/",
+    "example": "This is an example with assurance.",
+    "category": "Business"
+  },
+  {
+    "word": "control",
+    "meaning": "control (Influence or authority over something....)",
+    "ipa": "/kənˈtɹəʊl/",
+    "example": "The government has complete control over the situation.",
+    "category": "Business"
+  },
+  {
+    "word": "risk management",
+    "meaning": "risk management (The process of determining the maximum acceptable ...)",
+    "ipa": "/risk management/",
+    "example": "This is an example with risk management.",
+    "category": "Business"
+  },
+  {
+    "word": "mitigation",
+    "meaning": "mitigation (A reduction or decrease of something harmful or un...)",
+    "ipa": "/mɪtɪˈɡeɪʃən/",
+    "example": "This is an example with mitigation.",
+    "category": "Business"
+  },
+  {
+    "word": "contingency",
+    "meaning": "contingency (The quality of being contingent, of happening by c...)",
+    "ipa": "/kənˈtɪndʒənsi/",
+    "example": "This is an example with contingency.",
+    "category": "Business"
+  },
+  {
+    "word": "scenario",
+    "meaning": "scenario (An outline of the plot of a dramatic or literary w...)",
+    "ipa": "/səˈneːɹi.əʉ/",
+    "example": "This is an example with scenario.",
+    "category": "Business"
+  },
+  {
+    "word": "analysis",
+    "meaning": "analysis (Decomposition into components in order to study (a...)",
+    "ipa": "/əˈnælɪsɪs/",
+    "example": "This is an example with analysis.",
+    "category": "Business"
+  },
+  {
+    "word": "forecasting",
+    "meaning": "forecasting (To estimate how something will be in the future....)",
+    "ipa": "/forecasting/",
+    "example": "to forecast a rise in prices",
+    "category": "Business"
+  },
+  {
+    "word": "budgeting",
+    "meaning": "budgeting (To construct or draw up a budget....)",
+    "ipa": "/budgeting/",
+    "example": "Budgeting is even harder in times of recession",
+    "category": "Business"
+  },
+  {
+    "word": "accounting",
+    "meaning": "accounting (To provide explanation....)",
+    "ipa": "/ə.ˈkaʊn.tɪŋ/",
+    "example": "This is an example with accounting.",
+    "category": "Business"
+  },
+  {
+    "word": "financial",
+    "meaning": "financial (Related to finances....)",
+    "ipa": "/faɪˈnænʃəl/",
+    "example": "For financial reasons, we're not going to be able to continue to fund this program.",
+    "category": "Business"
+  },
+  {
+    "word": "fiscal",
+    "meaning": "fiscal (A public official in certain countries having cont...)",
+    "ipa": "/ˈfɪskəl/",
+    "example": "This is an example with fiscal.",
+    "category": "Business"
+  },
+  {
+    "word": "monetary",
+    "meaning": "monetary (Of, pertaining to, or consisting of money....)",
+    "ipa": "/ˈmʌnɪtəɹi/",
+    "example": "This is an example with monetary.",
+    "category": "Business"
+  },
+  {
+    "word": "cash flow",
+    "meaning": "cash flow (The sum of cash revenues and expenditures over a p...)",
+    "ipa": "/cash flow/",
+    "example": "This is an example with cash flow.",
+    "category": "Business"
+  },
+  {
+    "word": "liquidity",
+    "meaning": "liquidity (The degree of which something is in high supply an...)",
+    "ipa": "/lɪkˈwɪdəti/",
+    "example": "My Picasso painting is not very liquid, it would take me months to sell it. Gold on the other hand is convertible to cash at any moment, making it a very liquid commodity.",
+    "category": "Business"
+  },
+  {
+    "word": "solvency",
+    "meaning": "solvency (The state of having enough funds or liquid assets ...)",
+    "ipa": "/solvency/",
+    "example": "This is an example with solvency.",
+    "category": "Business"
+  },
+  {
+    "word": "insolvency",
+    "meaning": "insolvency (The condition of being insolvent; the state or con...)",
+    "ipa": "[ɪnˈsɒlvn̩si]",
+    "example": "The company faces insolvency.",
+    "category": "Business"
+  },
+  {
+    "word": "bankruptcy",
+    "meaning": "bankruptcy (A legally declared or recognized condition of inso...)",
+    "ipa": "/ˈbæŋkɹʌptsɪ/",
+    "example": "This is an example with bankruptcy.",
+    "category": "Business"
+  },
+  {
+    "word": "creditor",
+    "meaning": "creditor (A person to whom a debt is owed....)",
+    "ipa": "/creditor/",
+    "example": "This is an example with creditor.",
+    "category": "Business"
+  },
+  {
+    "word": "debtor",
+    "meaning": "debtor (A person or firm that owes money; one in debt; one...)",
+    "ipa": "/ˈdet.ə/",
+    "example": "This is an example with debtor.",
+    "category": "Business"
+  },
+  {
+    "word": "loan",
+    "meaning": "loan (An act or instance of lending, an act or instance ...)",
+    "ipa": "/ləʊn/",
+    "example": "Because of the loan that John made to me, I was able to pay my tuition for the upcoming semester.",
+    "category": "Business"
+  },
+  {
+    "word": "mortgage",
+    "meaning": "mortgage (A special form of secured loan where the purpose o...)",
+    "ipa": "/ˈmɔː.ɡɪdʒ/",
+    "example": "We're renting a property in the city centre because we can't afford to get a mortgage yet.",
+    "category": "Business"
+  },
+  {
+    "word": "collateral",
+    "meaning": "collateral (A security or guarantee (usually an asset) pledged...)",
+    "ipa": "/kəˈlætəɹəl/",
+    "example": "This is an example with collateral.",
+    "category": "Business"
+  },
+  {
+    "word": "lien",
+    "meaning": "lien (A tendon....)",
+    "ipa": "/ˈliːn/",
+    "example": "This is an example with lien.",
+    "category": "Business"
+  },
+  {
+    "word": "covenant",
+    "meaning": "covenant (An agreement to do or not do a particular thing....)",
+    "ipa": "/ˈkʌv.nənt/",
+    "example": "This is an example with covenant.",
+    "category": "Business"
+  },
+  {
+    "word": "warrant",
+    "meaning": "warrant (Authorization or certification; a sanction, as giv...)",
+    "ipa": "/warrant/",
+    "example": "This is an example with warrant.",
+    "category": "Business"
+  },
+  {
+    "word": "option",
+    "meaning": "option (One of a set of choices that can be made....)",
+    "ipa": "/ˈɒpʃən/",
+    "example": "This is an example with option.",
+    "category": "Business"
+  },
+  {
+    "word": "future",
+    "meaning": "future (The time ahead; those moments yet to be experience...)",
+    "ipa": "/ˈfjuːt͡ʃə/",
+    "example": "This is an example with future.",
+    "category": "Business"
+  },
+  {
+    "word": "derivative",
+    "meaning": "derivative (Something derived....)",
+    "ipa": "/dɪˈɹɪvətɪv/",
+    "example": "This is an example with derivative.",
+    "category": "Business"
+  },
+  {
+    "word": "hedge",
+    "meaning": "hedge (A thicket of bushes or other shrubbery, especially...)",
+    "ipa": "/hɛdʒ/",
+    "example": "He trims the hedge once a week.",
+    "category": "Business"
+  },
+  {
+    "word": "arbitrage",
+    "meaning": "arbitrage (A market activity in which a security, commodity, ...)",
+    "ipa": "/ˈɑːɹ.bɪ.tɹɪdʒ/",
+    "example": "This is an example with arbitrage.",
+    "category": "Business"
+  },
+  {
+    "word": "speculation",
+    "meaning": "speculation (The process of thinking or meditating on a subject...)",
+    "ipa": "/ˌspɛkjəˈleɪʃən/",
+    "example": "This is an example with speculation.",
+    "category": "Business"
+  },
+  {
+    "word": "investment",
+    "meaning": "investment (The act of investing, or state of being invested....)",
+    "ipa": "/ɪnˈvɛsmənt/",
+    "example": "Giving your children a good education is a wise long-term investment.",
+    "category": "Business"
+  },
+  {
+    "word": "diversification",
+    "meaning": "diversification (The act, or the result, of diversifying....)",
+    "ipa": "/daɪˌvɜːsɪfɪˈkeɪʃən/",
+    "example": "This is an example with diversification.",
+    "category": "Business"
+  },
+  {
+    "word": "rebalancing",
+    "meaning": "rebalancing (To balance again....)",
+    "ipa": "/rebalancing/",
+    "example": "This is an example with rebalancing.",
+    "category": "Business"
+  },
+  {
+    "word": "annuity",
+    "meaning": "annuity (A right to receive amounts of money regularly over...)",
+    "ipa": "/əˈn(j)uɪti/",
+    "example": "This is an example with annuity.",
+    "category": "Business"
+  },
+  {
+    "word": "pension",
+    "meaning": "pension (An annuity paid regularly as benefit due to a reti...)",
+    "ipa": "/ˈpɛnʃ(ə)n/",
+    "example": "Many old people depend on their pension to pay the bills.",
+    "category": "Business"
+  },
+  {
+    "word": "retirement",
+    "meaning": "retirement (An act of retiring; withdrawal....)",
+    "ipa": "/ɹəˈtaɪə(ɹ).mənt/",
+    "example": "This is an example with retirement.",
+    "category": "Business"
+  },
+  {
+    "word": "succession",
+    "meaning": "succession (An act of following in sequence....)",
+    "ipa": "/səkˈsɛʃ.ən/",
+    "example": "This is an example with succession.",
     "category": "Business"
   }
 ]
