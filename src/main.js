@@ -12,36 +12,61 @@ class VocabularyApp {
   }
 
   init() {
-    this.setupEventListeners()
     this.render()
+    this.attachGlobalListeners()
   }
 
-  setupEventListeners() {
-    document.getElementById('addWordBtn')?.addEventListener('click', () => this.showAddModal())
-    document.getElementById('addWordForm')?.addEventListener('submit', (e) => this.handleAddWord(e))
-    document.getElementById('closeModal')?.addEventListener('click', () => this.closeModal())
-    document.getElementById('categoryFilter')?.addEventListener('change', (e) => {
-      this.currentCategory = e.target.value
-      this.render()
-    })
-    document.getElementById('quizBtn')?.addEventListener('click', () => this.startQuiz())
-    document.getElementById('autoFillBtn')?.addEventListener('click', (e) => {
-      e.preventDefault()
-      this.autoFillWordInfo()
+  attachGlobalListeners() {
+    document.addEventListener('click', (e) => {
+      if (e.target.id === 'addWordBtn') this.showAddModal()
+      if (e.target.id === 'closeModal') this.closeModal()
+      if (e.target.id === 'autoFillBtn') { e.preventDefault(); this.autoFillWordInfo() }
+      if (e.target.id === 'quizBtn') this.startQuiz()
+      if (e.target.id === 'vocabTab') { this.currentView = 'vocabulary'; this.render() }
+      if (e.target.id === 'dictationTab') { this.currentView = 'dictation'; this.render() }
+      if (e.target.id === 'characterTab') { this.currentView = 'character'; this.render() }
+
+      if (e.target.getAttribute('data-toggle-meaning')) {
+        this.toggleMeaning(parseInt(e.target.getAttribute('data-toggle-meaning')))
+      }
+      if (e.target.getAttribute('data-toggle-learned')) {
+        this.toggleLearned(parseInt(e.target.getAttribute('data-toggle-learned')))
+      }
+      if (e.target.getAttribute('data-delete-word')) {
+        this.deleteWord(parseInt(e.target.getAttribute('data-delete-word')))
+      }
+      if (e.target.getAttribute('data-answer-quiz')) {
+        const [selected, correct] = e.target.getAttribute('data-answer-quiz').split('|')
+        this.answerQuiz(selected, correct)
+      }
     })
 
-    document.getElementById('vocabTab')?.addEventListener('click', () => {
-      this.currentView = 'vocabulary'
-      this.currentTab = 'list'
-      this.render()
+    document.addEventListener('change', (e) => {
+      if (e.target.id === 'categoryFilter') {
+        this.currentCategory = e.target.value
+        this.render()
+      }
     })
-    document.getElementById('dictationTab')?.addEventListener('click', () => {
-      this.currentView = 'dictation'
-      this.render()
+
+    document.addEventListener('submit', (e) => {
+      if (e.target.id === 'addWordForm') {
+        e.preventDefault()
+        this.handleAddWord(e)
+      }
+      if (e.target.id === 'dictationForm') {
+        e.preventDefault()
+        this.submitDictation(e)
+      }
     })
-    document.getElementById('characterTab')?.addEventListener('click', () => {
-      this.currentView = 'character'
-      this.render()
+
+    document.addEventListener('input', (e) => {
+      if (e.target.id === 'dictationInput') {
+        const wordId = e.target.getAttribute('data-word-id')
+        if (wordId) {
+          const word = this.words.find(w => w.id === parseInt(wordId))
+          if (word) this.checkDictationRealtime(e)
+        }
+      }
     })
   }
 
@@ -65,10 +90,7 @@ class VocabularyApp {
 
   loadDictationData() {
     const stored = localStorage.getItem('dictationData')
-    return stored ? JSON.parse(stored) : {
-      records: {},
-      stats: {}
-    }
+    return stored ? JSON.parse(stored) : { records: {}, stats: {} }
   }
 
   loadCharacter() {
@@ -96,31 +118,35 @@ class VocabularyApp {
   }
 
   render() {
+    const app = document.getElementById('app') || document.body
+
     if (this.currentView === 'vocabulary') {
-      this.renderVocabulary()
+      this.renderVocabulary(app)
     } else if (this.currentView === 'dictation') {
-      this.renderDictationTab()
+      this.renderDictationTab(app)
     } else if (this.currentView === 'character') {
-      this.renderCharacterTab()
+      this.renderCharacterTab(app)
+    } else if (this.currentView === 'quiz') {
+      this.renderQuiz(app)
     }
   }
 
-  renderVocabulary() {
-    document.body.innerHTML = `
+  renderVocabulary(container) {
+    container.innerHTML = `
       <div class="min-h-screen flex flex-col max-w-md mx-auto bg-gray-50">
         ${this.renderHeader()}
         ${this.renderTabs()}
         <main class="flex-1 px-4 py-4 overflow-y-auto pb-20">
           <div id="contentArea"></div>
         </main>
-        ${this.renderAddModal()}
       </div>
+      ${this.renderAddModal()}
     `
-    this.setupEventListeners()
     this.renderWordList()
   }
 
   renderHeader() {
+    const learned = this.words.filter(w => w.isLearned).length
     return `
       <header class="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
         <div class="px-4 py-4 flex items-center justify-between">
@@ -144,11 +170,11 @@ class VocabularyApp {
         <div class="px-4 pb-4 grid grid-cols-2 gap-3">
           <div class="bg-blue-50 rounded-lg p-3 text-center">
             <p class="text-xs text-gray-600 mb-1">전체</p>
-            <p class="text-2xl font-bold text-blue-600" id="totalWords">${this.words.length}</p>
+            <p class="text-2xl font-bold text-blue-600">${this.words.length}</p>
           </div>
           <div class="bg-green-50 rounded-lg p-3 text-center">
             <p class="text-xs text-gray-600 mb-1">학습완료</p>
-            <p class="text-2xl font-bold text-green-600" id="learnedWords">${this.words.filter(w => w.isLearned).length}</p>
+            <p class="text-2xl font-bold text-green-600">${learned}</p>
           </div>
         </div>
         <div class="px-4 pb-4">
@@ -162,27 +188,19 @@ class VocabularyApp {
   }
 
   renderTabs() {
+    const activeClass = (view) => view === 'vocabulary' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-600'
     return `
       <div class="sticky top-24 z-30 bg-white border-b border-gray-200 flex">
-        <button id="vocabTab" class="flex-1 py-3 px-4 font-medium border-b-2 border-blue-500 text-blue-600 text-center">
-          📚 단어장
-        </button>
-        <button id="dictationTab" class="flex-1 py-3 px-4 font-medium border-b-2 border-transparent text-gray-600 hover:text-gray-900 text-center">
-          ✏️ 필사
-        </button>
-        <button id="characterTab" class="flex-1 py-3 px-4 font-medium border-b-2 border-transparent text-gray-600 hover:text-gray-900 text-center">
-          🐣 캐릭터
-        </button>
+        <button id="vocabTab" class="flex-1 py-3 px-4 font-medium border-b-2 ${activeClass('vocabulary')} text-center">📚 단어장</button>
+        <button id="dictationTab" class="flex-1 py-3 px-4 font-medium border-b-2 border-transparent text-gray-600 text-center">✏️ 필사</button>
+        <button id="characterTab" class="flex-1 py-3 px-4 font-medium border-b-2 border-transparent text-gray-600 text-center">🐣 캐릭터</button>
       </div>
     `
   }
 
   renderWordList() {
-    const filtered = this.words.filter(w =>
-      this.currentCategory === 'all' || w.category === this.currentCategory
-    )
+    const filtered = this.words.filter(w => this.currentCategory === 'all' || w.category === this.currentCategory)
     const content = document.getElementById('contentArea')
-
     if (!content) return
 
     if (filtered.length === 0) {
@@ -199,7 +217,7 @@ class VocabularyApp {
               <span class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded">${this.escapeHtml(word.pos)}</span>
             </div>
             ${word.ipa ? `<p class="text-gray-500 text-xs mb-2">${this.escapeHtml(word.ipa)}</p>` : ''}
-            <div class="mb-2 p-3 bg-blue-50 rounded-lg cursor-pointer hover:bg-blue-100 transition" onclick="app.toggleMeaning(${word.id})">
+            <div class="mb-2 p-3 bg-blue-50 rounded-lg cursor-pointer hover:bg-blue-100 transition" data-toggle-meaning="${word.id}">
               <p class="text-gray-700 text-sm mb-2 font-medium">${this.escapeHtml(word.englishMeaning || word.meaning)}</p>
               <p class="text-xs text-gray-500 text-center">💬 뜻을 클릭하면 한글/영문 전환</p>
             </div>
@@ -212,12 +230,12 @@ class VocabularyApp {
             ${word.example ? `<p class="text-gray-500 text-xs italic mt-2">예: ${this.escapeHtml(word.example)}</p>` : ''}
           </div>
           <div class="flex gap-2 flex-shrink-0">
-            <button onclick="app.toggleLearned(${word.id})" class="p-2 rounded-lg ${word.isLearned ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-600'} hover:opacity-80 transition">
+            <button data-toggle-learned="${word.id}" class="p-2 rounded-lg ${word.isLearned ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-600'} hover:opacity-80 transition">
               <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
               </svg>
             </button>
-            <button onclick="app.deleteWord(${word.id})" class="p-2 rounded-lg bg-red-100 text-red-600 hover:opacity-80 transition">
+            <button data-delete-word="${word.id}" class="p-2 rounded-lg bg-red-100 text-red-600 hover:opacity-80 transition">
               <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
               </svg>
@@ -272,92 +290,67 @@ class VocabularyApp {
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">카테고리</label>
-              <input type="text" id="categoryInput" placeholder="예: 비즈니스, 일상" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+              <input type="text" id="categoryInput" placeholder="예: 비즈니스" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">예시</label>
-              <textarea id="exampleInput" placeholder="단어를 사용한 예문을 입력하세요" rows="2" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm resize-none"></textarea>
+              <textarea id="exampleInput" placeholder="예문을 입력하세요" rows="2" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm resize-none"></textarea>
             </div>
-            <div class="pt-4 space-y-2">
-              <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-lg transition-all active:scale-95">추가하기</button>
-            </div>
+            <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-lg transition-all active:scale-95">추가하기</button>
           </form>
         </div>
       </div>
       <style>
-        @keyframes slide-up {
-          from { transform: translateY(100%); }
-          to { transform: translateY(0); }
-        }
+        @keyframes slide-up { from { transform: translateY(100%); } to { transform: translateY(0); } }
         .animate-slide-up { animation: slide-up 0.3s ease-out; }
       </style>
     `
   }
 
-  renderDictationTab() {
-    document.body.innerHTML = `
+  renderDictationTab(container) {
+    const today = new Date().toISOString().split('T')[0]
+    const todayRecord = this.dictationData.records[today]
+
+    container.innerHTML = `
       <div class="min-h-screen flex flex-col max-w-md mx-auto bg-gray-50">
-        ${this.renderDictationHeader()}
-        ${this.renderDictationTabs()}
+        <header class="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
+          <div class="px-4 py-4">
+            <h1 class="text-2xl font-bold text-gray-900">✏️ 필사 도전</h1>
+            <p class="text-xs text-gray-500 mt-1">매일 예문을 필사하고 스탬프를 모으세요</p>
+          </div>
+          <div class="px-4 pb-4 grid grid-cols-3 gap-2">
+            <div class="bg-orange-50 rounded-lg p-3 text-center">
+              <p class="text-xs text-gray-600">오늘</p>
+              <p class="text-lg font-bold ${todayRecord?.success ? 'text-orange-600' : 'text-gray-400'}">${todayRecord?.success ? '✅' : '⭕'}</p>
+            </div>
+            <div class="bg-blue-50 rounded-lg p-3 text-center">
+              <p class="text-xs text-gray-600">연속</p>
+              <p class="text-lg font-bold text-blue-600">${this.character.streak}일</p>
+            </div>
+            <div class="bg-purple-50 rounded-lg p-3 text-center">
+              <p class="text-xs text-gray-600">성공</p>
+              <p class="text-lg font-bold text-purple-600">${this.character.totalSuccess}회</p>
+            </div>
+          </div>
+        </header>
+        ${this.renderTabs()}
         <main class="flex-1 px-4 py-4 overflow-y-auto pb-20">
           <div id="dictationContent"></div>
         </main>
       </div>
     `
-    this.setupEventListeners()
     this.renderDictationChallenge()
-  }
-
-  renderDictationHeader() {
-    const today = new Date().toISOString().split('T')[0]
-    const todayRecord = this.dictationData.records[today]
-
-    return `
-      <header class="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
-        <div class="px-4 py-4">
-          <h1 class="text-2xl font-bold text-gray-900">✏️ 필사 도전</h1>
-          <p class="text-xs text-gray-500 mt-1">매일 예문을 필사하고 스탬프를 모으세요</p>
-        </div>
-        <div class="px-4 pb-4 grid grid-cols-3 gap-2">
-          <div class="bg-orange-50 rounded-lg p-3 text-center">
-            <p class="text-xs text-gray-600">오늘</p>
-            <p class="text-lg font-bold ${todayRecord?.success ? 'text-orange-600' : 'text-gray-400'}">${todayRecord?.success ? '✅' : '⭕'}</p>
-          </div>
-          <div class="bg-blue-50 rounded-lg p-3 text-center">
-            <p class="text-xs text-gray-600">연속</p>
-            <p class="text-lg font-bold text-blue-600">${this.character.streak}일</p>
-          </div>
-          <div class="bg-purple-50 rounded-lg p-3 text-center">
-            <p class="text-xs text-gray-600">성공</p>
-            <p class="text-lg font-bold text-purple-600">${this.character.totalSuccess}회</p>
-          </div>
-        </div>
-      </header>
-    `
-  }
-
-  renderDictationTabs() {
-    return `
-      <div class="sticky top-24 z-30 bg-white border-b border-gray-200 flex">
-        <button id="vocabTab" class="flex-1 py-3 px-4 font-medium border-b-2 border-transparent text-gray-600 hover:text-gray-900 text-center">
-          📚 단어장
-        </button>
-        <button id="dictationTab" class="flex-1 py-3 px-4 font-medium border-b-2 border-orange-500 text-orange-600 text-center">
-          ✏️ 필사
-        </button>
-        <button id="characterTab" class="flex-1 py-3 px-4 font-medium border-b-2 border-transparent text-gray-600 hover:text-gray-900 text-center">
-          🐣 캐릭터
-        </button>
-      </div>
-    `
   }
 
   renderDictationChallenge() {
     const today = new Date().toISOString().split('T')[0]
     const todayRecord = this.dictationData.records[today]
+    const content = document.getElementById('dictationContent')
+
+    if (!content) return
 
     if (todayRecord?.success) {
-      document.getElementById('dictationContent').innerHTML = `
+      content.innerHTML = `
         <div class="text-center py-12">
           <div class="text-6xl mb-4">🎉</div>
           <h2 class="text-2xl font-bold text-gray-900 mb-2">완벽했어요!</h2>
@@ -371,14 +364,12 @@ class VocabularyApp {
     }
 
     const randomWord = this.words[Math.floor(Math.random() * this.words.length)]
-    if (!randomWord.example) {
-      document.getElementById('dictationContent').innerHTML = `
-        <div class="text-center py-8 text-gray-400">예문이 없는 단어가 있습니다.</div>
-      `
+    if (!randomWord?.example) {
+      content.innerHTML = '<div class="text-center py-8 text-gray-400">예문이 없습니다.</div>'
       return
     }
 
-    document.getElementById('dictationContent').innerHTML = `
+    content.innerHTML = `
       <div class="py-4">
         <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
           <h2 class="text-xl font-bold text-gray-900 mb-2">${this.escapeHtml(randomWord.word)}</h2>
@@ -393,50 +384,54 @@ class VocabularyApp {
           <form id="dictationForm" class="space-y-4">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">위 문장을 그대로 따라 쓰세요</label>
-              <textarea id="dictationInput" placeholder="예문을 입력하세요..." rows="4" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm resize-none"></textarea>
-              <div id="dictationFeedback" class="text-xs mt-2"></div>
+              <textarea id="dictationInput" data-word-id="${randomWord.id}" placeholder="예문을 입력하세요..." rows="4" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm resize-none"></textarea>
+              <div id="dictationFeedback" class="text-xs mt-2 text-gray-600"></div>
             </div>
-
-            <button type="submit" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-lg transition-all">
-              확인
-            </button>
+            <button type="submit" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-lg transition-all">확인</button>
           </form>
         </div>
       </div>
     `
-
-    const input = document.getElementById('dictationInput')
-    input.addEventListener('input', (e) => this.checkDictationRealtime(e, randomWord.example))
-    document.getElementById('dictationForm').addEventListener('submit', (e) => this.submitDictation(e, randomWord))
   }
 
-  checkDictationRealtime(e, correct) {
+  checkDictationRealtime(e) {
     const input = e.target.value
+    const wordId = parseInt(e.target.getAttribute('data-word-id'))
+    const word = this.words.find(w => w.id === wordId)
+    const correct = word?.example || ''
     const feedback = document.getElementById('dictationFeedback')
+
+    if (!feedback) return
 
     if (!input) {
       feedback.innerHTML = ''
       return
     }
 
-    let html = '<div class="space-y-1">'
+    let correctCount = 0
+    let html = '<div class="flex flex-wrap gap-1">'
+
     for (let i = 0; i < Math.max(input.length, correct.length); i++) {
       if (input[i] === correct[i]) {
-        html += `<span class="text-green-600">✓ ${this.escapeHtml(input[i] || '_')}</span> `
+        correctCount++
+        html += `<span class="text-green-600 font-semibold">${this.escapeHtml(input[i])}</span>`
       } else if (!input[i]) {
-        html += `<span class="text-gray-400">_ </span>`
+        html += `<span class="text-gray-300">_</span>`
       } else {
-        html += `<span class="text-red-600">✗ ${this.escapeHtml(input[i])}</span> `
+        html += `<span class="text-red-600 font-semibold bg-red-100 px-1 rounded">${this.escapeHtml(input[i])}</span>`
       }
     }
     html += '</div>'
-    feedback.innerHTML = html
+
+    const accuracy = Math.round((correctCount / correct.length) * 100)
+    feedback.innerHTML = `<div class="mb-2">${accuracy}% 정확도</div>${html}`
   }
 
-  submitDictation(e, word) {
-    e.preventDefault()
+  submitDictation(e) {
     const input = document.getElementById('dictationInput').value.trim()
-    const correct = word.example.trim()
+    const wordId = parseInt(document.getElementById('dictationInput').getAttribute('data-word-id'))
+    const word = this.words.find(w => w.id === wordId)
+    const correct = word?.example.trim() || ''
 
     if (input === correct) {
       const today = new Date().toISOString().split('T')[0]
@@ -452,6 +447,7 @@ class VocabularyApp {
       this.character.totalSuccess++
       this.character.streak++
       this.character.exp += 10
+
       if (this.character.exp >= 100) {
         this.character.level++
         this.character.exp = 0
@@ -462,6 +458,7 @@ class VocabularyApp {
       this.saveCharacter()
 
       alert('🎊 Perfect! You did it! Keep it up! 🌟')
+      this.currentView = 'dictation'
       this.render()
     } else {
       const similarity = this.calculateSimilarity(input, correct)
@@ -469,52 +466,28 @@ class VocabularyApp {
     }
   }
 
-  renderCharacterTab() {
-    document.body.innerHTML = `
+  renderCharacterTab(container) {
+    container.innerHTML = `
       <div class="min-h-screen flex flex-col max-w-md mx-auto bg-gray-50">
-        ${this.renderCharacterHeader()}
-        ${this.renderCharacterTabs()}
+        <header class="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
+          <div class="px-4 py-4">
+            <h1 class="text-2xl font-bold text-gray-900">🐣 캐릭터</h1>
+            <p class="text-xs text-gray-500 mt-1">매일 필사하면서 캐릭터를 성장시키세요</p>
+          </div>
+        </header>
+        ${this.renderTabs()}
         <main class="flex-1 px-4 py-4 overflow-y-auto pb-20">
-          <div id="characterContent"></div>
+          ${this.renderCharacterContent()}
         </main>
-      </div>
-    `
-    this.setupEventListeners()
-    this.renderCharacterContent()
-  }
-
-  renderCharacterHeader() {
-    return `
-      <header class="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
-        <div class="px-4 py-4">
-          <h1 class="text-2xl font-bold text-gray-900">🐣 캐릭터</h1>
-          <p class="text-xs text-gray-500 mt-1">매일 필사하면서 캐릭터를 성장시키세요</p>
-        </div>
-      </header>
-    `
-  }
-
-  renderCharacterTabs() {
-    return `
-      <div class="sticky top-24 z-30 bg-white border-b border-gray-200 flex">
-        <button id="vocabTab" class="flex-1 py-3 px-4 font-medium border-b-2 border-transparent text-gray-600 hover:text-gray-900 text-center">
-          📚 단어장
-        </button>
-        <button id="dictationTab" class="flex-1 py-3 px-4 font-medium border-b-2 border-transparent text-gray-600 hover:text-gray-900 text-center">
-          ✏️ 필사
-        </button>
-        <button id="characterTab" class="flex-1 py-3 px-4 font-medium border-b-2 border-purple-500 text-purple-600 text-center">
-          🐣 캐릭터
-        </button>
       </div>
     `
   }
 
   renderCharacterContent() {
-    const content = document.getElementById('characterContent')
     const characterStage = this.getCharacterStage()
+    const months = Object.keys(this.dictationData.stats).sort().reverse().slice(0, 3)
 
-    content.innerHTML = `
+    return `
       <div class="py-6">
         <div class="bg-white rounded-lg shadow-sm p-8 text-center mb-6">
           <div class="text-6xl mb-4">${characterStage.emoji}</div>
@@ -541,39 +514,29 @@ class VocabularyApp {
         <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
           <h3 class="font-bold text-gray-900 mb-4">🏆 Badges</h3>
           <div class="grid grid-cols-3 gap-3">
-            ${this.character.badges.map(b => `<div class="text-center p-3 bg-yellow-50 rounded-lg">${b.emoji} ${b.name}</div>`).join('')}
-            ${this.character.badges.length === 0 ? '<p class="text-xs text-gray-400">배지를 획득하면 여기에 표시됩니다</p>' : ''}
+            ${this.character.badges.map(b => `<div class="text-center p-3 bg-yellow-50 rounded-lg"><div class="text-2xl mb-1">${b.emoji}</div><p class="text-xs font-medium">${b.name}</p></div>`).join('')}
+            ${this.character.badges.length === 0 ? '<p class="text-xs text-gray-400 col-span-3">배지를 획득하면 여기에 표시됩니다</p>' : ''}
           </div>
         </div>
 
         <div class="bg-white rounded-lg shadow-sm p-6">
           <h3 class="font-bold text-gray-900 mb-4">📊 Monthly Stats</h3>
-          ${this.renderMonthlyStats()}
+          ${months.length === 0 ? '<p class="text-xs text-gray-400">아직 필사 기록이 없습니다.</p>' : months.map(month => {
+            const stats = this.dictationData.stats[month]
+            const [year, monthNum] = month.split('-')
+            return `
+              <div class="mb-3 pb-3 border-b last:border-b-0">
+                <p class="text-sm font-medium text-gray-900 mb-2">${year}년 ${monthNum}월</p>
+                <div class="flex justify-between text-xs text-gray-600">
+                  <span>성공: ${stats.successDays}일</span>
+                  <span>시도: ${stats.totalAttempts}일</span>
+                </div>
+              </div>
+            `
+          }).join('')}
         </div>
       </div>
     `
-  }
-
-  renderMonthlyStats() {
-    const months = Object.keys(this.dictationData.stats).sort().reverse().slice(0, 3)
-
-    if (months.length === 0) {
-      return '<p class="text-xs text-gray-400">아직 필사 기록이 없습니다.</p>'
-    }
-
-    return months.map(month => {
-      const stats = this.dictationData.stats[month]
-      const [year, monthNum] = month.split('-')
-      return `
-        <div class="mb-3 pb-3 border-b last:border-b-0">
-          <p class="text-sm font-medium text-gray-900 mb-2">${year}년 ${monthNum}월</p>
-          <div class="flex justify-between text-xs text-gray-600">
-            <span>성공: ${stats.successDays}일</span>
-            <span>시도: ${stats.totalAttempts}일</span>
-          </div>
-        </div>
-      `
-    }).join('')
   }
 
   getCharacterStage() {
@@ -595,6 +558,56 @@ class VocabularyApp {
     if (this.character.totalSuccess === 100 && !this.character.badges.find(b => b.id === 'century')) {
       this.character.badges.push({ id: 'century', name: '100일 전설', emoji: '👑' })
     }
+  }
+
+  renderQuiz(container) {
+    if (this.quizIndex >= (this.quizQuestions?.length || 0)) {
+      container.innerHTML = `
+        <div class="min-h-screen flex flex-col items-center justify-center bg-gray-50 max-w-md mx-auto">
+          <div class="text-6xl mb-4">🎉</div>
+          <h2 class="text-2xl font-bold text-gray-900 mb-2">Quiz Complete!</h2>
+          <p class="text-gray-600 mb-6">
+            <span class="text-3xl font-bold text-blue-600">${this.quizScore}</span> / ${this.quizQuestions?.length || 0}
+          </p>
+          <button id="vocabTab" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg transition-all">돌아가기</button>
+        </div>
+      `
+      return
+    }
+
+    const q = this.quizQuestions[this.quizIndex]
+    const progress = (this.quizIndex || 0) + 1
+
+    container.innerHTML = `
+      <div class="min-h-screen flex flex-col max-w-md mx-auto bg-gray-50">
+        <header class="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm p-4">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-sm font-medium text-gray-600">Progress: ${progress}/${this.quizQuestions?.length || 0}</span>
+            <button id="vocabTab" class="text-gray-400 hover:text-gray-600">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+              </svg>
+            </button>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-2">
+            <div class="bg-blue-500 h-2 rounded-full transition-all" style="width: ${(progress / (this.quizQuestions?.length || 1)) * 100}%"></div>
+          </div>
+        </header>
+        <main class="flex-1 px-4 py-6">
+          <div class="bg-white rounded-lg shadow-sm p-6">
+            <p class="text-gray-600 text-sm mb-4">Select the meaning:</p>
+            <h2 class="text-3xl font-bold text-gray-900 mb-6">${this.escapeHtml(q.correct.word)}</h2>
+            <div class="space-y-3">
+              ${q.options.map((meaning, idx) => `
+                <button data-answer-quiz="${meaning}|${q.correct.meaning}" class="w-full p-4 bg-gray-100 hover:bg-gray-200 text-left rounded-lg font-medium text-gray-900 transition-all border-2 border-transparent hover:border-blue-400">
+                  ${this.escapeHtml(meaning)}
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        </main>
+      </div>
+    `
   }
 
   toggleMeaning(id) {
@@ -632,14 +645,13 @@ class VocabularyApp {
   }
 
   handleAddWord(e) {
-    e.preventDefault()
-    const word = document.getElementById('wordInput').value.trim()
-    const englishMeaning = document.getElementById('englishMeaningInput').value.trim()
-    const meaning = document.getElementById('meaningInput').value.trim()
-    const ipa = document.getElementById('ipaInput').value.trim()
-    const pos = document.getElementById('posInput').value.trim() || '명사'
-    const category = document.getElementById('categoryInput').value.trim() || 'General'
-    const example = document.getElementById('exampleInput').value.trim()
+    const word = document.getElementById('wordInput')?.value.trim() || ''
+    const englishMeaning = document.getElementById('englishMeaningInput')?.value.trim() || ''
+    const meaning = document.getElementById('meaningInput')?.value.trim() || ''
+    const ipa = document.getElementById('ipaInput')?.value.trim() || ''
+    const pos = document.getElementById('posInput')?.value.trim() || '명사'
+    const category = document.getElementById('categoryInput')?.value.trim() || 'General'
+    const example = document.getElementById('exampleInput')?.value.trim() || ''
 
     if (!word || !meaning) {
       alert('단어와 뜻은 필수입니다.')
@@ -648,13 +660,7 @@ class VocabularyApp {
 
     this.words.push({
       id: Date.now(),
-      word,
-      englishMeaning,
-      meaning,
-      ipa,
-      pos,
-      category,
-      example,
+      word, englishMeaning, meaning, ipa, pos, category, example,
       createdAt: new Date().toISOString(),
       isLearned: false,
     })
@@ -662,12 +668,11 @@ class VocabularyApp {
     this.saveWords()
     this.closeModal()
     this.currentView = 'vocabulary'
-    this.currentTab = 'list'
     this.render()
   }
 
   async autoFillWordInfo() {
-    const word = document.getElementById('wordInput').value.trim()
+    const word = document.getElementById('wordInput')?.value.trim()
     if (!word) {
       alert('단어를 입력하세요.')
       return
@@ -680,26 +685,23 @@ class VocabularyApp {
 
     try {
       const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word.toLowerCase()}`)
-      if (!response.ok) throw new Error('단어를 찾을 수 없습니다.')
+      if (!response.ok) throw new Error()
 
       const data = await response.json()
       const entry = data[0]
-
       const phonetic = entry.phonetics?.[0]?.text || entry.phonetic || ''
       const meanings = entry.meanings || []
       const definitions = meanings.flatMap(m => m.definitions || [])
-      const englishMeaning = definitions[0]?.definition || meanings[0]?.definitions[0]?.definition || ''
-      const example = definitions[0]?.example || meanings[0]?.definitions[0]?.example || ''
+      const englishMeaning = definitions[0]?.definition || ''
+      const example = definitions[0]?.example || ''
 
       document.getElementById('englishMeaningInput').value = englishMeaning
       document.getElementById('ipaInput').value = phonetic
-      if (example) {
-        document.getElementById('exampleInput').value = example
-      }
+      if (example) document.getElementById('exampleInput').value = example
 
       alert('✅ 자동 조회 완료! 한글 뜻을 입력해주세요.')
     } catch (err) {
-      alert('❌ 단어를 찾을 수 없습니다. 다시 시도해주세요.')
+      alert('❌ 단어를 찾을 수 없습니다.')
     } finally {
       btn.textContent = originalText
       btn.disabled = false
@@ -715,7 +717,7 @@ class VocabularyApp {
     this.quizScore = 0
     this.currentView = 'quiz'
     this.generateQuiz()
-    this.renderQuiz()
+    this.render()
   }
 
   generateQuiz() {
@@ -733,62 +735,10 @@ class VocabularyApp {
     })
   }
 
-  renderQuiz() {
-    if (this.quizIndex >= this.quizQuestions.length) {
-      document.body.innerHTML = `
-        <div class="min-h-screen flex flex-col items-center justify-center bg-gray-50 max-w-md mx-auto">
-          <div class="text-6xl mb-4">🎉</div>
-          <h2 class="text-2xl font-bold text-gray-900 mb-2">Quiz Complete!</h2>
-          <p class="text-gray-600 mb-6">
-            <span class="text-3xl font-bold text-blue-600">${this.quizScore}</span> / ${this.quizQuestions.length}
-          </p>
-          <button onclick="app.currentView = 'vocabulary'; app.render()" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg transition-all">
-            돌아가기
-          </button>
-        </div>
-      `
-      return
-    }
-
-    const q = this.quizQuestions[this.quizIndex]
-    const progress = this.quizIndex + 1
-
-    document.body.innerHTML = `
-      <div class="min-h-screen flex flex-col max-w-md mx-auto bg-gray-50">
-        <header class="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm p-4">
-          <div class="flex justify-between items-center mb-2">
-            <span class="text-sm font-medium text-gray-600">Progress: ${progress}/${this.quizQuestions.length}</span>
-            <button onclick="app.currentView = 'vocabulary'; app.render()" class="text-gray-400 hover:text-gray-600">
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-              </svg>
-            </button>
-          </div>
-          <div class="w-full bg-gray-200 rounded-full h-2">
-            <div class="bg-blue-500 h-2 rounded-full transition-all" style="width: ${(progress / this.quizQuestions.length) * 100}%"></div>
-          </div>
-        </header>
-        <main class="flex-1 px-4 py-6">
-          <div class="bg-white rounded-lg shadow-sm p-6">
-            <p class="text-gray-600 text-sm mb-4">Select the meaning:</p>
-            <h2 class="text-3xl font-bold text-gray-900 mb-6">${this.escapeHtml(q.correct.word)}</h2>
-            <div class="space-y-3" id="quizOptions">
-              ${q.options.map(meaning => `
-                <button onclick="app.answerQuiz('${meaning}', '${q.correct.meaning}')" class="w-full p-4 bg-gray-100 hover:bg-gray-200 text-left rounded-lg font-medium text-gray-900 transition-all border-2 border-transparent hover:border-blue-400">
-                  ${this.escapeHtml(meaning)}
-                </button>
-              `).join('')}
-            </div>
-          </div>
-        </main>
-      </div>
-    `
-  }
-
   answerQuiz(selected, correct) {
     if (selected === correct) this.quizScore++
     this.quizIndex++
-    this.renderQuiz()
+    this.render()
   }
 
   calculateSimilarity(str1, str2) {
