@@ -442,30 +442,16 @@ class VocabularyApp {
           <form id="dictationForm" class="space-y-4">
             <label class="block text-sm font-medium text-gray-700 mb-4">예문을 따라 입력하세요</label>
 
-            <!-- 이중 레이어 입력 컴포넌트 -->
-            <div class="relative bg-white rounded-lg border-2 border-gray-200 focus-within:border-orange-500 focus-within:ring-2 focus-within:ring-orange-200 transition-all">
-
-              <!-- 아래 레이어: 목표 문장 (연한 회색, ghost text) -->
-              <div class="absolute inset-0 p-4 text-xl leading-relaxed break-words whitespace-pre-wrap text-gray-300 pointer-events-none font-light">
-                ${this.escapeHtml(randomWord.example)}
-              </div>
-
-              <!-- 위 레이어: 사용자 입력 텍스트 (검정색) -->
-              <div id="dictationDisplay" class="absolute inset-0 p-4 text-xl leading-relaxed break-words whitespace-pre-wrap text-gray-900 pointer-events-none">
-              </div>
-
-              <!-- 실제 입력 필드 (투명) -->
-              <input
-                id="dictationInput"
-                type="text"
-                data-word-id="${randomWord.id}"
-                data-target="${this.escapeHtml(randomWord.example)}"
-                class="relative block w-full bg-transparent text-transparent p-4 text-xl leading-relaxed caret-orange-500 focus:outline-none resize-none"
-                aria-label="단어장 필사 입력"
-                autocomplete="off"
-                spellcheck="false"
-              />
-            </div>
+            <!-- contenteditable 입력 영역 -->
+            <div
+              id="dictationInput"
+              contenteditable="true"
+              data-word-id="${randomWord.id}"
+              data-target="${this.escapeHtml(randomWord.example)}"
+              class="w-full bg-white rounded-lg border-2 border-gray-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all p-4 text-base leading-relaxed text-gray-900 focus:outline-none min-h-24 text-left"
+              aria-label="단어장 필사 입력"
+              spellcheck="false"
+            ></div>
 
             <button type="submit" id="submitBtn" class="w-full bg-gray-300 text-gray-500 font-semibold py-3 rounded-lg transition-all cursor-not-allowed" disabled>
               ✓ 입력 중...
@@ -473,68 +459,136 @@ class VocabularyApp {
           </form>
         </div>
       </div>
+
+      <style>
+        #dictationInput .char {
+          color: #ccc;
+          position: relative;
+        }
+        #dictationInput .char.correct {
+          color: #000;
+        }
+        #dictationInput .char.incorrect {
+          background-color: #ffe0d0;
+          color: #000;
+        }
+        #dictationInput .char.cursor::before {
+          content: '';
+          position: absolute;
+          left: -2px;
+          top: 0;
+          bottom: 0;
+          border-left: 2px solid #ff9500;
+        }
+      </style>
     `
     this.setupDictationInput()
   }
 
   setupDictationInput() {
     const input = document.getElementById('dictationInput')
-    const display = document.getElementById('dictationDisplay')
     const submitBtn = document.getElementById('submitBtn')
     const target = input?.getAttribute('data-target') || ''
 
-    if (!input || !display) return
+    if (!input) return
 
-    input.addEventListener('input', (e) => {
-      const value = e.target.value
-      let html = ''
+    // 초기 span 구조 생성
+    let html = ''
+    for (let char of target) {
+      html += `<span class="char pending">${this.escapeHtml(char)}</span>`
+    }
+    input.innerHTML = html
 
-      // 입력된 글자만 렌더링 (맞는 글자는 검정색, 틀린 글자는 빨간색)
-      for (let i = 0; i < value.length; i++) {
-        if (value[i] === target[i]) {
-          html += this.escapeHtml(value[i])
-        } else {
-          html += `<span class="text-red-600">${this.escapeHtml(value[i])}</span>`
-        }
-      }
+    let currentIndex = 0
 
-      display.innerHTML = html
-
-      // 완료 상태 확인
-      if (value === target) {
-        submitBtn.disabled = false
-        submitBtn.classList.remove('bg-gray-300', 'text-gray-500', 'cursor-not-allowed')
-        submitBtn.classList.add('bg-orange-500', 'hover:bg-orange-600', 'text-white')
-        submitBtn.textContent = '✓ 완료'
-      } else {
-        submitBtn.disabled = true
-        submitBtn.classList.remove('bg-orange-500', 'hover:bg-orange-600', 'text-white')
-        submitBtn.classList.add('bg-gray-300', 'text-gray-500', 'cursor-not-allowed')
-        submitBtn.textContent = `✓ 입력 중... (${value.length}/${target.length})`
-      }
+    // contenteditable 기본 입력 방지
+    input.addEventListener('beforeinput', (e) => {
+      e.preventDefault()
     })
 
     input.addEventListener('keydown', (e) => {
-      const value = e.target.value
-      const key = e.key
-
-      // 백스페이스, 화살표, Tab, Delete 등은 허용
-      if (['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Tab', 'Home', 'End'].includes(key)) {
+      // 백스페이스 처리
+      if (e.key === 'Backspace') {
+        e.preventDefault()
+        if (currentIndex > 0) {
+          currentIndex--
+          this.updateDictationDisplay(input, target, currentIndex)
+        }
         return
       }
 
-      // 정답 글자가 아니면 입력 방지
-      if (key.length === 1 && value.length < target.length) {
-        if (key !== target[value.length]) {
-          e.preventDefault()
-          audio.play('error')
-        }
-      } else if (key.length === 1) {
+      // 화살표 키, 컨트롤 키 등은 기본 동작 허용하지 않음
+      if (e.key.length !== 1) {
         e.preventDefault()
+        return
+      }
+
+      e.preventDefault()
+
+      // 정답 글자 비교
+      if (currentIndex < target.length) {
+        if (e.key === target[currentIndex]) {
+          // 맞는 글자
+          const spans = input.querySelectorAll('.char')
+          spans[currentIndex].classList.remove('pending', 'incorrect', 'cursor')
+          spans[currentIndex].classList.add('correct')
+          currentIndex++
+
+          if (currentIndex < target.length) {
+            spans[currentIndex].classList.add('cursor')
+          }
+
+          // 완료 확인
+          if (currentIndex === target.length) {
+            submitBtn.disabled = false
+            submitBtn.classList.remove('bg-gray-300', 'text-gray-500', 'cursor-not-allowed')
+            submitBtn.classList.add('bg-orange-500', 'hover:bg-orange-600', 'text-white')
+            submitBtn.textContent = '✓ 완료'
+          } else {
+            submitBtn.textContent = `✓ 입력 중... (${currentIndex}/${target.length})`
+          }
+        } else {
+          // 틀린 글자
+          audio.play('error')
+          const spans = input.querySelectorAll('.char')
+          spans[currentIndex].classList.remove('pending', 'correct', 'cursor')
+          spans[currentIndex].classList.add('incorrect')
+          spans[currentIndex].textContent = e.key
+        }
       }
     })
 
+    input.addEventListener('focus', () => {
+      // 포커스 시 첫 글자에 커서 표시
+      if (currentIndex < target.length) {
+        const spans = input.querySelectorAll('.char')
+        spans[currentIndex]?.classList.add('cursor')
+      }
+    })
+
+    input.addEventListener('blur', () => {
+      // 포커스 해제 시 커서 제거
+      const spans = input.querySelectorAll('.char')
+      spans.forEach(span => span.classList.remove('cursor'))
+    })
+
     input.focus()
+  }
+
+  updateDictationDisplay(input, target, currentIndex) {
+    const spans = input.querySelectorAll('.char')
+    spans.forEach((span, i) => {
+      span.classList.remove('correct', 'incorrect', 'cursor', 'pending')
+      span.textContent = this.escapeHtml(target[i])
+
+      if (i < currentIndex) {
+        span.classList.add('correct')
+      } else if (i === currentIndex) {
+        span.classList.add('cursor')
+      } else {
+        span.classList.add('pending')
+      }
+    })
   }
 
 
