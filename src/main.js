@@ -170,7 +170,7 @@ class VocabularyApp {
     app.innerHTML = `
       <div class="min-h-screen flex flex-col max-w-md mx-auto bg-gray-50">
         <!-- 고정 헤더 -->
-        <header class="sticky top-0 z-40 bg-white border-b-2 border-gray-200 shadow-sm">
+        <header class="fixed top-0 left-1/2 -translate-x-1/2 z-40 w-full max-w-md bg-white border-b border-gray-200 shadow-md">
           <div class="px-4 py-4 flex items-center justify-between">
             <div>
               <h1 class="text-2xl font-bold text-gray-900">heekiword</h1>
@@ -195,7 +195,7 @@ class VocabularyApp {
         ${this.renderTabs()}
 
         <!-- 콘텐츠 영역 -->
-        <main id="mainContent" class="flex-1 overflow-y-auto pb-20"></main>
+        <main id="mainContent" class="flex-1 overflow-y-auto pb-20 pt-32"></main>
       </div>
     `
 
