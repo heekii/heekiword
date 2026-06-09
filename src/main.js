@@ -374,17 +374,17 @@ class VocabularyApp {
             <p class="text-xs text-gray-500 mt-1">매일 예문을 필사하고 스탬프를 모으세요</p>
           </div>
           <div class="px-4 pb-4 grid grid-cols-3 gap-2">
-            <div class="bg-orange-50 rounded-lg p-3 text-center">
-              <p class="text-xs text-gray-600">오늘</p>
-              <p class="text-lg font-bold ${todayRecord?.success ? 'text-orange-600' : 'text-gray-400'}">${todayRecord?.success ? '✅' : '⭕'}</p>
+            <div class="rounded-lg p-3 text-center ${todayRecord?.success ? 'bg-green-50 border-2 border-green-300' : 'bg-gray-100 border-2 border-gray-300'}">
+              <p class="text-xs font-medium ${todayRecord?.success ? 'text-green-700' : 'text-gray-600'}">오늘</p>
+              <p class="text-2xl font-bold mt-2">${todayRecord?.success ? '✓ 완료' : '⭕ 대기중'}</p>
             </div>
-            <div class="bg-blue-50 rounded-lg p-3 text-center">
-              <p class="text-xs text-gray-600">연속</p>
-              <p class="text-lg font-bold text-blue-600">${this.character.streak}일</p>
+            <div class="bg-blue-50 rounded-lg p-3 text-center border-2 border-blue-300">
+              <p class="text-xs font-medium text-blue-700">연속</p>
+              <p class="text-2xl font-bold text-blue-600 mt-2">${this.character.streak}일</p>
             </div>
-            <div class="bg-purple-50 rounded-lg p-3 text-center">
-              <p class="text-xs text-gray-600">성공</p>
-              <p class="text-lg font-bold text-purple-600">${this.character.totalSuccess}회</p>
+            <div class="bg-purple-50 rounded-lg p-3 text-center border-2 border-purple-300">
+              <p class="text-xs font-medium text-purple-700">성공</p>
+              <p class="text-2xl font-bold text-purple-600 mt-2">${this.character.totalSuccess}회</p>
             </div>
           </div>
         </header>
@@ -596,8 +596,9 @@ class VocabularyApp {
 
 
   submitDictation(e) {
-    const input = document.getElementById('dictationInput').value.trim()
-    const wordId = parseInt(document.getElementById('dictationInput').getAttribute('data-word-id'))
+    const inputElement = document.getElementById('dictationInput')
+    const input = (inputElement?.textContent || '').trim()
+    const wordId = parseInt(inputElement?.getAttribute('data-word-id'))
     const word = this.words.find(w => w.id === wordId)
     const correct = word?.example.trim() || ''
 
@@ -627,7 +628,7 @@ class VocabularyApp {
       this.saveDictationData()
       this.saveCharacter()
 
-      alert('🎊 Perfect! You did it! Keep it up! 🌟')
+      // 성공 페이지로 전환
       this.currentView = 'dictation'
       this.render()
     } else {
