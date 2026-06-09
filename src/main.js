@@ -1,4 +1,5 @@
 import './style.css'
+import { supabase, signUp, signIn, signOut, getCurrentUser, onAuthStateChange } from './supabase-client'
 
 const audio = {
   audioContext: null,
@@ -61,10 +62,21 @@ class VocabularyApp {
     this.currentTab = 'list'
     this.selectedCourse = null
     this.courses = ['TED', 'Movie', 'Business']
+    this.user = null
+    this.authView = 'login' // 'login' or 'signup'
     this.init()
   }
 
-  init() {
+  async init() {
+    // 인증 상태 확인
+    this.user = await getCurrentUser()
+
+    // 인증 상태 변화 감시
+    onAuthStateChange((event, session) => {
+      this.user = session?.user || null
+      this.render()
+    })
+
     this.render()
     this.attachGlobalListeners()
   }
@@ -76,6 +88,11 @@ class VocabularyApp {
 
       if (e.target.id === 'addWordBtn') this.showAddModal()
       if (e.target.id === 'closeModal') this.closeModal()
+      if (e.target.id === 'logoutBtn') {
+        signOut()
+        this.user = null
+        this.render()
+      }
       if (e.target.id === 'autoFillBtn') { e.preventDefault(); this.autoFillWordInfo() }
       if (e.target.id === 'quizBtn') this.startQuiz()
       if (e.target.id === 'submitBtn') { e.preventDefault(); this.submitDictation(e) }
@@ -181,6 +198,13 @@ class VocabularyApp {
   render() {
     const app = document.getElementById('app') || document.body
 
+    // 로그인하지 않은 경우
+    if (!this.user) {
+      app.innerHTML = this.renderAuthPage()
+      requestAnimationFrame(() => this.attachAuthListeners())
+      return
+    }
+
     // 공통 레이아웃 (고정 헤더 + 탭 + 콘텐츠)
     app.innerHTML = `
       <div class="min-h-screen flex flex-col max-w-md mx-auto bg-gray-50">
@@ -191,15 +215,15 @@ class VocabularyApp {
               <h1 class="text-2xl font-bold text-gray-900">heekiword</h1>
               <p class="text-xs text-gray-500 mt-1">Vocabulary Tracker for Learning</p>
             </div>
-            <div class="flex gap-2">
-              <!-- <button id="quizBtn" class="bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 text-white rounded-full p-3 transition-all active:scale-95 shadow-lg" aria-label="Start Quiz" title="Start Quiz">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </button> -->
+            <div class="flex gap-2 items-center">
               <button id="addWordBtn" class="bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 text-white rounded-full p-3 transition-all active:scale-95 shadow-lg" aria-label="Add Word">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+              </button>
+              <button id="logoutBtn" class="bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 text-white rounded-full p-3 transition-all active:scale-95 shadow-lg" aria-label="Logout" title="Logout">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                 </svg>
               </button>
             </div>
@@ -240,6 +264,114 @@ class VocabularyApp {
     } else if (this.currentView === 'quiz') {
       mainContent.innerHTML = this.renderQuizContent()
     }
+  }
+
+  renderAuthPage() {
+    const isSignup = this.authView === 'signup'
+    return `
+      <div class="min-h-screen flex flex-col max-w-md mx-auto bg-gray-50">
+        <div class="flex-1 flex items-center justify-center px-4 py-8">
+          <div class="w-full bg-white rounded-lg shadow-lg p-8">
+            <div class="text-center mb-8">
+              <h1 class="text-3xl font-bold text-gray-900 mb-2">heekiword</h1>
+              <p class="text-sm text-gray-500">Vocabulary Tracker for Learning</p>
+            </div>
+
+            <form id="authForm" class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                <input type="email" id="authEmail" placeholder="your@email.com" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" required>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                <input type="password" id="authPassword" placeholder="••••••••" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" required>
+              </div>
+
+              ${isSignup ? `
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
+                  <input type="password" id="authPasswordConfirm" placeholder="••••••••" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" required>
+                </div>
+              ` : ''}
+
+              <button type="submit" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-lg transition-all active:scale-95">
+                ${isSignup ? 'Sign Up' : 'Log In'}
+              </button>
+            </form>
+
+            <div class="mt-6 text-center">
+              <button id="toggleAuth" class="text-orange-600 hover:text-orange-700 text-sm font-semibold">
+                ${isSignup ? 'Already have an account? Log In' : "Don't have an account? Sign Up"}
+              </button>
+            </div>
+
+            <div id="authError" class="mt-4 p-3 bg-red-50 text-red-700 rounded-lg hidden text-sm"></div>
+            <div id="authSuccess" class="mt-4 p-3 bg-green-50 text-green-700 rounded-lg hidden text-sm"></div>
+          </div>
+        </div>
+      </div>
+    `
+  }
+
+  attachAuthListeners() {
+    const form = document.getElementById('authForm')
+    const toggleBtn = document.getElementById('toggleAuth')
+    const errorDiv = document.getElementById('authError')
+    const successDiv = document.getElementById('authSuccess')
+
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', () => {
+        this.authView = this.authView === 'login' ? 'signup' : 'login'
+        this.render()
+      })
+    }
+
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault()
+        errorDiv.classList.add('hidden')
+        successDiv.classList.add('hidden')
+
+        const email = document.getElementById('authEmail').value.trim()
+        const password = document.getElementById('authPassword').value
+
+        if (this.authView === 'signup') {
+          const passwordConfirm = document.getElementById('authPasswordConfirm').value
+          if (password !== passwordConfirm) {
+            this.showAuthError('Passwords do not match', errorDiv)
+            return
+          }
+          const { error } = await signUp(email, password)
+          if (error) {
+            this.showAuthError(error.message, errorDiv)
+          } else {
+            this.showAuthSuccess('Sign up successful! Check your email to verify.', successDiv)
+            setTimeout(() => {
+              this.authView = 'login'
+              this.render()
+            }, 2000)
+          }
+        } else {
+          const { error } = await signIn(email, password)
+          if (error) {
+            this.showAuthError(error.message, errorDiv)
+          } else {
+            this.showAuthSuccess('Logged in successfully!', successDiv)
+          }
+        }
+      })
+    }
+  }
+
+  showAuthError(message, div) {
+    div.textContent = '❌ ' + message
+    div.classList.remove('hidden')
+  }
+
+  showAuthSuccess(message, div) {
+    div.textContent = '✅ ' + message
+    div.classList.remove('hidden')
   }
 
   renderVocabularyContent() {
@@ -675,7 +807,7 @@ class VocabularyApp {
   }
 
 
-  submitDictation(e) {
+  async submitDictation(e) {
     const inputElement = document.getElementById('dictationInput')
     const input = (inputElement?.textContent || '').trim()
     const wordId = parseInt(inputElement?.getAttribute('data-word-id'))
@@ -707,6 +839,21 @@ class VocabularyApp {
 
       this.saveDictationData()
       this.saveCharacter()
+
+      // Supabase에 학습 기록 저장
+      if (this.user) {
+        const { error } = await supabase
+          .from('learning_records')
+          .insert([{
+            user_id: this.user.id,
+            type: 'dictation',
+            word: word.word,
+            course: word.category,
+            success: true,
+            created_at: new Date().toISOString()
+          }])
+        if (error) console.error('Failed to save record:', error)
+      }
 
       // 성공 페이지로 전환
       this.currentView = 'dictation'
