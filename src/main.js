@@ -442,27 +442,28 @@ class VocabularyApp {
           <form id="dictationForm" class="space-y-4">
             <label class="block text-sm font-medium text-gray-700 mb-4">예문을 따라 입력하세요</label>
 
-            <!-- 입력 컴포넌트 -->
-            <div class="bg-gray-50 rounded-lg p-4 relative min-h-24 focus-within:ring-2 focus-within:ring-orange-500 focus-within:ring-offset-2 transition-all">
-              <!-- 예문 배경 (연하게) -->
-              <div class="absolute inset-4 text-gray-200 text-lg leading-relaxed pointer-events-none break-words whitespace-pre-wrap" id="dictationExample">
+            <!-- 이중 레이어 입력 컴포넌트 -->
+            <div class="relative bg-white rounded-lg border-2 border-gray-200 focus-within:border-orange-500 focus-within:ring-2 focus-within:ring-orange-200 transition-all">
+
+              <!-- 아래 레이어: 목표 문장 (연한 회색, ghost text) -->
+              <div class="absolute inset-0 p-4 text-xl leading-relaxed break-words whitespace-pre-wrap text-gray-300 pointer-events-none font-light">
                 ${this.escapeHtml(randomWord.example)}
               </div>
 
-              <!-- 사용자 입력 표시 -->
-              <div id="dictationDisplay" class="relative text-lg leading-relaxed break-words whitespace-pre-wrap min-h-20">
-                <span class="text-transparent">.</span>
+              <!-- 위 레이어: 사용자 입력 텍스트 (검정색) -->
+              <div id="dictationDisplay" class="absolute inset-0 p-4 text-xl leading-relaxed break-words whitespace-pre-wrap text-gray-900 pointer-events-none">
               </div>
 
-              <!-- 실제 input (숨김) -->
+              <!-- 실제 입력 필드 (투명) -->
               <input
                 id="dictationInput"
                 type="text"
                 data-word-id="${randomWord.id}"
                 data-target="${this.escapeHtml(randomWord.example)}"
-                class="absolute inset-0 p-4 bg-transparent text-transparent caret-orange-500 focus:outline-none resize-none"
+                class="relative block w-full bg-transparent text-transparent p-4 text-xl leading-relaxed caret-orange-500 focus:outline-none resize-none"
                 aria-label="단어장 필사 입력"
                 autocomplete="off"
+                spellcheck="false"
               />
             </div>
 
@@ -488,19 +489,16 @@ class VocabularyApp {
       const value = e.target.value
       let html = ''
 
-      for (let i = 0; i < target.length; i++) {
-        if (i < value.length) {
-          if (value[i] === target[i]) {
-            html += `<span class="text-gray-900">${this.escapeHtml(value[i])}</span>`
-          } else {
-            html += `<span class="text-red-600 bg-red-50">${this.escapeHtml(value[i])}</span>`
-          }
+      // 입력된 글자만 렌더링 (맞는 글자는 검정색, 틀린 글자는 빨간색)
+      for (let i = 0; i < value.length; i++) {
+        if (value[i] === target[i]) {
+          html += this.escapeHtml(value[i])
         } else {
-          html += `<span class="text-gray-300">${this.escapeHtml(target[i])}</span>`
+          html += `<span class="text-red-600">${this.escapeHtml(value[i])}</span>`
         }
       }
 
-      display.innerHTML = html || '<span class="text-transparent">.</span>'
+      display.innerHTML = html
 
       // 완료 상태 확인
       if (value === target) {
