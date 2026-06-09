@@ -887,13 +887,13 @@ class VocabularyApp {
       this.saveCharacter()
 
       // Supabase에 학습 기록 저장 (User 또는 Device)
-      const { error } = await saveLearningRecord({
-        type: 'dictation',
-        word: word.word,
-        course: word.category,
-        success: true
-      }, this.deviceId)
-      if (error) console.error('Failed to save record:', error)
+      // const { error } = await saveLearningRecord({
+      //   type: 'dictation',
+      //   word: word.word,
+      //   course: word.category,
+      //   success: true
+      // }, this.deviceId)
+      // if (error) console.error('Failed to save record:', error)
 
       // 성공 페이지로 전환
       this.currentView = 'dictation'
