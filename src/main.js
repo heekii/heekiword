@@ -33,14 +33,14 @@ class VocabularyApp {
     if (stored) return JSON.parse(stored)
 
     const initialWords = [
-      { id: 1, word: 'infrastructure', pos: '명사', meaning: '기간 시설, 인프라', category: 'Business', example: '', isLearned: false, createdAt: new Date().toISOString() },
-      { id: 2, word: 'rollout', pos: '명사', meaning: '(첫) 출시, 본격적인 전개', category: 'Business', example: '', isLearned: false, createdAt: new Date().toISOString() },
-      { id: 3, word: 'cooperation', pos: '명사', meaning: '협력, 협조', category: 'Business', example: '', isLearned: false, createdAt: new Date().toISOString() },
-      { id: 4, word: 'delivery', pos: '명사', meaning: '인도, 납품, 배달', category: 'Business', example: '', isLearned: false, createdAt: new Date().toISOString() },
-      { id: 5, word: 'institute', pos: '명사', meaning: '기관, 협회, 연구소', category: 'Business', example: '', isLearned: false, createdAt: new Date().toISOString() },
-      { id: 6, word: 'strategically', pos: '부사', meaning: '전략적으로', category: 'Business', example: '', isLearned: false, createdAt: new Date().toISOString() },
-      { id: 7, word: 'academic', pos: '형용사', meaning: '학문적인, 대학의', category: 'Business', example: '', isLearned: false, createdAt: new Date().toISOString() },
-      { id: 8, word: 'establishment', pos: '명사', meaning: '설립, 수립', category: 'Business', example: '', isLearned: false, createdAt: new Date().toISOString() },
+      { id: 1, word: 'infrastructure', pos: '명사', meaning: '기간 시설, 인프라', englishMeaning: 'the basic systems, services, and facilities needed for a country or organization to function properly', ipa: '/ˈɪnfrəˌstrʌktʃər/', category: 'Business', example: '', isLearned: false, createdAt: new Date().toISOString() },
+      { id: 2, word: 'rollout', pos: '명사', meaning: '(첫) 출시, 본격적인 전개', englishMeaning: 'the process of introducing something new, especially a product or service', ipa: '/ˈroʊl.aʊt/', category: 'Business', example: '', isLearned: false, createdAt: new Date().toISOString() },
+      { id: 3, word: 'cooperation', pos: '명사', meaning: '협력, 협조', englishMeaning: 'the action or process of working together to the same end', ipa: '/koʊ.ɑpəˈreɪ.ʃən/', category: 'Business', example: '', isLearned: false, createdAt: new Date().toISOString() },
+      { id: 4, word: 'delivery', pos: '명사', meaning: '인도, 납품, 배달', englishMeaning: 'the action of delivering letters, packages, or goods', ipa: '/dɪˈlɪv.ər.i/', category: 'Business', example: '', isLearned: false, createdAt: new Date().toISOString() },
+      { id: 5, word: 'institute', pos: '명사', meaning: '기관, 협회, 연구소', englishMeaning: 'an organization founded for a particular purpose', ipa: '/ˈɪn.stɪ.tut/', category: 'Business', example: '', isLearned: false, createdAt: new Date().toISOString() },
+      { id: 6, word: 'strategically', pos: '부사', meaning: '전략적으로', englishMeaning: 'in a way that is carefully planned and designed to accomplish a particular goal', ipa: '/strəˈtɪdʒ.ɪ.kəl.i/', category: 'Business', example: '', isLearned: false, createdAt: new Date().toISOString() },
+      { id: 7, word: 'academic', pos: '형용사', meaning: '학문적인, 대학의', englishMeaning: 'relating to education and scholarship', ipa: '/ˌæk.əˈdem.ɪk/', category: 'Business', example: '', isLearned: false, createdAt: new Date().toISOString() },
+      { id: 8, word: 'establishment', pos: '명사', meaning: '설립, 수립', englishMeaning: 'the action or process of establishing or starting something', ipa: '/ɪˈstæb.lɪʃ.mənt/', category: 'Business', example: '', isLearned: false, createdAt: new Date().toISOString() },
     ]
 
     this.saveWords(initialWords)
@@ -63,7 +63,9 @@ class VocabularyApp {
   handleAddWord(e) {
     e.preventDefault()
     const word = document.getElementById('wordInput').value.trim()
+    const englishMeaning = document.getElementById('englishMeaningInput').value.trim()
     const meaning = document.getElementById('meaningInput').value.trim()
+    const ipa = document.getElementById('ipaInput').value.trim()
     const pos = document.getElementById('posInput').value.trim() || '명사'
     const category = document.getElementById('categoryInput').value.trim() || 'General'
     const example = document.getElementById('exampleInput').value.trim()
@@ -76,7 +78,9 @@ class VocabularyApp {
     this.words.push({
       id: Date.now(),
       word,
+      englishMeaning,
       meaning,
+      ipa,
       pos,
       category,
       example,
@@ -121,11 +125,111 @@ class VocabularyApp {
   render() {
     if (this.currentView === 'quiz') {
       this.renderQuiz()
+    } else if (this.currentView === 'dictation') {
+      this.renderDictation()
     } else {
       this.renderStats()
       this.renderCategoryFilter()
       this.renderWordList()
     }
+  }
+
+  renderDictation() {
+    const word = this.words.find(w => w.id === this.dictationWordId)
+    const main = document.querySelector('main')
+    if (!main || !word) return
+
+    main.innerHTML = `
+      <div class="py-4">
+        <div class="mb-6">
+          <button onclick="app.closeDictation()" class="text-blue-600 hover:text-blue-700 font-medium mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            목록으로 돌아가기
+          </button>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+          <h2 class="text-xl font-bold text-gray-900 mb-2">${this.escapeHtml(word.word)}</h2>
+          <p class="text-gray-500 text-sm mb-4">${this.escapeHtml(word.ipa)}</p>
+
+          <div class="bg-gray-100 rounded-lg p-4 mb-6">
+            <p class="text-gray-700 font-medium text-center text-lg leading-relaxed">
+              ${this.escapeHtml(word.example)}
+            </p>
+          </div>
+
+          <form id="dictationForm" class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">위 문장을 그대로 필사하세요</label>
+              <textarea id="dictationInput" placeholder="예문을 입력하세요..." rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm resize-none"></textarea>
+            </div>
+
+            <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-lg transition-all">
+              확인
+            </button>
+          </form>
+        </div>
+      </div>
+    `
+
+    document.getElementById('dictationForm').addEventListener('submit', (e) => this.checkDictation(e, word))
+  }
+
+  checkDictation(e, word) {
+    e.preventDefault()
+    const input = document.getElementById('dictationInput').value.trim()
+    const correct = word.example.trim()
+    const isCorrect = input === correct
+
+    if (isCorrect) {
+      alert('✅ 완벽합니다!')
+    } else {
+      const similarity = this.calculateSimilarity(input, correct)
+      if (similarity > 80) {
+        alert('⚠️ 거의 맞았습니다! (정확도: ' + similarity + '%)')
+      } else if (similarity > 60) {
+        alert('❌ 다시 시도해보세요. (정확도: ' + similarity + '%)')
+      } else {
+        alert('❌ 다시 확인해주세요.')
+      }
+    }
+  }
+
+  calculateSimilarity(str1, str2) {
+    const longer = str1.length > str2.length ? str1 : str2
+    const shorter = str1.length > str2.length ? str2 : str1
+
+    if (longer.length === 0) return 100
+    const editDistance = this.getEditDistance(longer, shorter)
+    return Math.round((1 - editDistance / longer.length) * 100)
+  }
+
+  getEditDistance(s1, s2) {
+    const costs = []
+    for (let i = 0; i <= s1.length; i++) {
+      let lastValue = i
+      for (let j = 0; j <= s2.length; j++) {
+        if (i === 0) {
+          costs[j] = j
+        } else if (j > 0) {
+          let newValue = costs[j - 1]
+          if (s1.charAt(i - 1) !== s2.charAt(j - 1)) {
+            newValue = Math.min(Math.min(newValue, lastValue), costs[j]) + 1
+          }
+          costs[j - 1] = lastValue
+          lastValue = newValue
+        }
+      }
+      if (i > 0) costs[s2.length] = lastValue
+    }
+    return costs[s2.length]
+  }
+
+  closeDictation() {
+    this.currentView = 'list'
+    this.render()
   }
 
   startQuiz() {
@@ -258,13 +362,23 @@ class VocabularyApp {
         <div class="bg-white rounded-lg shadow-sm p-4 mb-3 border-l-4 ${word.isLearned ? 'border-green-500 opacity-60' : 'border-blue-500'} transition-all">
           <div class="flex items-start justify-between gap-3">
             <div class="flex-1">
-              <div class="flex items-center gap-2 mb-1">
+              <div class="flex items-center gap-2 mb-2">
                 <h3 class="font-bold text-lg ${word.isLearned ? 'line-through text-gray-400' : 'text-gray-900'}">${this.escapeHtml(word.word)}</h3>
                 <span class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded">${this.escapeHtml(word.pos)}</span>
               </div>
-              <p class="text-gray-600 text-sm mb-2">${this.escapeHtml(word.meaning)}</p>
+              ${word.ipa ? `<p class="text-gray-500 text-xs mb-2">${this.escapeHtml(word.ipa)}</p>` : ''}
+              <div class="mb-2 p-3 bg-blue-50 rounded-lg cursor-pointer hover:bg-blue-100 transition" onclick="app.toggleMeaning(${word.id})">
+                <p class="text-gray-700 text-sm mb-2 font-medium">${this.escapeHtml(word.englishMeaning || word.meaning)}</p>
+                <p class="text-xs text-gray-500 text-center">💬 뜻을 클릭하면 한글/영문 전환</p>
+              </div>
+              <div id="meaning-${word.id}" class="hidden text-gray-600 text-sm mb-2 p-2 bg-gray-50 rounded">
+                ${this.escapeHtml(word.meaning)}
+              </div>
               <div class="flex gap-2">
                 <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">${this.escapeHtml(word.category)}</span>
+                <button onclick="app.startDictation(${word.id})" class="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded hover:opacity-80 transition">
+                  필사 연습
+                </button>
               </div>
               ${word.example ? `<p class="text-gray-500 text-xs italic mt-2">예: ${this.escapeHtml(word.example)}</p>` : ''}
             </div>
@@ -284,6 +398,25 @@ class VocabularyApp {
         </div>
       `)
       .join('')
+  }
+
+  toggleMeaning(id) {
+    const meaningDiv = document.getElementById(`meaning-${id}`)
+    const word = this.words.find(w => w.id === id)
+    if (!meaningDiv) return
+
+    meaningDiv.classList.toggle('hidden')
+  }
+
+  startDictation(id) {
+    const word = this.words.find(w => w.id === id)
+    if (!word.example) {
+      alert('이 단어에는 아직 예문이 없습니다.')
+      return
+    }
+    this.dictationWordId = id
+    this.currentView = 'dictation'
+    this.render()
   }
 
   escapeHtml(text) {
