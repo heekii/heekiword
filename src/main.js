@@ -443,21 +443,16 @@ class VocabularyApp {
             <label class="block text-sm font-medium text-gray-700 mb-3">위 문장을 입력창에 그대로 따라 쓰세요</label>
 
             <div class="relative mb-4">
-              <div class="bg-gray-100 rounded-lg p-4 min-h-24 text-center text-lg leading-relaxed font-light text-gray-300 relative">
+              <div class="bg-gray-100 rounded-lg p-4 min-h-24 text-center text-lg leading-relaxed font-light text-gray-300 relative border-2 border-transparent" id="dictationContainer">
                 ${this.escapeHtml(randomWord.example)}
                 <textarea
                   id="dictationInput"
                   data-word-id="${randomWord.id}"
                   placeholder=""
-                  class="absolute inset-0 p-4 text-center text-lg leading-relaxed text-gray-900 bg-transparent resize-none focus:outline-none focus:ring-2 focus:ring-orange-500 rounded-lg"
+                  class="absolute inset-0 p-4 text-center text-lg leading-relaxed text-gray-900 bg-transparent resize-none focus:outline-none rounded-lg"
                   aria-label="단어장 필사 입력"
-                  aria-describedby="dictation-feedback"
                   style="font-family: inherit;"
                 ></textarea>
-              </div>
-
-              <div id="dictationFeedback" class="mt-2 p-3 rounded-lg min-h-12" role="status" aria-live="polite" aria-atomic="true">
-                <div class="text-xs text-gray-600">입력을 시작하세요...</div>
               </div>
             </div>
 
@@ -475,64 +470,41 @@ class VocabularyApp {
     const wordId = parseInt(e.target.getAttribute('data-word-id'))
     const word = this.words.find(w => w.id === wordId)
     const correct = word?.example || ''
-    const feedback = document.getElementById('dictationFeedback')
-    const textarea = e.target
-
-    if (!feedback) return
+    const container = document.getElementById('dictationContainer')
 
     if (!input) {
-      feedback.innerHTML = '<div class="text-xs text-gray-600">입력을 시작하세요...</div>'
-      textarea.classList.remove('border-red-500', 'border-green-500')
-      textarea.classList.add('border-gray-300')
+      if (container) container.classList.remove('border-red-500', 'border-green-500')
       return
     }
 
     let correctCount = 0
     let hasError = false
-    let html = '<div class="grid grid-cols-[repeat(auto-fill,minmax(2rem,1fr))] gap-1 mb-2">'
 
     for (let i = 0; i < Math.max(input.length, correct.length); i++) {
-      if (input[i] === correct[i]) {
-        correctCount++
-        html += `<span class="flex items-center justify-center w-8 h-8 rounded text-sm font-bold text-white bg-green-500">✓</span>`
-      } else if (!input[i]) {
-        html += `<span class="flex items-center justify-center w-8 h-8 rounded text-sm text-gray-400 bg-gray-100 border-2 border-dashed border-gray-300">_</span>`
-      } else {
+      if (input[i] !== correct[i]) {
         hasError = true
-        html += `<span class="flex items-center justify-center w-8 h-8 rounded text-sm font-bold text-white bg-red-500 border-2 border-red-600" title="${this.escapeHtml(input[i])}">${this.escapeHtml(input[i])}</span>`
+        break
       }
+      if (input[i] === correct[i]) correctCount++
     }
-    html += '</div>'
 
     const accuracy = Math.round((correctCount / correct.length) * 100)
-    const accuracyColor = accuracy >= 80 ? 'text-green-600' : accuracy >= 50 ? 'text-orange-600' : 'text-red-600'
-    const accuracyIcon = accuracy >= 80 ? '✓' : accuracy >= 50 ? '△' : '✗'
 
-    feedback.innerHTML = `
-      <div class="mb-2">
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-semibold ${accuracyColor}">
-            ${accuracyIcon} 정확도 ${accuracy}%
-          </span>
-          <span class="text-xs text-gray-500">${correctCount}/${correct.length}</span>
-        </div>
-      </div>
-      ${html}
-    `
-
-    // 실시간 피드백 음향
-    if (hasError && accuracy === Math.round((correctCount / correct.length) * 100)) {
-      audio.play('warning')
-    }
-
-    // 테두리 색상 업데이트
-    textarea.classList.remove('border-gray-300', 'border-red-500', 'border-green-500')
     if (hasError) {
-      textarea.classList.add('border-red-500')
+      audio.play('warning')
+      if (container) {
+        container.classList.remove('border-green-500')
+        container.classList.add('border-red-500')
+      }
     } else if (accuracy >= 80) {
-      textarea.classList.add('border-green-500')
+      if (container) {
+        container.classList.remove('border-red-500')
+        container.classList.add('border-green-500')
+      }
     } else {
-      textarea.classList.add('border-gray-300')
+      if (container) {
+        container.classList.remove('border-red-500', 'border-green-500')
+      }
     }
   }
 
