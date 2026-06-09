@@ -1,4 +1,5 @@
 import './style.css'
+import audio from './audio.js'
 
 class VocabularyApp {
   constructor() {
@@ -18,6 +19,9 @@ class VocabularyApp {
 
   attachGlobalListeners() {
     document.addEventListener('click', (e) => {
+      const button = e.target.closest('button')
+      if (button) audio.play('click')
+
       if (e.target.id === 'addWordBtn') this.showAddModal()
       if (e.target.id === 'closeModal') this.closeModal()
       if (e.target.id === 'autoFillBtn') { e.preventDefault(); this.autoFillWordInfo() }
@@ -148,33 +152,33 @@ class VocabularyApp {
   renderHeader() {
     const learned = this.words.filter(w => w.isLearned).length
     return `
-      <header class="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
+      <header class="sticky top-0 z-40 bg-white border-b-2 border-gray-200 shadow-sm">
         <div class="px-4 py-4 flex items-center justify-between">
           <div>
             <h1 class="text-2xl font-bold text-gray-900">heekiword</h1>
             <p class="text-xs text-gray-500 mt-1">단어 수집가를 위한 학습장</p>
           </div>
           <div class="flex gap-2">
-            <button id="quizBtn" class="bg-orange-500 hover:bg-orange-600 text-white rounded-full p-3 transition-all active:scale-95 shadow-lg" title="퀴즈">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button id="quizBtn" class="bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 text-white rounded-full p-3 transition-all active:scale-95 shadow-lg" aria-label="퀴즈 시작" title="퀴즈 시작">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </button>
-            <button id="addWordBtn" class="bg-blue-500 hover:bg-blue-600 text-white rounded-full p-3 transition-all active:scale-95 shadow-lg">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button id="addWordBtn" class="bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 text-white rounded-full p-3 transition-all active:scale-95 shadow-lg" aria-label="새 단어 추가">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
               </svg>
             </button>
           </div>
         </div>
         <div class="px-4 pb-4 grid grid-cols-2 gap-3">
-          <div class="bg-blue-50 rounded-lg p-3 text-center">
+          <div class="bg-blue-50 rounded-lg p-3 text-center border-2 border-blue-200">
             <p class="text-xs text-gray-600 mb-1">전체</p>
-            <p class="text-2xl font-bold text-blue-600">${this.words.length}</p>
+            <p class="text-2xl font-bold text-blue-600" aria-label="전체 단어 개수">${this.words.length}</p>
           </div>
-          <div class="bg-green-50 rounded-lg p-3 text-center">
-            <p class="text-xs text-gray-600 mb-1">학습완료</p>
-            <p class="text-2xl font-bold text-green-600">${learned}</p>
+          <div class="bg-green-50 rounded-lg p-3 text-center border-2 border-green-200">
+            <p class="text-xs text-gray-600 mb-1">학습완료 ✓</p>
+            <p class="text-2xl font-bold text-green-600" aria-label="학습 완료 단어 개수">${learned}</p>
           </div>
         </div>
         <div class="px-4 pb-4">
@@ -188,12 +192,21 @@ class VocabularyApp {
   }
 
   renderTabs() {
-    const activeClass = (view) => view === 'vocabulary' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-600'
+    const isVocab = this.currentView === 'vocabulary'
+    const isDictation = this.currentView === 'dictation'
+    const isCharacter = this.currentView === 'character'
+
     return `
-      <div class="sticky top-24 z-30 bg-white border-b border-gray-200 flex">
-        <button id="vocabTab" class="flex-1 py-3 px-4 font-medium border-b-2 ${activeClass('vocabulary')} text-center">📚 단어장</button>
-        <button id="dictationTab" class="flex-1 py-3 px-4 font-medium border-b-2 border-transparent text-gray-600 text-center">✏️ 필사</button>
-        <button id="characterTab" class="flex-1 py-3 px-4 font-medium border-b-2 border-transparent text-gray-600 text-center">🐣 캐릭터</button>
+      <div class="sticky top-24 z-30 bg-white border-b border-gray-200 flex" role="tablist" aria-label="Main navigation">
+        <button id="vocabTab" class="flex-1 py-3 px-4 font-medium border-b-2 transition-colors ${isVocab ? 'border-blue-500 text-blue-600 bg-blue-50' : 'border-transparent text-gray-600 hover:text-gray-900'} text-center" role="tab" aria-selected="${isVocab}" aria-controls="vocab-panel">
+          📚 <span class="hidden sm:inline">단어장</span>
+        </button>
+        <button id="dictationTab" class="flex-1 py-3 px-4 font-medium border-b-2 transition-colors ${isDictation ? 'border-orange-500 text-orange-600 bg-orange-50' : 'border-transparent text-gray-600 hover:text-gray-900'} text-center" role="tab" aria-selected="${isDictation}" aria-controls="dictation-panel">
+          ✏️ <span class="hidden sm:inline">필사</span>
+        </button>
+        <button id="characterTab" class="flex-1 py-3 px-4 font-medium border-b-2 transition-colors ${isCharacter ? 'border-purple-500 text-purple-600 bg-purple-50' : 'border-transparent text-gray-600 hover:text-gray-900'} text-center" role="tab" aria-selected="${isCharacter}" aria-controls="character-panel">
+          🐣 <span class="hidden sm:inline">캐릭터</span>
+        </button>
       </div>
     `
   }
@@ -350,12 +363,13 @@ class VocabularyApp {
     if (!content) return
 
     if (todayRecord?.success) {
+      audio.play('success')
       content.innerHTML = `
         <div class="text-center py-12">
           <div class="text-6xl mb-4">🎉</div>
           <h2 class="text-2xl font-bold text-gray-900 mb-2">완벽했어요!</h2>
           <p class="text-gray-600 mb-4">내일 다시 도전하세요!</p>
-          <div class="bg-green-50 rounded-lg p-4 mb-4">
+          <div class="bg-green-50 rounded-lg p-4 mb-4 border-2 border-green-200">
             <p class="text-sm text-green-700">✨ You nailed it! Keep up the great streak! ✨</p>
           </div>
         </div>
@@ -373,21 +387,34 @@ class VocabularyApp {
       <div class="py-4">
         <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
           <h2 class="text-xl font-bold text-gray-900 mb-2">${this.escapeHtml(randomWord.word)}</h2>
-          <p class="text-gray-500 text-sm mb-4">${this.escapeHtml(randomWord.ipa)}</p>
-
-          <div class="bg-gray-100 rounded-lg p-6 mb-6 relative min-h-24 flex items-center justify-center">
-            <p class="text-gray-300 text-center text-lg leading-relaxed font-light tracking-wide">
-              ${this.escapeHtml(randomWord.example)}
-            </p>
-          </div>
+          <p class="text-gray-500 text-sm mb-4" aria-label="발음기호">${this.escapeHtml(randomWord.ipa)}</p>
 
           <form id="dictationForm" class="space-y-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">위 문장을 그대로 따라 쓰세요</label>
-              <textarea id="dictationInput" data-word-id="${randomWord.id}" placeholder="예문을 입력하세요..." rows="4" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm resize-none"></textarea>
-              <div id="dictationFeedback" class="text-xs mt-2 text-gray-600"></div>
+            <label class="block text-sm font-medium text-gray-700 mb-3">위 문장을 입력창에 그대로 따라 쓰세요</label>
+
+            <div class="relative mb-4">
+              <div class="bg-gray-100 rounded-lg p-4 mb-2 min-h-24 text-center text-lg leading-relaxed font-light text-gray-300">
+                ${this.escapeHtml(randomWord.example)}
+              </div>
+
+              <textarea
+                id="dictationInput"
+                data-word-id="${randomWord.id}"
+                placeholder="여기에 따라 쓰세요..."
+                rows="4"
+                class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm resize-none bg-white"
+                aria-label="단어장 필사 입력"
+                aria-describedby="dictation-feedback"
+              ></textarea>
+
+              <div id="dictationFeedback" class="mt-2 p-3 rounded-lg min-h-12" role="status" aria-live="polite" aria-atomic="true">
+                <div class="text-xs text-gray-600">입력을 시작하세요...</div>
+              </div>
             </div>
-            <button type="submit" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-lg transition-all">확인</button>
+
+            <button type="submit" class="w-full bg-orange-500 hover:bg-orange-600 active:bg-orange-700 text-white font-semibold py-3 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2">
+              ✓ 완료
+            </button>
           </form>
         </div>
       </div>
@@ -400,31 +427,64 @@ class VocabularyApp {
     const word = this.words.find(w => w.id === wordId)
     const correct = word?.example || ''
     const feedback = document.getElementById('dictationFeedback')
+    const textarea = e.target
 
     if (!feedback) return
 
     if (!input) {
-      feedback.innerHTML = ''
+      feedback.innerHTML = '<div class="text-xs text-gray-600">입력을 시작하세요...</div>'
+      textarea.classList.remove('border-red-500', 'border-green-500')
+      textarea.classList.add('border-gray-300')
       return
     }
 
     let correctCount = 0
-    let html = '<div class="flex flex-wrap gap-1">'
+    let hasError = false
+    let html = '<div class="grid grid-cols-[repeat(auto-fill,minmax(2rem,1fr))] gap-1 mb-2">'
 
     for (let i = 0; i < Math.max(input.length, correct.length); i++) {
       if (input[i] === correct[i]) {
         correctCount++
-        html += `<span class="text-green-600 font-semibold">${this.escapeHtml(input[i])}</span>`
+        html += `<span class="flex items-center justify-center w-8 h-8 rounded text-sm font-bold text-white bg-green-500">✓</span>`
       } else if (!input[i]) {
-        html += `<span class="text-gray-300">_</span>`
+        html += `<span class="flex items-center justify-center w-8 h-8 rounded text-sm text-gray-400 bg-gray-100 border-2 border-dashed border-gray-300">_</span>`
       } else {
-        html += `<span class="text-red-600 font-semibold bg-red-100 px-1 rounded">${this.escapeHtml(input[i])}</span>`
+        hasError = true
+        html += `<span class="flex items-center justify-center w-8 h-8 rounded text-sm font-bold text-white bg-red-500 border-2 border-red-600" title="${this.escapeHtml(input[i])}">${this.escapeHtml(input[i])}</span>`
       }
     }
     html += '</div>'
 
     const accuracy = Math.round((correctCount / correct.length) * 100)
-    feedback.innerHTML = `<div class="mb-2">${accuracy}% 정확도</div>${html}`
+    const accuracyColor = accuracy >= 80 ? 'text-green-600' : accuracy >= 50 ? 'text-orange-600' : 'text-red-600'
+    const accuracyIcon = accuracy >= 80 ? '✓' : accuracy >= 50 ? '△' : '✗'
+
+    feedback.innerHTML = `
+      <div class="mb-2">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-semibold ${accuracyColor}">
+            ${accuracyIcon} 정확도 ${accuracy}%
+          </span>
+          <span class="text-xs text-gray-500">${correctCount}/${correct.length}</span>
+        </div>
+      </div>
+      ${html}
+    `
+
+    // 실시간 피드백 음향
+    if (hasError && accuracy === Math.round((correctCount / correct.length) * 100)) {
+      audio.play('warning')
+    }
+
+    // 테두리 색상 업데이트
+    textarea.classList.remove('border-gray-300', 'border-red-500', 'border-green-500')
+    if (hasError) {
+      textarea.classList.add('border-red-500')
+    } else if (accuracy >= 80) {
+      textarea.classList.add('border-green-500')
+    } else {
+      textarea.classList.add('border-gray-300')
+    }
   }
 
   submitDictation(e) {
@@ -434,6 +494,8 @@ class VocabularyApp {
     const correct = word?.example.trim() || ''
 
     if (input === correct) {
+      audio.play('success')
+
       const today = new Date().toISOString().split('T')[0]
       this.dictationData.records[today] = { success: true, word: word.word }
 
@@ -461,6 +523,7 @@ class VocabularyApp {
       this.currentView = 'dictation'
       this.render()
     } else {
+      audio.play('error')
       const similarity = this.calculateSimilarity(input, correct)
       alert(`❌ Not quite. Keep trying! Accuracy: ${similarity}%`)
     }
@@ -736,7 +799,12 @@ class VocabularyApp {
   }
 
   answerQuiz(selected, correct) {
-    if (selected === correct) this.quizScore++
+    if (selected === correct) {
+      audio.play('success')
+      this.quizScore++
+    } else {
+      audio.play('error')
+    }
     this.quizIndex++
     this.render()
   }
