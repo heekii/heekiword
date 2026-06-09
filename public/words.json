@@ -1,32 +1,247 @@
 [
-  {"word": "infrastructure", "meaning": "기반 시설, 인프라", "ipa": "/ˈɪnfrəˌstrʌktʃər/", "example": "Modern infrastructure is essential for development.", "dictation_sentence": "Strong infrastructure supports economic growth.", "category": "TED"},
-  {"word": "resilience", "meaning": "회복력, 탄력성", "ipa": "/rɪˈzɪliəns/", "example": "Resilience helps us overcome challenges.", "dictation_sentence": "Building resilience is key to success.", "category": "TED"},
-  {"word": "innovation", "meaning": "혁신", "ipa": "/ˌɪnəˈveɪʃən/", "example": "Innovation drives technological progress.", "dictation_sentence": "Innovation is essential for survival.", "category": "TED"},
-  {"word": "collaboration", "meaning": "협력, 협업", "ipa": "/kəˌlæbəˈreɪʃən/", "example": "Collaboration between teams improves results.", "dictation_sentence": "Effective collaboration achieves great things.", "category": "TED"},
-  {"word": "sustainability", "meaning": "지속가능성", "ipa": "/səˌsteɪnəˈbɪləti/", "example": "Sustainability is crucial for our future.", "dictation_sentence": "We must prioritize sustainability.", "category": "TED"},
-  {"word": "transformation", "meaning": "변환, 변화", "ipa": "/ˌtrænzfərˈmeɪʃən/", "example": "Digital transformation is changing industries.", "dictation_sentence": "Transformation begins with a single step.", "category": "TED"},
-  {"word": "expertise", "meaning": "전문 지식", "ipa": "/ˌekspɜrˈtiːz/", "example": "His expertise in technology is invaluable.", "dictation_sentence": "Expertise comes from years of practice.", "category": "TED"},
-  {"word": "efficiency", "meaning": "효율성", "ipa": "/ɪˈfɪʃənsi/", "example": "Improving efficiency reduces waste.", "dictation_sentence": "Efficiency matters in every field.", "category": "TED"},
-  {"word": "perspective", "meaning": "관점, 관살", "ipa": "/pərˈspektɪv/", "example": "Different perspectives create better solutions.", "dictation_sentence": "A fresh perspective can change everything.", "category": "TED"},
-  {"word": "engagement", "meaning": "참여, 관계", "ipa": "/ɪnˈɡeɪdʒmənt/", "example": "Community engagement strengthens society.", "dictation_sentence": "Engagement requires genuine interest.", "category": "TED"},
-  {"word": "empowerment", "meaning": "권한 부여", "ipa": "/ɪmˈpaʊərmənt/", "example": "Education enables personal empowerment.", "dictation_sentence": "Empowerment starts with belief.", "category": "TED"},
-  {"word": "integrity", "meaning": "청렴함, 완전성", "ipa": "/ɪnˈtɛɡrɪti/", "example": "Integrity is the foundation of trust.", "dictation_sentence": "Acting with integrity builds character.", "category": "TED"},
-  {"word": "advocacy", "meaning": "옹호, 지지", "ipa": "/ˈædvəkəsi/", "example": "Advocacy for change requires courage.", "dictation_sentence": "Advocacy transforms communities.", "category": "TED"},
-  {"word": "narrative", "meaning": "이야기, 설명", "ipa": "/ˈnærətɪv/", "example": "Stories shape our narrative of change.", "dictation_sentence": "Every narrative tells a powerful truth.", "category": "TED"},
-  {"word": "catalyst", "meaning": "촉매, 계기", "ipa": "/ˈkætəlɪst/", "example": "One person can be a catalyst for change.", "dictation_sentence": "A catalyst sparks innovation.", "category": "TED"},
-  {"word": "paradigm", "meaning": "패러다임, 모범", "ipa": "/ˈpærədaɪm/", "example": "We need a paradigm shift in thinking.", "dictation_sentence": "Paradigm shifts reshape society.", "category": "TED"},
-  {"word": "authenticity", "meaning": "진정성, 진정함", "ipa": "/ɔːθɛnˈtɪsɪti/", "example": "Authenticity resonates with audiences.", "dictation_sentence": "Authenticity builds real connections.", "category": "TED"},
-  {"word": "complexity", "meaning": "복잡성", "ipa": "/kəmˈplɛksɪti/", "example": "Understanding complexity requires patience.", "dictation_sentence": "Complexity is the nature of progress.", "category": "TED"},
-  {"word": "potential", "meaning": "잠재력, 가능성", "ipa": "/pəˈtɛnʃəl/", "example": "Every person has untapped potential.", "dictation_sentence": "Unlocking potential changes lives.", "category": "TED"},
-  {"word": "adaptive", "meaning": "적응력 있는", "ipa": "/əˈdæptɪv/", "example": "Adaptive strategies help us survive.", "dictation_sentence": "Being adaptive is crucial for success.", "category": "TED"},
-  {"word": "resilient", "meaning": "회복력 있는", "ipa": "/rɪˈzɪliənt/", "example": "Resilient communities overcome crises.", "dictation_sentence": "We are more resilient than we think.", "category": "TED"},
-  {"word": "interconnected", "meaning": "상호 연결된", "ipa": "/ˌɪntərəˈnɛktɪd/", "example": "Our world is deeply interconnected.", "dictation_sentence": "Interconnected systems require holistic thinking.", "category": "TED"},
-  {"word": "diversity", "meaning": "다양성", "ipa": "/daɪˈvɜrsɪti/", "example": "Diversity strengthens organizations.", "dictation_sentence": "Celebrating diversity creates innovation.", "category": "TED"},
-  {"word": "inclusion", "meaning": "포함, 포용", "ipa": "/ɪnˈkluːʒən/", "example": "Inclusion creates a sense of belonging.", "dictation_sentence": "True inclusion requires action.", "category": "TED"},
-  {"word": "equity", "meaning": "공평성, 형평성", "ipa": "/ˈɛkwɪti/", "example": "Equity ensures fair opportunities for all.", "dictation_sentence": "Equity is the foundation of justice.", "category": "TED"},
-  {"word": "abundance", "meaning": "풍부함, 충만", "ipa": "/əˈbʌndəns/", "example": "Mindset shifts from scarcity to abundance.", "dictation_sentence": "Abundance thinking opens new possibilities.", "category": "TED"},
-  {"word": "mindful", "meaning": "주의 깊은, 마음챙김", "ipa": "/ˈmaɪndfl/", "example": "Mindful practices reduce stress.", "dictation_sentence": "Being mindful improves well-being.", "category": "TED"},
-  {"word": "evolution", "meaning": "진화, 발전", "ipa": "/ˌɛvəˈluːʃən/", "example": "Technology evolution happens rapidly.", "dictation_sentence": "Evolution requires adaptation.", "category": "TED"},
-  {"word": "impact", "meaning": "영향", "ipa": "/ˈɪmpækt/", "example": "Our actions have significant impact.", "dictation_sentence": "Small actions create big impact.", "category": "TED"},
-  {"word": "legacy", "meaning": "유산, 후대", "ipa": "/ˈlɛɡəsi/", "example": "We leave a legacy for future generations.", "dictation_sentence": "What legacy will we create?", "category": "TED"}
+  {
+    "word": "resilience",
+    "meaning": "회복력, 탄력성",
+    "ipa": "/rɪˈzɪliəns/",
+    "example": "Resilience helps us overcome challenges.",
+    "category": "TED"
+  },
+  {
+    "word": "innovation",
+    "meaning": "혁신",
+    "ipa": "/ˌɪnəˈveɪʃən/",
+    "example": "Innovation drives technological progress.",
+    "category": "TED"
+  },
+  {
+    "word": "collaboration",
+    "meaning": "협력, 협업",
+    "ipa": "/kəˌlæbəˈreɪʃən/",
+    "example": "Collaboration between teams improves results.",
+    "category": "TED"
+  },
+  {
+    "word": "sustainability",
+    "meaning": "지속가능성",
+    "ipa": "/səˌsteɪnəˈbɪləti/",
+    "example": "Sustainability is crucial for our future.",
+    "category": "TED"
+  },
+  {
+    "word": "transformation",
+    "meaning": "변환, 변화",
+    "ipa": "/ˌtrænzfərˈmeɪʃən/",
+    "example": "Digital transformation is changing industries.",
+    "category": "TED"
+  },
+  {
+    "word": "expertise",
+    "meaning": "전문 지식",
+    "ipa": "/ˌekspɜrˈtiːz/",
+    "example": "His expertise in technology is invaluable.",
+    "category": "TED"
+  },
+  {
+    "word": "efficiency",
+    "meaning": "효율성",
+    "ipa": "/ɪˈfɪʃənsi/",
+    "example": "Improving efficiency reduces waste.",
+    "category": "TED"
+  },
+  {
+    "word": "perspective",
+    "meaning": "관점, 관살",
+    "ipa": "/pərˈspektɪv/",
+    "example": "Different perspectives create better solutions.",
+    "category": "TED"
+  },
+  {
+    "word": "engagement",
+    "meaning": "참여, 관계",
+    "ipa": "/ɪnˈɡeɪdʒmənt/",
+    "example": "Community engagement strengthens society.",
+    "category": "TED"
+  },
+  {
+    "word": "empowerment",
+    "meaning": "권한 부여",
+    "ipa": "/ɪmˈpaʊərmənt/",
+    "example": "Education enables personal empowerment.",
+    "category": "TED"
+  },
+  {
+    "word": "integrity",
+    "meaning": "청렴함, 완전성",
+    "ipa": "/ɪnˈtɛɡrɪti/",
+    "example": "Integrity is the foundation of trust.",
+    "category": "TED"
+  },
+  {
+    "word": "advocacy",
+    "meaning": "옹호, 지지",
+    "ipa": "/ˈædvəkəsi/",
+    "example": "Advocacy for change requires courage.",
+    "category": "TED"
+  },
+  {
+    "word": "narrative",
+    "meaning": "이야기, 설명",
+    "ipa": "/ˈnærətɪv/",
+    "example": "Stories shape our narrative of change.",
+    "category": "TED"
+  },
+  {
+    "word": "catalyst",
+    "meaning": "촉매, 계기",
+    "ipa": "/ˈkætəlɪst/",
+    "example": "One person can be a catalyst for change.",
+    "category": "TED"
+  },
+  {
+    "word": "paradigm",
+    "meaning": "패러다임, 모범",
+    "ipa": "/ˈpærədaɪm/",
+    "example": "We need a paradigm shift in thinking.",
+    "category": "TED"
+  },
+  {
+    "word": "protagonist",
+    "meaning": "주인공, 주역",
+    "ipa": "/prəˈtæɡənɪst/",
+    "example": "The protagonist overcomes all odds in the film.",
+    "category": "Movie"
+  },
+  {
+    "word": "antagonist",
+    "meaning": "적, 대항자",
+    "ipa": "/ænˈtæɡənɪst/",
+    "example": "The antagonist reveals his true intentions.",
+    "category": "Movie"
+  },
+  {
+    "word": "climax",
+    "meaning": "절정, 최고조",
+    "ipa": "/ˈklaɪmæks/",
+    "example": "The climax of the movie left everyone speechless.",
+    "category": "Movie"
+  },
+  {
+    "word": "suspense",
+    "meaning": "긴장, 불안감",
+    "ipa": "/səˈspens/",
+    "example": "The suspense builds throughout the entire film.",
+    "category": "Movie"
+  },
+  {
+    "word": "dialogue",
+    "meaning": "대사, 대화",
+    "ipa": "/ˈdaɪəlɔːɡ/",
+    "example": "The dialogue between the characters was witty.",
+    "category": "Movie"
+  },
+  {
+    "word": "flashback",
+    "meaning": "회상, 플래시백",
+    "ipa": "/ˈflæʃbæk/",
+    "example": "A flashback reveals the character's tragic past.",
+    "category": "Movie"
+  },
+  {
+    "word": "revelation",
+    "meaning": "폭로, 밝혀짐",
+    "ipa": "/ˌrevəˈleɪʃən/",
+    "example": "The revelation shocked the entire audience.",
+    "category": "Movie"
+  },
+  {
+    "word": "betrayal",
+    "meaning": "배신, 배반",
+    "ipa": "/bɪˈtreɪəl/",
+    "example": "The betrayal of his closest friend devastated him.",
+    "category": "Movie"
+  },
+  {
+    "word": "redemption",
+    "meaning": "구원, 구속",
+    "ipa": "/rɪˈdempʃən/",
+    "example": "The character finds redemption through sacrifice.",
+    "category": "Movie"
+  },
+  {
+    "word": "poignant",
+    "meaning": "감동적인, 애절한",
+    "ipa": "/ˈpɔɪnjənt/",
+    "example": "The poignant ending brought tears to everyone.",
+    "category": "Movie"
+  },
+  {
+    "word": "revenue",
+    "meaning": "수익, 매출",
+    "ipa": "/ˈrevənuː/",
+    "example": "The company's revenue increased by 20% this year.",
+    "category": "Business"
+  },
+  {
+    "word": "profit",
+    "meaning": "이윤, 수익",
+    "ipa": "/ˈprɑːfɪt/",
+    "example": "Reducing costs will increase our profit margin.",
+    "category": "Business"
+  },
+  {
+    "word": "acquisition",
+    "meaning": "인수, 습득",
+    "ipa": "/ˌækwɪˈzɪʃən/",
+    "example": "The acquisition of that company was strategic.",
+    "category": "Business"
+  },
+  {
+    "word": "merger",
+    "meaning": "합병, 통합",
+    "ipa": "/ˈmɜːrdʒər/",
+    "example": "The merger created a stronger market position.",
+    "category": "Business"
+  },
+  {
+    "word": "portfolio",
+    "meaning": "포트폴리오, 자산 보유",
+    "ipa": "/pɔːrˈfoʊlioʊ/",
+    "example": "Our investment portfolio is well-diversified.",
+    "category": "Business"
+  },
+  {
+    "word": "strategy",
+    "meaning": "전략, 계획",
+    "ipa": "/ˈstrætədʒi/",
+    "example": "Our marketing strategy focuses on digital channels.",
+    "category": "Business"
+  },
+  {
+    "word": "stakeholder",
+    "meaning": "이해관계자",
+    "ipa": "/ˈsteɪkhoʊldər/",
+    "example": "We must consider all stakeholders in this decision.",
+    "category": "Business"
+  },
+  {
+    "word": "dividend",
+    "meaning": "배당금",
+    "ipa": "/ˈdɪvɪdend/",
+    "example": "Shareholders received a 5% dividend this quarter.",
+    "category": "Business"
+  },
+  {
+    "word": "liability",
+    "meaning": "책임, 부채",
+    "ipa": "/ˌlaɪəˈbɪləti/",
+    "example": "The company's liabilities exceed its assets.",
+    "category": "Business"
+  },
+  {
+    "word": "asset",
+    "meaning": "자산, 재산",
+    "ipa": "/ˈæset/",
+    "example": "Real estate is our most valuable asset.",
+    "category": "Business"
+  }
 ]

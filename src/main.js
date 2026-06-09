@@ -59,6 +59,8 @@ class VocabularyApp {
     this.currentCategory = 'all'
     this.currentView = 'vocabulary'
     this.currentTab = 'list'
+    this.selectedCourse = null
+    this.courses = ['TED', 'Movie', 'Business']
     this.init()
   }
 
@@ -93,6 +95,19 @@ class VocabularyApp {
       if (e.target.getAttribute('data-answer-quiz')) {
         const [selected, correct] = e.target.getAttribute('data-answer-quiz').split('|')
         this.answerQuiz(selected, correct)
+      }
+
+      // 코스 카드 클릭
+      const courseCard = e.target.closest('.course-card')
+      if (courseCard) {
+        this.selectedCourse = courseCard.getAttribute('data-course')
+        this.render()
+      }
+
+      // 뒤로가기 (코스 대시보드로)
+      if (e.target.id === 'backToCourses') {
+        this.selectedCourse = null
+        this.render()
       }
     })
 
@@ -228,25 +243,77 @@ class VocabularyApp {
   }
 
   renderVocabularyContent() {
-    const learned = this.words.filter(w => w.isLearned).length
+    // 코스 대시보드 또는 단어 목록 표시
+    if (!this.selectedCourse) {
+      return this.renderCourseDashboard()
+    }
+
+    // 선택된 코스의 단어 목록
+    const courseWords = this.words.filter(w => w.category === this.selectedCourse)
+    const learned = courseWords.filter(w => w.isLearned).length
+
     return `
+      <div class="mb-4">
+        <button id="backToCourses" class="flex items-center gap-2 text-orange-600 hover:text-orange-700 font-semibold mb-4">
+          <span>←</span> Back to Courses
+        </button>
+      </div>
+
       <div class="grid grid-cols-2 gap-3 mb-4">
         <div class="bg-blue-50 rounded-lg p-3 text-center border-2 border-blue-200">
-          <p class="text-xs text-gray-600 mb-1">Total</p>
-          <p class="text-2xl font-bold text-blue-600" aria-label="Total words">${this.words.length}</p>
+          <p class="text-xs text-gray-600 mb-1">Course</p>
+          <p class="text-lg font-bold text-blue-600">${this.selectedCourse}</p>
         </div>
         <div class="bg-green-50 rounded-lg p-3 text-center border-2 border-green-200">
-          <p class="text-xs text-gray-600 mb-1">완료됨 ✓</p>
-          <p class="text-2xl font-bold text-green-600" aria-label="Completed words">${learned}</p>
+          <p class="text-xs text-gray-600 mb-1">Completed</p>
+          <p class="text-2xl font-bold text-green-600">${learned}/${courseWords.length}</p>
         </div>
       </div>
-      <div class="mb-4">
-        <select id="categoryFilter" class="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-          <option value="all">All</option>
-          ${[...new Set(this.words.map(w => w.category))].sort().map(cat => `<option value="${cat}">${cat}</option>`).join('')}
-        </select>
-      </div>
+
       <div id="contentArea"></div>
+      ${this.renderAddModal()}
+    `
+  }
+
+  renderCourseDashboard() {
+    return `
+      <div class="py-4">
+        <h2 class="text-xl font-bold text-gray-900 mb-6">Select a Course</h2>
+        <div class="space-y-3">
+          ${this.courses.map(course => {
+            const courseWords = this.words.filter(w => w.category === course)
+            const learned = courseWords.filter(w => w.isLearned).length
+            const progress = courseWords.length > 0 ? Math.round((learned / courseWords.length) * 100) : 0
+
+            const courseEmojis = {
+              'TED': '🎬',
+              'Movie': '🎥',
+              'Business': '💼'
+            }
+
+            return `
+              <div class="bg-white rounded-lg shadow-sm p-5 border-l-4 border-orange-500 hover:shadow-md transition cursor-pointer course-card" data-course="${course}">
+                <div class="flex items-start justify-between mb-3">
+                  <div>
+                    <div class="flex items-center gap-2 mb-1">
+                      <span class="text-3xl">${courseEmojis[course] || '📚'}</span>
+                      <h3 class="text-lg font-bold text-gray-900">${course}</h3>
+                    </div>
+                    <p class="text-sm text-gray-600">${courseWords.length} words</p>
+                  </div>
+                  <span class="text-2xl font-bold text-orange-600">${progress}%</span>
+                </div>
+
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                  <div class="bg-gradient-to-r from-orange-400 to-orange-600 h-2 rounded-full transition" style="width: ${progress}%"></div>
+                </div>
+
+                <p class="text-xs text-gray-500 mt-2">${learned} completed</p>
+              </div>
+            `
+          }).join('')}
+        </div>
+      </div>
       ${this.renderAddModal()}
     `
   }
@@ -272,7 +339,15 @@ class VocabularyApp {
   }
 
   renderWordList() {
-    const filtered = this.words.filter(w => this.currentCategory === 'all' || w.category === this.currentCategory)
+    let filtered = this.words
+
+    // 선택된 코스가 있으면 그 코스의 단어만 필터
+    if (this.selectedCourse) {
+      filtered = filtered.filter(w => w.category === this.selectedCourse)
+    } else {
+      filtered = filtered.filter(w => this.currentCategory === 'all' || w.category === this.currentCategory)
+    }
+
     const content = document.getElementById('contentArea')
     if (!content) return
 
