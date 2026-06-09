@@ -27,7 +27,7 @@ jobs:
 
       - name: 🔑 .env 파일 생성
         run: |
-          cat > .env << EOF
+          cat > scripts/.env << EOF
           CLAUDE_API_KEY=${{ secrets.CLAUDE_API_KEY }}
           GUARDIAN_API_KEY=${{ secrets.GUARDIAN_API_KEY }}
           NYT_API_KEY=${{ secrets.NYT_API_KEY }}
@@ -43,13 +43,13 @@ jobs:
           git config user.name "Word Scraper Bot"
           git config user.email "bot@heekiword.dev"
 
-          if git diff --quiet public/words.json; then
-            echo "✓ 변경사항 없음"
-          else
-            echo "📝 words.json 업데이트 감지"
+          # public/words.json이 있는지 확인
+          if [ -f "public/words.json" ]; then
             git add public/words.json
-            git commit -m "feat: 자동 단어 수집 - $(date +'%Y-%m-%d')"
-            git push
+            git commit -m "feat: 자동 단어 수집 - $(date +'%Y-%m-%d')" || echo "✓ 변경사항 없음"
+            git push || echo "✓ 푸시할 변경사항 없음"
+          else
+            echo "⚠️  public/words.json 파일 없음"
           fi
 
       - name: ✅ 완료
