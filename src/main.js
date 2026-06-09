@@ -174,14 +174,17 @@ class VocabularyApp {
 
       const wordsData = await response.json()
       this.words = wordsData
+      console.log(`✅ Loaded ${wordsData.length} words from words.json`)
       localStorage.setItem('vocabularyWords', JSON.stringify(wordsData))
     } catch (error) {
-      console.warn('Failed to load words.json, using initial data:', error)
+      console.error('❌ Failed to load words.json:', error)
       const stored = localStorage.getItem('vocabularyWords')
       if (stored) {
         this.words = JSON.parse(stored)
+        console.log(`📦 Using cached data: ${this.words.length} words`)
       } else {
         this.words = this.getInitialWords()
+        console.log(`⚠️  Using initial data: ${this.words.length} words`)
         localStorage.setItem('vocabularyWords', JSON.stringify(this.words))
       }
     }
