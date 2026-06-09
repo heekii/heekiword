@@ -874,6 +874,7 @@ class VocabularyApp {
       spans.forEach(span => span.classList.remove('cursor'))
     })
 
+    // 즉시 포커스 (setTimeout 제거)
     input.focus()
   }
 
@@ -893,6 +894,11 @@ class VocabularyApp {
     })
   }
 
+
+  nextDictation() {
+    audio.play('click')
+    this.renderDictationChallenge()
+  }
 
   async submitDictation(e) {
     const inputElement = document.getElementById('dictationInput')
@@ -923,19 +929,11 @@ class VocabularyApp {
             <div class="text-6xl mb-4">✨</div>
             <h2 class="text-2xl font-bold text-gray-900 mb-2">Perfect!</h2>
             <p class="text-gray-600 mb-6">+10 EXP | Streak: ${this.character.streak}</p>
-            <button id="nextPracticeBtn" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-8 rounded-lg transition-all active:scale-95">
+            <button class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-8 rounded-lg transition-all active:scale-95" onclick="window.app.nextDictation()">
               Next Practice 🚀
             </button>
           </div>
         `
-
-        // 다음 연습 버튼 이벤트
-        setTimeout(() => {
-          document.getElementById('nextPracticeBtn')?.addEventListener('click', () => {
-            audio.play('click')
-            this.renderDictationChallenge()
-          })
-        }, 0)
       }
     } else {
       audio.play('error')
