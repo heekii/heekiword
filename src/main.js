@@ -168,22 +168,22 @@ class VocabularyApp {
 
   async loadWordsFromFile() {
     try {
-      const stored = localStorage.getItem('vocabularyWords')
-      if (stored) {
-        this.words = JSON.parse(stored)
-        return
-      }
-
+      // 항상 words.json에서 최신 데이터 로드 (캐시 무시)
       const response = await fetch('/words.json')
       if (!response.ok) throw new Error('Failed to load words.json')
 
       const wordsData = await response.json()
       this.words = wordsData
-      this.saveWords(wordsData)
+      localStorage.setItem('vocabularyWords', JSON.stringify(wordsData))
     } catch (error) {
       console.warn('Failed to load words.json, using initial data:', error)
-      this.words = this.getInitialWords()
-      this.saveWords(this.words)
+      const stored = localStorage.getItem('vocabularyWords')
+      if (stored) {
+        this.words = JSON.parse(stored)
+      } else {
+        this.words = this.getInitialWords()
+        localStorage.setItem('vocabularyWords', JSON.stringify(this.words))
+      }
     }
   }
 
