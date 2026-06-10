@@ -121,14 +121,14 @@ class VocabularyApp {
       if (e.target.id === 'dictationTab') { this.currentView = 'dictation'; this.render() }
       if (e.target.id === 'characterTab') { this.currentView = 'character'; this.render() }
 
-      if (e.target.getAttribute('data-toggle-meaning')) {
-        this.toggleMeaning(parseInt(e.target.getAttribute('data-toggle-meaning')))
+      // 클릭 타깃이 자식 요소(svg, p 등)일 수 있으므로 closest로 탐색
+      const meaningEl = e.target.closest('[data-toggle-meaning]')
+      if (meaningEl) {
+        this.toggleMeaning(parseInt(meaningEl.getAttribute('data-toggle-meaning')))
       }
-      if (e.target.getAttribute('data-toggle-learned')) {
-        this.toggleLearned(parseInt(e.target.getAttribute('data-toggle-learned')))
-      }
-      if (e.target.getAttribute('data-delete-word')) {
-        this.deleteWord(parseInt(e.target.getAttribute('data-delete-word')))
+      const learnedBtn = e.target.closest('[data-toggle-learned]')
+      if (learnedBtn) {
+        this.toggleLearned(parseInt(learnedBtn.getAttribute('data-toggle-learned')))
       }
       if (e.target.getAttribute('data-answer-quiz')) {
         const [selected, correct] = e.target.getAttribute('data-answer-quiz').split('|')
@@ -143,7 +143,7 @@ class VocabularyApp {
       }
 
       // 뒤로가기 (코스 대시보드로)
-      if (e.target.id === 'backToCourses') {
+      if (e.target.closest('#backToCourses')) {
         this.selectedCourse = null
         this.render()
       }
@@ -176,6 +176,18 @@ class VocabularyApp {
       if (!response.ok) throw new Error('Failed to load words.json')
 
       const wordsData = await response.json()
+      // words.json에는 id가 없음 → 인덱스로 부여, 학습 상태는 category|word 키로 복원 (코스 간 중복 단어 존재)
+      const learnedMap = new Map()
+      try {
+        const stored = JSON.parse(localStorage.getItem('vocabularyWords') || '[]')
+        stored.forEach(w => { if (w.isLearned) learnedMap.set(`${w.category}|${w.word}`, w.learnedAt || null) })
+      } catch (e) {}
+      wordsData.forEach((w, i) => {
+        w.id = i + 1
+        const key = `${w.category}|${w.word}`
+        w.isLearned = learnedMap.has(key)
+        if (w.isLearned) w.learnedAt = learnedMap.get(key)
+      })
       this.words = wordsData
       console.log(`✅ Loaded ${wordsData.length} words from words.json`)
       localStorage.setItem('vocabularyWords', JSON.stringify(wordsData))
@@ -287,8 +299,11 @@ class VocabularyApp {
         <!-- 탭 버튼 (top-28 = 헤더 바로 아래) -->
         ${this.renderTabs()}
 
-        <!-- 콘텐츠 영역 (pt-40 = 헤더 112px + 탭 52px) -->
-        <main id="mainContent" class="flex-1 overflow-y-auto pb-20 pt-40"></main>
+        <!-- 코스 선택 시 고정 서브헤더 (스크롤해도 Back 버튼 항상 노출) -->
+        ${this.currentView === 'vocabulary' && this.selectedCourse ? this.renderCourseBar() : ''}
+
+        <!-- 콘텐츠 영역 (pt-40 = 헤더 112px + 탭 48px, 코스 바 있으면 +48px) -->
+        <main id="mainContent" class="flex-1 overflow-y-auto pb-20 ${this.currentView === 'vocabulary' && this.selectedCourse ? 'pt-52' : 'pt-40'}"></main>
       </div>
     `
 
@@ -476,12 +491,6 @@ class VocabularyApp {
     const learned = courseWords.filter(w => w.isLearned).length
 
     return `
-      <div class="mb-4">
-        <button id="backToCourses" class="flex items-center gap-2 text-orange-600 hover:text-orange-700 font-semibold mb-4">
-          <span>←</span> Back to Courses
-        </button>
-      </div>
-
       <div class="grid grid-cols-2 gap-3 mb-4">
         <div class="bg-blue-50 rounded-lg p-3 text-center border-2 border-blue-200">
           <p class="text-xs text-gray-600 mb-1">Course</p>
@@ -541,6 +550,17 @@ class VocabularyApp {
     `
   }
 
+  renderCourseBar() {
+    return `
+      <div class="fixed top-40 left-1/2 -translate-x-1/2 z-30 w-full max-w-md h-12 bg-white border-b border-gray-200 flex items-center justify-between px-4">
+        <button id="backToCourses" class="flex items-center gap-2 text-orange-600 hover:text-orange-700 font-semibold text-sm">
+          <span>←</span> Back to Courses
+        </button>
+        <span class="text-sm font-bold text-gray-900">${this.selectedCourse}</span>
+      </div>
+    `
+  }
+
   renderTabs() {
     const isActive = (view) => this.currentView === view
     const activeClass = 'border-orange-500 text-orange-600 bg-orange-50'
@@ -570,6 +590,13 @@ class VocabularyApp {
     } else {
       filtered = filtered.filter(w => this.currentCategory === 'all' || w.category === this.currentCategory)
     }
+
+    // 미학습 단어 우선, 학습 완료 단어는 완료 시각순으로 하단 배치
+    filtered = [...filtered].sort((a, b) => {
+      if (a.isLearned !== b.isLearned) return a.isLearned ? 1 : -1
+      if (a.isLearned) return (a.learnedAt || '').localeCompare(b.learnedAt || '')
+      return 0
+    })
 
     const content = document.getElementById('contentArea')
     if (!content) return
@@ -601,14 +628,9 @@ class VocabularyApp {
             ${word.example ? `<p class="text-gray-500 text-xs italic mt-2">Example: ${this.escapeHtml(word.example)}</p>` : ''}
           </div>
           <div class="flex gap-2 flex-shrink-0">
-            <button data-toggle-learned="${word.id}" class="p-2 rounded-lg ${word.isLearned ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-600'} hover:opacity-80 transition">
+            <button data-toggle-learned="${word.id}" aria-label="Mark as learned" class="p-2 rounded-lg ${word.isLearned ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-600'} hover:opacity-80 transition">
               <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-              </svg>
-            </button>
-            <button data-delete-word="${word.id}" class="p-2 rounded-lg bg-red-100 text-red-600 hover:opacity-80 transition">
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
               </svg>
             </button>
           </div>
@@ -1070,16 +1092,10 @@ class VocabularyApp {
     const word = this.words.find(w => w.id === id)
     if (word) {
       word.isLearned = !word.isLearned
+      word.learnedAt = word.isLearned ? new Date().toISOString() : null
       this.saveWords()
-      this.render()
-    }
-  }
-
-  deleteWord(id) {
-    if (confirm('Delete this word?')) {
-      this.words = this.words.filter(w => w.id !== id)
-      this.saveWords()
-      this.render()
+      // 전체 render()는 스크롤 위치를 초기화하므로 콘텐츠만 갱신
+      this.renderMainContent()
     }
   }
 
